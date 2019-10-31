@@ -1,4 +1,7 @@
-# ATSC 500 - 10 September
+# ATSC 500 
+
+
+# 10 September
 	
 create environmental variables so can just go cd $a500
 
@@ -346,10 +349,13 @@ du/dz increases with height by 5z/L when it’s non_dimensionalized with monin-o
 
 surface layer similarity is so important because it’s in every model
 
-To update from a forked repo
-git fetch upstream
-git checkout master
-git merge upstream/master
+To update from a forked repo:
+
+`git fetch upstream`
+
+`git checkout master`
+
+`git merge upstream/master`
 
 
 parallelism
@@ -422,6 +428,35 @@ gaussian process regression…?
 homoschedastic?
 
 read pg. 312 on imaginary numbers in FFTs?
+
+
+fourier transform the last code to check the cutoff points for the k/ power details after filtering. 
+
+
+fft2d notebook --> have a class that carries around the data
+intro to object orientated programming
+
+now we have member functions and attributes for each object that we create...
+
+power spectrum function adds info to the object (adds an attribute)
+
+
+## For homework:
+
+do what the cell is doing
+
+photons in cloud travel further than 25 meters so when pixels talk to each other we get photon diffusion so we see the signature of that which is no longer tracking turbulence but mixing turbulent eddies from all over the cloud (200m) so we get diffusivity that looks like a k^2 terms
+
+
+We need to filter the image and eliminate length scales smaller than 2km, back transform it and show the data
+what radius in k space corresponds to 2km if pixel is 25m
+
+k^2 = kx^2 + ky^2
+
+
+filter, back transform
+
+try on boundaries that aren't circular
 
 ```python
 
