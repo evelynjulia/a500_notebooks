@@ -372,7 +372,7 @@ task based vs fork join
 
 
 Optimum
-ewicksteed@optimum.eos.ubc.ca  with password raxi0Iez
+ewicksteed@optimum.eos.ubc.ca 
 Check www.optimum.eos.ubc.ca for docs (edited) 
 
  df -h
