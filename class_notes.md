@@ -1,3 +1,11 @@
+---
+title: Class notes
+output: 
+  html_document:
+    keep_md: true
+    theme: paper
+---
+
 # ATSC 500 
 
 

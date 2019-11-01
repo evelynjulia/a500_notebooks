@@ -1,3 +1,11 @@
+---
+title: Project details
+output: 
+  html_document:
+    keep_md: true
+    theme: paper
+---
+
 # Project idea - Eve
 
 31 October
