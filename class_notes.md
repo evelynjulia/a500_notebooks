@@ -4,7 +4,10 @@ output:
   html_document:
     keep_md: true
     theme: paper
+    toc: true
 ---
+
+
 
 # ATSC 500 
 
