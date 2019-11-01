@@ -1,4 +1,4 @@
-Links to certain docs:
+Links:
 
 [Class notes](https://evelynjulia.github.io/a500_notebooks/class_notes.html)
 
