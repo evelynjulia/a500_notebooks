@@ -48,6 +48,15 @@ In class we will learn how to work with 150G of data with x-array
 - Snow Depth
 - Min and Max temp
 
-```python
+## Possible journal articles:
+1. [Verification of Convection-Allowing WRF Model Forecasts of the Planetary Boundary Layer Using Sounding Observations](https://journals.ametsoc.org/doi/full/10.1175/WAF-D-12-00103.1)
+  - Coniglio, M.C., J. Correia, P.T. Marsh, and F. Kong, 2013
+  - They compare 5 PBL schemes in WRF to springtime radiosonde observations for deep convection events
+  - Focus on the thermodynamic accuracy of the forecasts using radiosonde observations as truth.
+  - They use Student's t-test to get statistical significance that the error is significantly different from zero. 
+  - They look at the following things in terms of results and comparisons:
+    * PBL height
+    * Potential temperature profiles
+    * Humidity profiles
+    * Other derived sounding variables: e.g. CAPE, MLCAPE, MLCIN
 
-```
