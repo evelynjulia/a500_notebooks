@@ -471,6 +471,25 @@ filter, back transform
 
 try on boundaries that aren't circular
 
+
+# 5 November 2019
+
+
+decorators in python: higher order functions that contain other functions
+
+Stallman created GNU and emacs
+
+LLVM is the competitive compiler to GNU (then numba uses LLVM to run python fast)
+
+Check the [nine rules of debugging](https://www.tygertec.com/9-rules-debugging/):
+    - make one of them fail...?
+   
+Want the dissipation rate becaase it's the thing that's turning the eddies into heat.  (See fft_dissipation.py notebook)
+
+```python
+
+```
+
 ```python
 
 ```
