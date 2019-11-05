@@ -16,14 +16,14 @@ output:
 
 # 10 September
 	
-create environmental variables so can just go cd $a500
+create environmental variables so can just go `cd $a500`
 
 can create functions to swap between condo versions
 
 
-mdfind -name stull | grep pdf
+`mdfind -name stull | grep pdf`
 
-open <filename>
+`open <filename>`
 
 the boundary layer has a well defined top which is because there is warm air descending that is dry because it’s all rained out in the hadley cell so that is why the top is defined
 
@@ -64,29 +64,32 @@ hackmd.io —> can use markdown and link to docs to ask questions
 jupytext? to cover between notebooks and .py files
 
 To test python from the command line
-python -c "import a500"
+
+`python -c "import a500"`
 
 when you call jupyter notebooks: 
-jupyter notebook &
+
+`jupyter notebook &`
+
 this will get it running in the background
 
 
 
-git fetch
+`git fetch`
 
 
 if we have made changes:
 
-git rebase origin/master
+`git rebase origin/master`
 
 copy notebook with our initials
 
 if we haven’t made any edits:
 
-git reset —hard origin/master
+`git reset —hard origin/master`
 
 
-pip install -e —upgrade # apparently don’t need to do this anymore
+`pip install -e —upgrade` # apparently don’t need to do this anymore
 
 pull combines fetch and rebase so better to do both separately
 
@@ -121,15 +124,18 @@ avg_var: float
 # 19 September:
 
 
-####type commands in the same order to update git repository 
+Type commands in the same order to update git repository 
 
-git fetch origin
-git reset --hard origin/master
-pip install -e . --upgrade
+`git fetch origin`
+
+`git reset --hard origin/master`
+
+`pip install -e . --upgrade`
 
 
-####Run to ensure you got the update 
-git log -1
+Run to ensure you got the update 
+
+`git log -1`
 
 
 
@@ -139,7 +145,7 @@ git log -1
 Think about what project I’d like to do (~35 hours of work) for this course. 
 
 
-24 September
+# 24 September
 
 take home points from readings:
 - term by term analysis of sinks and sources
@@ -164,7 +170,7 @@ b. doesn’t work for tropical convection apparently
 
 reproduce velocity scale and then reproduce fire 4.18
 
-ars technica?
+[ars technica?](https://arstechnica.com/)
 
 
 
@@ -181,7 +187,7 @@ richardson number goes down as kinetic energy goes up, high numbers, no turbulen
 
 # 10 October 
 
-constrained_layout = True
+`constrained_layout = True`
 
 —> to make better plots
 
@@ -205,10 +211,12 @@ account name and password for cedar account
 
 # 15 October
 
-jupytext --to notebook spline_profiles.py  --execute
+`jupytext --to notebook spline_profiles.py  --execute`
+
 don’t edit ipynb file
 use 
-`touch 
+`touch`
+
 wh is negative?
 gamma is the lapse rate
 
@@ -241,36 +249,49 @@ use F0 as 60 if want it to match the dry les run
 https://docs.conda.io/en/latest/miniconda.html
 
 
+## Installation and environment set up
+
 Open a termnal with spotlight
 
 
-cd ~/Downloads
-ls M*
-bash Mini*
-conda config --prepend channels conda-forge
-conda install git
-conda update --all
-conda create -n ds --clone base
-conda activate ds
-conda install numpy scipy matplotlib
+`cd ~/Downloads`
+
+`ls M*`
+
+`bash Mini*`
+
+`conda config --prepend channels conda-forge`
+
+`conda install git`
+
+`conda update --all`
+
+`conda create -n ds --clone base`
+
+`conda activate ds`
+
+`conda install numpy scipy matplotlib`
 
 
 
-jupyter notebook
-python -c "import a500"
+`jupyter notebook`
+
+`python -c "import a500"`
 
 
 
-cd ~/path of clone/
-python -c "import package"
+`cd ~/path of clone/`
 
-cd conda
-conda env create -f environment.yml
+`python -c "import package"`
+
+`cd conda`
+
+`conda env create -f environment.yml`
 
 
-conda activate a500test
+`conda activate a500test`
 
-pip install -e . --upgrade
+`pip install -e . --upgrade`
 
 
 
@@ -306,9 +327,13 @@ stratus to cumulous condition is where GCMs don’t do very well
 
 
 see cabau fit
+
 stable 2am
+
 sunrise 10am
+
 full convection 2pm
+
 overlay fit on curves
 
 
@@ -322,7 +347,9 @@ notebook for next tuesday
 # 24 October 2019
 
 most important equations are the ones in section 6.9 of fleagle businger…
+
 the relationship between means and turbulence
+
 in stable atmosphere there aren’t constant fluxes so we need to make corrections
 
 
@@ -474,7 +501,7 @@ try on boundaries that aren't circular
 
 # 5 November 2019
 
-
+<!-- #region -->
 decorators in python: higher order functions that contain other functions
 
 Stallman created GNU and emacs
@@ -482,9 +509,25 @@ Stallman created GNU and emacs
 LLVM is the competitive compiler to GNU (then numba uses LLVM to run python fast)
 
 Check the [nine rules of debugging](https://www.tygertec.com/9-rules-debugging/):
-    - make one of them fail...?
+    - make it fail...?
    
 Want the dissipation rate becaase it's the thing that's turning the eddies into heat.  (See fft_dissipation.py notebook)
+
+xcorr_fft.py gives details on the size of eddies because if the plane flies and data is correlated over time then the air is related and probably in the same eddies. Uses this frozen turbulence theory?
+    - Can use two ffts to get the autocorrelation
+    
+## Homework:
+
+Go over these lectures from [ECMWF](https://confluence.ecmwf.int/display/OPTR/NWP+Training+Material+2019):
+ - [PBL 1](https://www.dropbox.com/s/dcs4m640dxyg1t4/pbl1_is_2019.pdf?dl=0)
+ - [PBL 2](https://www.dropbox.com/s/77owrwwanadmpw2/pbl2_is_2019.pdf?dl=0)
+ - [PBL 3](https://www.dropbox.com/s/8gusigsskov4gbg/pbl3_is_2019.pdf?dl=0)
+ 
+
+## Next week 
+
+We'll look at the mixed layer but with the addition of evaporation and condensation
+<!-- #endregion -->
 
 ```python
 
