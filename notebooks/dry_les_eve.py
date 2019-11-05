@@ -171,7 +171,7 @@ temp_400=temp[-1,index,:,:]
 
 
 # %%
-temp_diff.shape
+#temp_diff.shape
 
 # %%
 temp_diff=temp_400 - temp_400.mean(axis=(0,1))
