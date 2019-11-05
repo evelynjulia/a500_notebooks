@@ -7,3 +7,14 @@ include:
   - project_idea.md
   - README.md
   - class_notes.md
+
+search_in_topnav: true
+
+# show feedback button in top nav bar?
+show_feedback: true
+
+# email address feedback gets sent to
+feedback_email: evewicksteed@gmail.com
+
+# inserts github link in top nav bar (recommended)
+github_button_location_top_navbar: true
