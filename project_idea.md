@@ -1,29 +1,36 @@
-# Project idea - Eve
+# ATSC 500 Project notes - Eve
 
 31 October
 
 
-project idea - understand model’s boundary layer scheme (maybe just pick one NAEFS model)
-compare this with sonde data (somewhere in the states where there is lots of data) and then compare with the soundings to see how well the model does at predicting the boundary layer
-
-see what variables are available in the model and how I could compare it. 
-
-would this be for cases? or for a long time series?
-eg. look at just he stable nocturnal boundary layer
-
-Phil said something about predicting when the model will do well? Not sure about this… ask him maybe?
+# Project idea:
+Understand model’s boundary layer scheme (maybe just pick one NAEFS model)
+Compare this with sonde data (somewhere in the states where there is lots of data) and then compare with the soundings to see how well the model does at predicting the boundary layer.
 
 
-— NAPS —> national air pollution prevalence stations
+## Questions:
+- How many days of data do I need from the models?
+- Would this be for cases? or for a long time series? eg. look at just he stable nocturnal boundary layer
+  --> Would have to be for certain cases because I can't get a time series from sounding data
+- Phil said something about predicting when the model will do well? Not sure about this… ask him maybe?
+- Do I need to interpolate to a particular station?
 
 
+## To do 
 ** find 2 or 3 background papers that are topical 
 what are the key research papers in this particular area
 eg. papers that have compared model boundary layer to obs and how do they compare? what are their metrics and statistical tests that they use
 
 
-In class we will learn how to work with 150G of data with x-array
+## Extra notes:
+- In class we will learn how to work with 150G of data with x-array
+- NAPS: national air pollution prevalence stations
 
+
+
+# Project notes:
+
+## See what variables are available in the model and how I could compare it:
 
 **Data in NAEFS netCDF files:**
 - Latent Heat Net Flux
@@ -44,6 +51,9 @@ In class we will learn how to work with 150G of data with x-array
 **About NAEFS model**
 American model is GFS and then has perturbations
 Canadian model is GEM and then has perturbations
+
+So check the PBL scheme in these control members...
+
 
 
 
