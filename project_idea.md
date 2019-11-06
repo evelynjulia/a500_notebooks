@@ -40,6 +40,13 @@ In class we will learn how to work with 150G of data with x-array
 - Snow Depth
 - Min and Max temp
 
+
+**About NAEFS model**
+American model is GFS and then has perturbations
+Canadian model is GEM and then has perturbations
+
+
+
 ## Possible journal articles:
 1. [Verification of Convection-Allowing WRF Model Forecasts of the Planetary Boundary Layer Using Sounding Observations](https://journals.ametsoc.org/doi/full/10.1175/WAF-D-12-00103.1)
   - Coniglio, M.C., J. Correia, P.T. Marsh, and F. Kong, 2013
