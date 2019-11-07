@@ -529,6 +529,42 @@ Go over these lectures from [ECMWF](https://confluence.ecmwf.int/display/OPTR/NW
 We'll look at the mixed layer but with the addition of evaporation and condensation
 <!-- #endregion -->
 
+# 7 November 2019
+
+
+Installed beautiful soup
+
+## Using pandas
+
+`weather = pandas.read_csv(weather_file)`
+
+`dir(weather)` --> this prints the list of things that can be down with the dataframe. Shows its methods
+
+`weather.? <tab>` --> lists the functions that you can use
+
+`import requests` --> get stuff from website programmatically
+
+## For sonde data:
+- [SHARPpy](https://github.com/sharppy/SHARPpy)
+- [MetPy](https://unidata.github.io/python-gallery/examples/SkewT_Example.html#sphx-glr-examples-skewt-example-py)
+- plus see Phil's wyoming notebook
+
+## For easy access to Optimum:
+
+[SSH Keygen](https://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/)
+
+```python
+
+```
+
+```python
+
+```
+
+```python
+
+```
+
 ```python
 
 ```
