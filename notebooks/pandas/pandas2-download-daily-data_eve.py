@@ -26,7 +26,7 @@
 from pathlib import Path
 
 import pandas as pd
-import requests
+import requests  # get stuff from website programmatically
 
 # %% [markdown]
 # ## Set the context for this notebook
@@ -63,6 +63,8 @@ f = (
 
 # %%
 inventory_file = context.data_dir / "Station Inventory EN.csv"
+
+print(inventory_file)
 inventory = pd.read_csv(inventory_file, skiprows=3)
 
 # Rename some of the columns to more convenient labels

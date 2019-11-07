@@ -103,7 +103,7 @@ import context
 # We create those folders in the cell below
 
 # %% {"scrolled": true}
-processed_dir =  Path("data/processed")
+processed_dir = Path("data/processed")
 raw_dir = Path("data/raw")
 #print(list(raw_dir.glob("*")))
 # %% [markdown]
@@ -166,7 +166,8 @@ weather_file = Path("data/weather_YVR.csv")  #subfolder
 
 # %%
 weather = pandas.read_csv(weather_file)
-#dir(weather)
+
+#dir(weather) # --> to see the list of things that you can do
 
 # %% [markdown] {"slideshow": {"slide_type": "skip"}}
 # > Pro Tips!
@@ -174,7 +175,7 @@ weather = pandas.read_csv(weather_file)
 # - Auto-complete even works for file paths inside a string!
 
 # %%
-weather.head()
+weather
 
 # %% [markdown]
 # - Only the first 30 and last 30 rows are displayed (but the data is all there in our `weather` variable)
@@ -215,7 +216,13 @@ weather.head()
 # First two rows:
 
 # %%
-weather.iloc[100,2]
+weather.head(2)
+
+#weather["Month"].loc[100]
+
+weather.iloc[100,2] # gets row 100, column 2
+
+weather.iloc[100]
 
 # %%
 # Last four rows:
