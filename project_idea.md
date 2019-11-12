@@ -84,14 +84,15 @@ Could look at source code? (With Phil and Henryk):
 - Want to be able to see the monin-obukov equations and look at how they are implemented in the model
 need to look at what equations are used for the boundary layer.
 
-Phil's links:
+
+**Phil's links:**
 
   - [ARM site review paper](https://journals.ametsoc.org/doi/pdf/10.1175/AMSMONOGRAPHS-D-16-0004.1)
   - [FIFE](https://daac.ornl.gov/FIFE/guides/lidar_height_data.html)
   - [Gabls](https://link.springer.com/article/10.1007/s10546-014-9919-1)
 
 
-Project code setup:
+**Project code setup:**
 
 - Need to see tests with handwritten code
 - Have some functions that you import into your notebook
