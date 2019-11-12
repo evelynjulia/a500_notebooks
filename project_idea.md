@@ -69,3 +69,21 @@ So check the PBL scheme in these control members...
     * Humidity profiles
     * Other derived sounding variables: e.g. CAPE, MLCAPE, MLCIN
 
+
+
+# Deadline updates - 12 Nov
+
+Have 3 papers and a dataset by next week
+
+What am I most interested in? wind? 
+
+Could look at source code? (With Phil and Henryk)
+
+Want to be able to see the monin-obukov equations and look at how they are implemented in the model
+need to look at what equations are used for the boundary layer.
+
+Phil's links:
+
+- ARM site review paper
+- FIFE
+- Gables
