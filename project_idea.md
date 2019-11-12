@@ -91,3 +91,9 @@ Phil's links:
   - [FIFE](https://daac.ornl.gov/FIFE/guides/lidar_height_data.html)
 
   - [Gabls](https://link.springer.com/article/10.1007/s10546-014-9919-1)
+
+
+Project code setup:
+
+- Need to see tests with handwritten code
+- Have some functions that you import into your notebook

@@ -554,4 +554,46 @@ Installed beautiful soup
 [SSH Keygen](https://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/)
 
 
+# 12 November 2019
 
+## Project update:
+
+Have 3 papers and a dataset by Friday
+
+## Other notes:
+
+Cloud stuff: 
+
+- Have radiative cooling which changes fluxes... 
+- Changes how surface affects the upper atmosphere
+- Entrainment flux...?
+- see thermo.pdf notes: don't want to use a dry theta that changes with evap etc. So we define theta_L that is conserved and doesn't change (conserves entropy)
+- can convert between true entropy (`s` in 2nd law of thermodynamics) and the atmos entropy
+
+
+See [thermlib.py](https://github.com/phaustin/a500_notebooks/blob/master/a500/thermo/thermlib.py):
+- Can do a doc test with `>>>` in the docstring
+- What is this testing? How do we do it? What's the point?
+- [Pytest](https://docs.pytest.org/en/latest/)
+- [Sphinx](http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
+
+
+Be able to publish a web page with docs about our functions in our library
+
+`conda install sphinx`
+
+`pip install sphinxcontrib-fulltoc`
+
+copy `sphinx-build -N -v -b html . _build` to prompt and run it... 
+- says build this website, build html, put in folder called build
+
+Now we want to also be able to use [click](https://click.palletsprojects.com/en/7.x/documentation/):
+
+- need to know whether you have options or arguments
+- arguments are mandatory
+- arguments don't have defaults
+
+- would normally use parameters, results, etc for web things (see test_click.py)
+
+
+If we're writing libraries we'll have tests and docstrings so they test themselves and document themselves.
