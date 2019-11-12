@@ -597,3 +597,7 @@ Now we want to also be able to use [click](https://click.palletsprojects.com/en/
 
 
 If we're writing libraries we'll have tests and docstrings so they test themselves and document themselves.
+
+## Homework:
+
+- test the xarray dataset
