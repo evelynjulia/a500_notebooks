@@ -531,6 +531,9 @@ We'll look at the mixed layer but with the addition of evaporation and condensat
 
 # 7 November 2019
 
+## Extra notes:
+- In class we will learn how to work with 150G of data with x-array
+- NAPS: national air pollution prevalence stations
 
 Installed beautiful soup
 
@@ -553,6 +556,7 @@ Installed beautiful soup
 
 [SSH Keygen](https://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/)
 
+<!-- #endregion -->
 
 # 12 November 2019
 

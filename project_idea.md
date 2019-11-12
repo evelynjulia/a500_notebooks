@@ -4,7 +4,7 @@
 
 
 # Project idea:
-Understand model’s boundary layer scheme (maybe just pick one NAEFS model)
+Understand model’s boundary layer scheme (maybe just pick one NAEFS model).
 Compare this with sonde data (somewhere in the states where there is lots of data) and then compare with the soundings to see how well the model does at predicting the boundary layer.
 
 
@@ -17,14 +17,10 @@ Compare this with sonde data (somewhere in the states where there is lots of dat
 
 
 ## To do 
-** find 2 or 3 background papers that are topical 
-what are the key research papers in this particular area
-eg. papers that have compared model boundary layer to obs and how do they compare? what are their metrics and statistical tests that they use
+- Find 2 or 3 background papers that are topical 
+- What are the key research papers in this particular area?
+  eg. papers that have compared model boundary layer to obs and how do they compare? What are their metrics and statistical tests that they use?
 
-
-## Extra notes:
-- In class we will learn how to work with 150G of data with x-array
-- NAPS: national air pollution prevalence stations
 
 
 
@@ -33,6 +29,7 @@ eg. papers that have compared model boundary layer to obs and how do they compar
 ## See what variables are available in the model and how I could compare it:
 
 **Data in NAEFS netCDF files:**
+
 - Latent Heat Net Flux
 - Sensible Heat Net Flux
 - geopotential height at various levels
@@ -49,8 +46,9 @@ eg. papers that have compared model boundary layer to obs and how do they compar
 
 
 **About NAEFS model**
-American model is GFS and then has perturbations
-Canadian model is GEM and then has perturbations
+
+- American model is GFS and then has perturbations
+- Canadian model is GEM and then has perturbations
 
 So check the PBL scheme in these control members...
 
