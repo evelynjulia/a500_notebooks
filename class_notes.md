@@ -553,22 +553,5 @@ Installed beautiful soup
 
 [SSH Keygen](https://www.tecmint.com/ssh-passwordless-login-using-ssh-keygen-in-5-easy-steps/)
 
-```python
 
-```
 
-```python
-
-```
-
-```python
-
-```
-
-```python
-
-```
-
-```python
-
-```
