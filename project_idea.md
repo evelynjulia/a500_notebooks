@@ -14,6 +14,7 @@ Compare this with sonde data (somewhere in the states where there is lots of dat
   --> Would have to be for certain cases because I can't get a time series from sounding data
 - Phil said something about predicting when the model will do well? Not sure about this… ask him maybe?
 - Do I need to interpolate to a particular station?
+- What am I most interested in? wind? 
 
 
 ## To do 
@@ -62,32 +63,31 @@ So check the PBL scheme in these control members...
   - Focus on the thermodynamic accuracy of the forecasts using radiosonde observations as truth.
   - They use Student's t-test to get statistical significance that the error is significantly different from zero. 
   - They look at the following things in terms of results and comparisons:
-    * PBL height
-    * Potential temperature profiles
-    * Humidity profiles
-    * Other derived sounding variables: e.g. CAPE, MLCAPE, MLCIN
+      * PBL height
+      * Potential temperature profiles
+      * Humidity profiles
+      * Other derived sounding variables: e.g. CAPE, MLCAPE, MLCIN
 
 
 
-# Deadline updates - 12 Nov
+## Deadline updates - 12 Nov
 
-Understand forecast model boundary layer parameterization and compare with tower or sonde data
+**Goal:** Understand forecast model boundary layer parameterization and compare with tower or sonde data
 
-Have 3 papers and a dataset by Friday. So we will have 6 pages of setting and analysis and 6 pages of our own data analysis etc. 
+Have 3 papers and a dataset by Friday. 
 
-What am I most interested in? wind? 
+In the report we will have 6 pages of setting and analysis and 6 pages of our own data analysis etc. 
 
-Could look at source code? (With Phil and Henryk)
 
-Want to be able to see the monin-obukov equations and look at how they are implemented in the model
+Could look at source code? (With Phil and Henryk):
+
+- Want to be able to see the monin-obukov equations and look at how they are implemented in the model
 need to look at what equations are used for the boundary layer.
 
 Phil's links:
 
   - [ARM site review paper](https://journals.ametsoc.org/doi/pdf/10.1175/AMSMONOGRAPHS-D-16-0004.1)
-
   - [FIFE](https://daac.ornl.gov/FIFE/guides/lidar_height_data.html)
-
   - [Gabls](https://link.springer.com/article/10.1007/s10546-014-9919-1)
 
 
