@@ -68,7 +68,7 @@ So check the PBL scheme in these control members...
       * Humidity profiles
       * Other derived sounding variables: e.g. CAPE, MLCAPE, MLCIN
 
-
+2. [Implementation in the NCEP GFS of a Hybrid Eddy-Diffusivity Mass-Flux (EDMF) Boundary Layer Parameterization with Dissipative Heating and Modified Stable Boundary Layer Mixing](https://journals.ametsoc.org/doi/10.1175/WAF-D-15-0053.1?mobileUi=0)
 
 ## Deadline updates - 12 Nov
 
