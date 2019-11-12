@@ -73,7 +73,9 @@ So check the PBL scheme in these control members...
 
 # Deadline updates - 12 Nov
 
-Have 3 papers and a dataset by next week
+Understand forecast model boundary layer parameterization and compare with tower or sonde data
+
+Have 3 papers and a dataset by Friday. So we will have 6 pages of setting and analysis and 6 pages of our own data analysis etc. 
 
 What am I most interested in? wind? 
 
@@ -84,6 +86,8 @@ need to look at what equations are used for the boundary layer.
 
 Phil's links:
 
-- ARM site review paper
-- FIFE
-- Gables
+  - [ARM site review paper](https://journals.ametsoc.org/doi/pdf/10.1175/AMSMONOGRAPHS-D-16-0004.1)
+
+  - [FIFE](https://daac.ornl.gov/FIFE/guides/lidar_height_data.html)
+
+  - [Gabls](https://link.springer.com/article/10.1007/s10546-014-9919-1)
