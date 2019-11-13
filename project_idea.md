@@ -76,7 +76,11 @@ So check the PBL scheme in these control members...
 
 Have 3 papers and a dataset by Friday. 
 
+
 In the report we will have 6 pages of setting and analysis and 6 pages of our own data analysis etc. 
+- Have 2 or 3 pages on the PBL scheme and how it works 
+- have a season's worth of data
+
 
 
 Could look at source code? (With Phil and Henryk):
