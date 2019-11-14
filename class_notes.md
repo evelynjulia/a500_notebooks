@@ -604,4 +604,33 @@ If we're writing libraries we'll have tests and docstrings so they test themselv
 
 ## Homework:
 
-- test the xarray dataset
+- test the xarray dataset / notebook
+
+
+
+# 14 November 2019
+
+
+**Creating a yml file**
+
+To save the env:
+
+`conda env export > environment.yml`
+
+—> but this is too detailed and gives too specific details on libraries
+
+Then can create the env again with:
+
+`conda env create -f environment.yml`
+
+
+For **plot_dales.py** --> if you were to do this for 10000 files you'd want to throttle your server requests so use time.sleep to sleep for 10 seconds or something. 
+
+Would I need to do this when I get sounding data?
+
+
+## To do:
+
+- get another paper for project
+- figure out how to work with a branch for git
+- look into beautiful soup html parser (finds specific tags e.g. hyperlinks (see plot_dales.py))
