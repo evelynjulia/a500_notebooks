@@ -628,9 +628,14 @@ For **plot_dales.py** --> if you were to do this for 10000 files you'd want to t
 
 Would I need to do this when I get sounding data?
 
+encroachment -> when the inversion temp matches the mixed layer
+
+the last notebook we were shown about clouds is kinda ow things work in the Canadian GCM. And apparently we're at the stage we would need to be if we were joining a GCM team
+
 
 ## To do:
 
 - get another paper for project
 - figure out how to work with a branch for git
 - look into beautiful soup html parser (finds specific tags e.g. hyperlinks (see plot_dales.py))
+- how does one use a pull request? (I looked this up the other day...)
