@@ -471,7 +471,7 @@ def sector_mask(shape,centre,radius,angle_range):
 
 # %%
 rad_filter_func=np.zeros_like(output.fft_data,dtype=np.float64)
-mask = sector_mask(rad_filter_func.shape,(output.midpoint,output.midpoint),973,(0,360))
+mask = sector_mask(rad_filter_func.shape,(output.midpoint,output.midpoint),1400,(0,360))
 rad_filter_func[~mask] = 1
 #rad_filter_func[:,k2_index:-k2_index]=0.
 
@@ -519,5 +519,26 @@ divider = make_axes_locatable(ax[0])
 cax = divider.append_axes("bottom", size="5%", pad=0.35)
 out=fig.colorbar(im0,orientation='horizontal',cax=cax)
 #out=fig.colorbar(im1,orientation='horizontal',cax=cax)
+
+# %%
+
+# %% [markdown]
+#
+
+# %%
+
+# %%
+
+# %%
+
+# %%
+
+# %%
+
+# %%
+
+# %%
+
+# %%
 
 # %%
