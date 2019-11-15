@@ -35,11 +35,13 @@ open(data_dir+'test_sounding.txt', 'wb').write(r.content)
 
 
 #df = pd.read_fwf('test_sounding.txt',skiprows = 10, header =)
-col_names=['PRES','HGHT','TEMP','DWPT','RH','W','WDIR','WSPD','THETA','THTE','THETV']
+col_names=['PRES','HGHT','TEMP','DWPT','RH','MIXR','WDIR','WSPD','THTA','THTE','THTV']
+
 cols_to_use = np.arange(0,len(col_names))
 df = pd.read_fwf(url, skiprows = 10, names=col_names, skipfooter= 60,usecols=cols_to_use,widths=[7,7,7,7,7,7,7,7,7,7,7])
 
-
+# technically here I could just add the dfs to a bigger df instead of saving all the files...
+# do I want to do this?
 
 # this is how to save to a csv file
 df2.to_csv(data_dir+'test_save_df_as_csv.csv')
