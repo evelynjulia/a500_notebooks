@@ -42,9 +42,17 @@ jupyter:
 ---
 
 <h1>Table of Contents<span class="tocSkip"></span></h1>
+<div class="toc"><ul class="toc-item"><li><span><a href="#Project-rubric" data-toc-modified-id="Project-rubric-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>Project rubric</a></span><ul class="toc-item"><li><span><a href="#Programming/data" data-toc-modified-id="Programming/data-1.1"><span class="toc-item-num">1.1&nbsp;&nbsp;</span>Programming/data</a></span></li></ul></li><li><span><a href="#Project-list-for-A500" data-toc-modified-id="Project-list-for-A500-2"><span class="toc-item-num">2&nbsp;&nbsp;</span>Project list for A500</a></span></li></ul></div>
+
+
+<h1>Table of Contents<span class="tocSkip"></span></h1>
+<div class="toc"><ul class="toc-item"><li><span><a href="#Project-rubric" data-toc-modified-id="Project-rubric-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>Project rubric</a></span><ul class="toc-item"><li><span><a href="#Programming/data" data-toc-modified-id="Programming/data-1.1"><span class="toc-item-num">1.1&nbsp;&nbsp;</span>Programming/data</a></span></li></ul></li><li><span><a href="#Project-list-for-A500" data-toc-modified-id="Project-list-for-A500-2"><span class="toc-item-num">2&nbsp;&nbsp;</span>Project list for A500</a></span></li></ul></div>
+
+
+<h1>Table of Contents<span class="tocSkip"></span></h1>
 <div class="toc"><ul class="toc-item"><li><span><a href="#Project-list-for-A500" data-toc-modified-id="Project-list-for-A500-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>Project list for A500</a></span></li></ul></div>
 
-
+<!-- #region -->
 # Project rubric
 
 ## Programming/data
@@ -55,17 +63,23 @@ jupyter:
 
   - submit the project as a pull request
 
-  - black and flake8 should pass silently
+  - black and flake8 should pass silently (test formatters).
+      This makes it conform to the python standard. Can use these inside VS code
 
-  - should use standard numpy docstrings
+  - should use standard numpy docstrings (types of parameters and returns)
 
   - checkin notebooks as python files
-
+  
+  - need one function in a library at least and should have one test for the code
+  
   - use context.py to make your library available to your notebook
 
   - functions should live in your library module
 
   - have at least one unit test
+  
+  - Need an env.yml file so that we can reproduct the environment that we're using so that someone else can run our code
+
 
 # Project list for A500
 
@@ -102,3 +116,8 @@ jupyter:
 
   - [rico review paper](https://journals.ametsoc.org/doi/abs/10.1175/BAMS-88-12-1912)
 
+<!-- #endregion -->
+
+```python
+
+```

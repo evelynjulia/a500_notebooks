@@ -143,7 +143,7 @@ def calc_d(theta, qv):
     return Ad,Bd
 
 
-from a500.thermo.thermfuncs import find_theta, find_rs
+from a500.thermo.thermlib import find_theta, find_rs
 press=90.  #kPa
 Temp = 280. #K
 theta = find_theta(Temp,press)
