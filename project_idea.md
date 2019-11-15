@@ -89,6 +89,11 @@ Could look at source code? (With Phil and Henryk):
 need to look at what equations are used for the boundary layer.
 
 
+One possible question to ask would be:  if the forecast model had matched the observed sounding exactly, how much of a difference would it have made in the surface fluxes as estimated by MO theory?
+
+The nice thing about that is that if any information that you need is missing, you can just fill in an approximare guess and treat it as a sensitivity study.
+
+
 **Phil's links:**
 
   - [ARM site review paper](https://journals.ametsoc.org/doi/pdf/10.1175/AMSMONOGRAPHS-D-16-0004.1)
