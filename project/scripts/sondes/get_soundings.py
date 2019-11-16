@@ -25,10 +25,8 @@ hh = '00'
 # just want one sounding per file so have dd_start and stop be the same 
 # and hh_start and stop are the same
 
-start_url = 'http://weather.uwyo.edu/cgi-bin/sounding?region='
-
-
-url = start_url+region+'&TYPE=TEXT%3ALIST&YEAR='+yyyy+'&MONTH='+mm+'&FROM='+dd+hh+'&TO='+dd+hh+'&STNM='+stn_no
+#start_url = 'http://weather.uwyo.edu/cgi-bin/sounding?region='
+#url = start_url+region+'&TYPE=TEXT%3ALIST&YEAR='+yyyy+'&MONTH='+mm+'&FROM='+dd+hh+'&TO='+dd+hh+'&STNM='+stn_no
 
 #
 #r = requests.get(url, allow_redirects=True)
@@ -54,7 +52,7 @@ df['DATE']= pd.to_datetime(yyyy+mm+dd+' '+hh,format='%Y/%m/%d %H')
 
 
 
-def get_soundings(year,month,day,hour,region,stn):
+def get_soundings(year,month,day,hour,region,stn,out_dir):
 
     """
     Downloads University of Wyoming soundings
@@ -85,11 +83,24 @@ def get_soundings(year,month,day,hour,region,stn):
 
     """
 
-#get url:
-url = start_url+region+'&TYPE=TEXT%3ALIST&YEAR='+year+'&MONTH='+month+'&FROM='+day+hour+'&TO='+day+hour+'&STNM='+stn
+    # set full date string:
+    date_str = year+month+day+hour
 
+    # get url:
+    url = 'http://weather.uwyo.edu/cgi-bin/sounding?region='+region+'&TYPE=TEXT%3ALIST&YEAR='+year+'&MONTH='+month+'&FROM='+day+hour+'&TO='+day+hour+'&STNM='+stn
 
+    # get / set column details
+    col_names=['PRES','HGHT','TEMP','DWPT','RH','MIXR','WDIR','WSPD','THTA','THTE','THTV']
+    col_widths=[7,7,7,7,7,7,7,7,7,7,7]
+    cols_to_use = np.arange(0,len(col_names))
+    rows_to_skip = 10
+    foot_to_skip=60
 
+    # read in dataframe using URL
+    df = pd.read_fwf(url, skiprows=rows_to_skip, names=col_names, skipfooter=foot_to_skip, usecols=cols_to_use, widths=col_widths)
+
+    # save as csv
+    df.to_csv(out_dir+year+date_str+'_sounding_'+stn'.csv')
 
 
 '''
