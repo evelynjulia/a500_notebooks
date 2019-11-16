@@ -40,10 +40,23 @@ for year in range(2016, 2017):
 get_soundings(2017,'06',29,00,my_region,stn_no,data_dir)
 
 
+
+
+
 ### need to test if website exists
+
+
+yyyy = '2016'
+mm = '06'
+dd = '31'
+hh = '12'
+
 import requests
-request = requests.get('http://www.example.com')
+request = requests.get('http://weather.uwyo.edu/cgi-bin/sounding?region='+my_region+'&TYPE=TEXT%3ALIST&YEAR='+yyyy+'&MONTH='+mm+'&FROM='+dd+hh+'&TO='+dd+hh+'&STNM='+stn_no)
 if request.status_code == 200:
     print('Web site exists')
 else:
     print('Web site does not exist') 
+
+
+get_soundings(yyyy,mm,dd,hh,my_region,stn_no,data_dir)
