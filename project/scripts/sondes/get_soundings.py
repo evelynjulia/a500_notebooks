@@ -43,18 +43,50 @@ df = pd.read_fwf(url, skiprows=10, names=col_names, skipfooter=60, usecols=cols_
 
 # add a date column so I know which date that data is for
 # function will take date as an input so use that as input to the date column
-df['date']= pd.to_datetime(yyyy+mm+dd+' '+hh,format='%Y/%m/%d %H')
+df['DATE']= pd.to_datetime(yyyy+mm+dd+' '+hh,format='%Y/%m/%d %H')
 
-import datetime as dt
-(pd.to_datetime(yyyy+mm+dd+' '+hh,format='%Y/%m/%d %H'))
 
 # technically here I could just add the dfs to a bigger df instead of saving all the files...
 # do I want to do this?
 
 # this is how to save to a csv file
-df2.to_csv(data_dir+'test_save_df_as_csv.csv')
+#df.to_csv(data_dir+'test_save_df_as_csv.csv')
 
 
+
+def get_soundings(year,month,day,hour,region,stn):
+
+    """
+    Downloads University of Wyoming soundings
+    
+    parameters
+    ==========
+
+    dates: 
+
+    region: 
+        north america = naconf, 
+        south america = samer, 
+        South Pacific = pac, 
+        New Zealand = nz, 
+        Antarctica = ant, 
+        Arctic = np, 
+        Europe = europe, 
+        Africa = africa, 
+        Southeast Asia = seasia, 
+        Midlle east = mideast
+
+    stn: station number
+
+    dir: Directory into which to save the data 
+    
+    Returns
+    =======
+
+    """
+
+#get url:
+url = start_url+region+'&TYPE=TEXT%3ALIST&YEAR='+year+'&MONTH='+month+'&FROM='+day+hour+'&TO='+day+hour+'&STNM='+stn
 
 
 
