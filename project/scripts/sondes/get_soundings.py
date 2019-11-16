@@ -104,11 +104,7 @@ def get_soundings(year,month,day,hour,region,stn,out_dir):
     else:
         print('Web site does not exist')
         print('No file for '+ date_str) 
-
-
-
-
-    
+        
 
     
     return None
@@ -118,4 +114,4 @@ def get_soundings(year,month,day,hour,region,stn,out_dir):
 
 
 
-get_soundings(yyyy,mm,dd,hh,my_region,stn_no,data_dir)
+#get_soundings(yyyy,mm,dd,hh,my_region,stn_no,data_dir)
