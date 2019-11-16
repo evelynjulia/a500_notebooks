@@ -22,6 +22,8 @@ mm = '06'
 dd = '29'
 hh = '00'
 
+get_soundings(yyyy,mm,ds,hh,my_region,stn_no,data_dir)
+
 # just want one sounding per file so have dd_start and stop be the same 
 # and hh_start and stop are the same
 
@@ -34,14 +36,14 @@ hh = '00'
 
 
 #df = pd.read_fwf('test_sounding.txt',skiprows = 10, header =)
-col_names=['PRES','HGHT','TEMP','DWPT','RH','MIXR','WDIR','WSPD','THTA','THTE','THTV']
-col_widths=[7,7,7,7,7,7,7,7,7,7,7]
-cols_to_use = np.arange(0,len(col_names))
-df = pd.read_fwf(url, skiprows=10, names=col_names, skipfooter=60, usecols=cols_to_use, widths=col_widths)
+#col_names=['PRES','HGHT','TEMP','DWPT','RH','MIXR','WDIR','WSPD','THTA','THTE','THTV']
+#col_widths=[7,7,7,7,7,7,7,7,7,7,7]
+#cols_to_use = np.arange(0,len(col_names))
+#df = pd.read_fwf(url, skiprows=10, names=col_names, skipfooter=60, usecols=cols_to_use, widths=col_widths)
 
 # add a date column so I know which date that data is for
 # function will take date as an input so use that as input to the date column
-df['DATE']= pd.to_datetime(yyyy+mm+dd+' '+hh,format='%Y/%m/%d %H')
+#df['DATE']= pd.to_datetime(yyyy+mm+dd+' '+hh,format='%Y/%m/%d %H')
 
 
 # technically here I could just add the dfs to a bigger df instead of saving all the files...
@@ -119,12 +121,16 @@ def get_soundings(year,month,day,hour,region,stn,out_dir):
     df['DATE']= pd.to_datetime(year+month+day+' '+hour,format='%Y/%m/%d %H')
 
     # save as csv
-    outfilename = year+date_str+'_sounding_'+stn'.csv'
+    outfilename = date_str+'_sounding_'+stn+'.csv'
 
     df.to_csv(out_dir+outfilename)
 
     print('Saved to '+out_dir+' as '+ outfilename)
 
+    return None
 
 
 
+
+
+get_soundings(yyyy,mm,dd,hh,my_region,stn_no,data_dir)
