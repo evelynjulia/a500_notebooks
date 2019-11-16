@@ -16,7 +16,7 @@ data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/d
 script_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/scripts/'
 
 stn_no = '68816'
-region = 'africa'
+my_region = 'africa'
 yyyy = '2019'
 mm = '06'
 dd = '29'
@@ -60,7 +60,11 @@ def get_soundings(year,month,day,hour,region,stn,out_dir):
     parameters
     ==========
 
-    dates: 
+    year (YYYY): float or string
+    month (MM): float or string
+    day (DD): float or string
+    hour (HH): float or string 
+        can be 00 or 12 in most cases  
 
     region: 
         north america = naconf, 
@@ -74,14 +78,26 @@ def get_soundings(year,month,day,hour,region,stn,out_dir):
         Southeast Asia = seasia, 
         Midlle east = mideast
 
-    stn: station number
+    stn: station number (find on http://weather.uwyo.edu/upperair/sounding.html)
+        float or string 
 
-    dir: Directory into which to save the data 
+    out_dir: Directory into which to save the data 
+        string
     
     Returns
     =======
 
+    a csv file of the dataframe in the output directory
+        with a filename of the date and station number
+
     """
+
+    # convert to strings
+    year = str(year)
+    month = str(month)
+    day = str(day)
+    hour = str(hour)
+    stn = str(stn)
 
     # set full date string:
     date_str = year+month+day+hour
@@ -99,20 +115,16 @@ def get_soundings(year,month,day,hour,region,stn,out_dir):
     # read in dataframe using URL
     df = pd.read_fwf(url, skiprows=rows_to_skip, names=col_names, skipfooter=foot_to_skip, usecols=cols_to_use, widths=col_widths)
 
+    # Add a date column to the dataframe
+    df['DATE']= pd.to_datetime(year+month+day+' '+hour,format='%Y/%m/%d %H')
+
     # save as csv
-    df.to_csv(out_dir+year+date_str+'_sounding_'+stn'.csv')
+    outfilename = year+date_str+'_sounding_'+stn'.csv'
 
+    df.to_csv(out_dir+outfilename)
 
-'''
-create a function
-
-want it to take in a list of URLS / or dates, region, times for soundings
-
-read URLS into dataframe using pd.read_fwf:
-
-extract the column names
+    print('Saved to '+out_dir+' as '+ outfilename)
 
 
 
 
-'''
