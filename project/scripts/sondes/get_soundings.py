@@ -84,18 +84,33 @@ def get_soundings(year,month,day,hour,region,stn,out_dir):
     foot_to_skip=60
 
     # read in dataframe using URL
-    df = pd.read_fwf(url, skiprows=rows_to_skip, names=col_names, skipfooter=foot_to_skip, usecols=cols_to_use, widths=col_widths)
 
-    # Add a date column to the dataframe
-    df['DATE']= pd.to_datetime(year+month+day+' '+hour,format='%Y/%m/%d %H')
+    # check for website:
+    request = requests.get(url)
+    if request.status_code == 200:
+        print('Web site exists')
+        df = pd.read_fwf(url, skiprows=rows_to_skip, names=col_names, skipfooter=foot_to_skip, usecols=cols_to_use, widths=col_widths)
+        
+        # Add a date column to the dataframe
+        df['DATE']= pd.to_datetime(year+month+day+' '+hour,format='%Y/%m/%d %H')
 
-    # save as csv
-    outfilename = date_str+'_sounding_'+stn+'.csv'
+        # save as csv
+        outfilename = date_str+'_sounding_'+stn+'.csv'
 
-    df.to_csv(out_dir+outfilename)
+        df.to_csv(out_dir+outfilename)
 
-    print('Saved to '+out_dir+' as '+ outfilename)
+        print('Saved to '+out_dir+' as '+ outfilename)
+    
+    else:
+        print('Web site does not exist')
+        print('No file for '+ date_str) 
 
+
+
+
+    
+
+    
     return None
 
 
