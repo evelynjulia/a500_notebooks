@@ -103,4 +103,4 @@ def get_soundings(year,month,day,hour,region,stn,out_dir):
 
 
 
-get_soundings(yyyy,mm,ds,hh,my_region,stn_no,data_dir)
+get_soundings(yyyy,mm,dd,hh,my_region,stn_no,data_dir)
