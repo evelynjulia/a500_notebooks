@@ -23,23 +23,23 @@ data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/d
 
 # range of dates to get files for
 # Maybe do summer 2016?
-dates = [datetime(2016, 1, 1, 0, 0)+timedelta(days=i) for i in range(365)] 
+#dates = [datetime(2016, 1, 1, 0, 0)+timedelta(days=i) for i in range(365)] 
 
 # 2016050900/cmc_gep20.t00z.pgrb2f132
 
 # to extract certain file: 
 #You can also use tar -zxvf <tar filename> <file you want to extract>
 
-'''
-untar_cmd = 'tar -zxvf '+ filename + file_to_extract -C path
-
-'''
+#'''
+#untar_cmd = 'tar -zxvf '+ filename + file_to_extract -C path
+#
+#'''
 
 # test: 
 #tar -zxvf /Users/catherinemathews/Google Drive File Stream/Shared drives/Datamart/NAEFS/2016050900.tgz 2016050900/ncep_gec00.t00z.pgrb2f000 - C /Users/catherinemathews/Google Drive File Stream/My Drive/Eve/data
 
 #this works:
-'tar -zxvf /Users/catherinemathews/Google\ Drive\ File\ Stream/Shared\ drives/Datamart/NAEFS/2016050900.tgz 2016050900/ncep_gec00.t00z.pgrb2f006 -C /Users/catherinemathews/Google\ Drive\ File\ Stream/My\ Drive/Eve/data/'
+#'tar -zxvf /Users/catherinemathews/Google\ Drive\ File\ Stream/Shared\ drives/Datamart/NAEFS/2016050900.tgz 2016050900/ncep_gec00.t00z.pgrb2f006 -C /Users/catherinemathews/Google\ Drive\ File\ Stream/My\ Drive/Eve/data/'
 
 
 # where
@@ -55,27 +55,27 @@ untar_cmd = 'tar -zxvf '+ filename + file_to_extract -C path
 ### get stuff ready for function
 
 # change directory first
-os.chdir(data_dir) # this isn't working
+#os.chdir(data_dir) # this isn't working
 
 year='2016'
 month='06'
 day='10'
 hr='00'
 
-init_date= year+month+day+hr
+#init_date= year+month+day+hr
 fcsthr = '000'
 
 
-tar_src_dir = '/Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/'
+#tar_src_dir = '/Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/'
 
 
 # remove file path because we're in the right directory
-tar_cmd = 'tar -zxvf '+tar_src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr
+#tar_cmd = 'tar -zxvf '+tar_src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr
 
-print('Getting data for '+init_date+' for fcst hour '+fcsthr)
-subprocess.call(tar_cmd, shell=True) # test without this first: , shell=True)
+#print('Getting data for '+init_date+' for fcst hour '+fcsthr)
+#subprocess.call(tar_cmd, shell=True) # test without this first: , shell=True)
 
-'tar -zxvf /Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/2016060100.tgz 2016060100/ncep_gec00.t00z.pgrb2f012 -C /Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
+#'tar -zxvf /Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/2016060100.tgz 2016060100/ncep_gec00.t00z.pgrb2f012 -C /Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
 
 
 
@@ -135,7 +135,7 @@ def get_naefs(year,month,day,hour,fcst_hr,mod,member,out_dir):
 
 
     # set full date string:
-    date_str = year+month+day+hour
+    init_date = year+month+day+hour
 
     # naefs source on team drive:
     #src_dir = '/Volumes/GoogleDrive/Shared drives/Datamart/NAEFS/'
