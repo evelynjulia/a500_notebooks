@@ -3,19 +3,21 @@
 # get naefs files from google drive
 
 import os
-import h5py
-import pygrib
+#import h5py
+#import pygrib
 import subprocess
 import numpy as np
-from glob import glob
-from os.path import isfile, basename
+#from glob import glob
+#from os.path import isfile, basename
 from datetime import datetime, timedelta
 
 
 # work flow: copy from source --> unzip --> process and save
-source = '/Users/catherinemathews/Google Drive File Stream/Shared drives/Datamart/NAEFS/'
-temp_folder = '/Volumes/Scratch/ewicksteed/data/naefs/'
-final_folder
+#source = '/Users/catherinemathews/Google Drive File Stream/Shared drives/Datamart/NAEFS/'
+src_dir = '/Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/'
+#temp_folder = '/Volumes/Scratch/ewicksteed/data/naefs/'
+#final_folder
+data_dir = '/Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
 
 # team_drive = '/glade/scratch/ksha/DATA/NAEFS/'      # source dir
 # my_drive = '/glade/scratch/ksha/DATA/NAEFS_TEMP/'   # temporal space for un-ziping files
@@ -25,13 +27,15 @@ final_folder
 # Maybe do summer 2016?
 dates = [datetime(2016, 1, 1, 0, 0)+timedelta(days=i) for i in range(365)] 
 
-2016050900/cmc_gep20.t00z.pgrb2f132
+# 2016050900/cmc_gep20.t00z.pgrb2f132
 
 # to extract certain file: 
 #You can also use tar -zxvf <tar filename> <file you want to extract>
 
+'''
 untar_cmd = 'tar -zxvf '+ filename + file_to_extract -C path
 
+'''
 
 # test: 
 #tar -zxvf /Users/catherinemathews/Google Drive File Stream/Shared drives/Datamart/NAEFS/2016050900.tgz 2016050900/ncep_gec00.t00z.pgrb2f000 - C /Users/catherinemathews/Google Drive File Stream/My Drive/Eve/data
@@ -50,3 +54,16 @@ untar_cmd = 'tar -zxvf '+ filename + file_to_extract -C path
 
 
 
+### get stuff ready for function
+year='2016'
+month='06'
+day='01'
+hr='00'
+
+init_date= year+month+day+hr
+fcsthr = '000'
+tar_cmd = 'tar -zxvf '+src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr+' -C '+data_dir
+
+
+
+'tar -zxvf /Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/2016060100.tgz 2016060100/ncep_gec00.t00z.pgrb2f000 -C /Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
