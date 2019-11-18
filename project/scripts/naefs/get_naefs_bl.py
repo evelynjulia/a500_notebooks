@@ -17,9 +17,9 @@ source = '/Users/catherinemathews/Google Drive File Stream/Shared drives/Datamar
 temp_folder = '/Volumes/Scratch/ewicksteed/data/naefs/'
 final_folder
 
-team_drive = '/glade/scratch/ksha/DATA/NAEFS/'      # source dir
-my_drive = '/glade/scratch/ksha/DATA/NAEFS_TEMP/'   # temporal space for un-ziping files
-local_space = '/glade/scratch/ksha/DATA/FILE_TEMP/' # storage of post-processed data
+# team_drive = '/glade/scratch/ksha/DATA/NAEFS/'      # source dir
+# my_drive = '/glade/scratch/ksha/DATA/NAEFS_TEMP/'   # temporal space for un-ziping files
+# local_space = '/glade/scratch/ksha/DATA/FILE_TEMP/' # storage of post-processed data
 
 # range of dates to get files for
 # Maybe do summer 2016?
