@@ -55,6 +55,10 @@ untar_cmd = 'tar -zxvf '+ filename + file_to_extract -C path
 
 
 ### get stuff ready for function
+
+# change directory first
+os.chdir(data_dir)
+
 year='2016'
 month='05'
 day='09'
@@ -62,10 +66,20 @@ hr='00'
 
 init_date= year+month+day+hr
 fcsthr = '012'
-tar_cmd = 'tar -zxvf '+src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr+' -C '+data_dir
+# remove file path because we're in the right directory
+tar_cmd = 'tar -zxvf '+src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr #+' -C '+data_dir
 
 print('Getting data for '+init_date+' for fcst hour '+fcsthr)
-subprocess.call(tar_cmd)
+subprocess.call(tar_cmd, shell=True)
 
 'tar -zxvf /Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/2016060100.tgz 2016060100/ncep_gec00.t00z.pgrb2f000 -C /Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
 'tar -zxvf /Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/2016060100.tgz 2016060100/ncep_gec00.t00z.pgrb2f012 -C /Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
+
+
+
+# Maybe I must change directories first?
+
+# test
+temp_dir2 = "/temp_dir2/"
+local_space="/localspace/"
+kyle_cmd_tar = 'tar xvzf "'+temp_dir2+'" -C "'+local_space+'temp2/"'
