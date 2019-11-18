@@ -14,10 +14,10 @@ from datetime import datetime, timedelta
 
 # work flow: copy from source --> unzip --> process and save
 #source = '/Users/catherinemathews/Google Drive File Stream/Shared drives/Datamart/NAEFS/'
-src_dir = '/Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/'
+src_dir = '/Volumes/GoogleDrive/Shared drives/Datamart/NAEFS/'
 #temp_folder = '/Volumes/Scratch/ewicksteed/data/naefs/'
 #final_folder
-data_dir = '/Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
+data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
 
 # team_drive = '/glade/scratch/ksha/DATA/NAEFS/'      # source dir
 # my_drive = '/glade/scratch/ksha/DATA/NAEFS_TEMP/'   # temporal space for un-ziping files
@@ -83,3 +83,80 @@ subprocess.call(tar_cmd, shell=True)
 temp_dir2 = "/temp_dir2/"
 local_space="/localspace/"
 kyle_cmd_tar = 'tar xvzf "'+temp_dir2+'" -C "'+local_space+'temp2/"'
+
+
+
+#### Create function:
+
+
+def get_naefs(year,month,day,hour,out_dir):
+
+    """
+    Downloads University of Wyoming soundings
+    
+    parameters
+    ==========
+
+    year (YYYY): float or string
+    month (MM): float or string
+    day (DD): float or string
+    hour (HH): float or string 
+        can be 00 or 12 in most cases  
+
+
+    out_dir: Directory into which to save the data 
+        string
+    
+    Returns
+    =======
+
+
+
+    """
+
+    # convert to strings
+    year = str(year)
+    month = str(month)
+    day = str(day)
+    hour = str(hour)
+
+
+    # set full date string:
+    date_str = year+month+day+hour
+
+    # get url:
+    url = 'http://weather.uwyo.edu/cgi-bin/sounding?region='+region+'&TYPE=TEXT%3ALIST&YEAR='+year+'&MONTH='+month+'&FROM='+day+hour+'&TO='+day+hour+'&STNM='+stn
+
+    # get / set column details
+    col_names=['PRES','HGHT','TEMP','DWPT','RH','MIXR','WDIR','WSPD','THTA','THTE','THTV']
+    col_widths=[7,7,7,7,7,7,7,7,7,7,7]
+    cols_to_use = np.arange(0,len(col_names))
+    rows_to_skip = 10
+    foot_to_skip=60
+
+    # read in dataframe using URL
+
+    # check for website:
+    request = requests.get(url)
+    if request.status_code == 200:
+        print('Web site exists')
+        df = pd.read_fwf(url, skiprows=rows_to_skip, names=col_names, skipfooter=foot_to_skip, usecols=cols_to_use, widths=col_widths)
+        
+        # Add a date column to the dataframe
+        df['DATE']= pd.to_datetime(year+month+day+' '+hour,format='%Y/%m/%d %H')
+
+        # save as csv
+        outfilename = date_str+'_sounding_'+stn+'.csv'
+
+        df.to_csv(out_dir+outfilename)
+
+        print('Saved to '+out_dir+' as '+ outfilename)
+    
+    else:
+        print('Web site does not exist')
+        print('No file for '+ date_str) 
+        
+
+    
+    return None
+
