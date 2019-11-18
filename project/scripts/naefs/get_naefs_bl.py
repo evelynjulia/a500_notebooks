@@ -57,13 +57,13 @@ data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/d
 # change directory first
 #os.chdir(data_dir) # this isn't working
 
-year='2016'
-month='06'
-day='10'
-hr='00'
+# year='2016'
+# month='06'
+# day='10'
+# hr='00'
 
 #init_date= year+month+day+hr
-fcsthr = '000'
+#fcsthr = '000'
 
 
 #tar_src_dir = '/Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/'
@@ -86,8 +86,8 @@ fcsthr = '000'
 
 #### Create function:
 
-mod='ncep' # or cmc
-member='gec00'
+# mod='ncep' # or cmc
+# member='gec00'
 
 
 def get_naefs(year,month,day,hour,fcst_hr,mod,member,out_dir):
@@ -142,14 +142,13 @@ def get_naefs(year,month,day,hour,fcst_hr,mod,member,out_dir):
     tar_src_dir = '/Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/'
 
     # Create tar command
-    tar_cmd = 'tar -zxvf '+tar_src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr
+    tar_cmd = 'tar -zxvf '+tar_src_dir+init_date+'.tgz '+init_date+'/'+mod+'_'+member+'.t'+hour+'z.pgrb2f'+fcst_hr
 
     # extract files
-    print('Getting data for '+init_date+' for fcst hour '+fcsthr)
-    subprocess.call(tar_cmd, shell=True) # test without this first: , shell=True)
+    print('Getting data for '+init_date+' for fcst hour '+fcst_hr)
+    print('Downloading file '+mod+'_'+member+'.t'+hour+'z.pgrb2f'+fcst_hr)
+    #subprocess.call(tar_cmd, shell=True) # test without this first: , shell=True)
 
 
-    
-    
     return None
 
