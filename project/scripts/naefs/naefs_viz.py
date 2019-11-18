@@ -31,7 +31,7 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 #import pytz
 from datetime import datetime as dt
-import ncdump
+from a500.utils import ncdump
 
 import numpy as np
 from scipy.optimize import curve_fit
@@ -58,10 +58,13 @@ from netCDF4 import num2date, date2num
 
 file = 'cmc_gec00.t00z.pgrb2f012_BC.nc'
 
+data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
+date='2016050900/'
 # +
-# with Dataset(file) as input:
-#     ncdump.ncdump(input)
+with Dataset(data_dir+file) as input:
+    ncdump.ncdump(input)
 # -
+
 
 with Dataset(file,'r') as gec00:
     hgt85 = gec00.variables['HGT_850mb'][...]
