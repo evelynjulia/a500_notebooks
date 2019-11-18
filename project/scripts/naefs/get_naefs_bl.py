@@ -67,11 +67,10 @@ fcsthr = '000'
 
 
 tar_src_dir = '/Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/'
-tar_data_dir = '/Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
 
 
 # remove file path because we're in the right directory
-tar_cmd = 'tar -zxvf '+tar_src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr #+' -C '+data_dir
+tar_cmd = 'tar -zxvf '+tar_src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr
 
 print('Getting data for '+init_date+' for fcst hour '+fcsthr)
 subprocess.call(tar_cmd, shell=True) # test without this first: , shell=True)
@@ -110,8 +109,8 @@ def get_naefs(year,month,day,hour,fcst_hr,mod,member,out_dir):
         ncep (US) or cmc (Canadian)
     
     member: model member (str)
-
-
+        gec00 for control
+        oe gep01 to 20
 
     out_dir: Directory into which to save the data 
         string
@@ -119,6 +118,7 @@ def get_naefs(year,month,day,hour,fcst_hr,mod,member,out_dir):
     Returns
     =======
 
+    Downloaded NAEFS files for certain dates/times/models
 
 
     """
@@ -131,44 +131,25 @@ def get_naefs(year,month,day,hour,fcst_hr,mod,member,out_dir):
     month = str(month)
     day = str(day)
     hour = str(hour)
+    fcst_hr=str(fcst_hr)
 
 
     # set full date string:
     date_str = year+month+day+hour
 
     # naefs source on team drive:
-    src_dir = '/Volumes/GoogleDrive/Shared drives/Datamart/NAEFS/'
+    #src_dir = '/Volumes/GoogleDrive/Shared drives/Datamart/NAEFS/'
+    tar_src_dir = '/Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/'
 
-    # get / set column details
-    col_names=['PRES','HGHT','TEMP','DWPT','RH','MIXR','WDIR','WSPD','THTA','THTE','THTV']
-    col_widths=[7,7,7,7,7,7,7,7,7,7,7]
-    cols_to_use = np.arange(0,len(col_names))
-    rows_to_skip = 10
-    foot_to_skip=60
+    # Create tar command
+    tar_cmd = 'tar -zxvf '+tar_src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr
 
-    # read in dataframe using URL
+    # extract files
+    print('Getting data for '+init_date+' for fcst hour '+fcsthr)
+    subprocess.call(tar_cmd, shell=True) # test without this first: , shell=True)
 
-    # check for website:
-    request = requests.get(url)
-    if request.status_code == 200:
-        print('Web site exists')
-        df = pd.read_fwf(url, skiprows=rows_to_skip, names=col_names, skipfooter=foot_to_skip, usecols=cols_to_use, widths=col_widths)
-        
-        # Add a date column to the dataframe
-        df['DATE']= pd.to_datetime(year+month+day+' '+hour,format='%Y/%m/%d %H')
 
-        # save as csv
-        outfilename = date_str+'_sounding_'+stn+'.csv'
-
-        df.to_csv(out_dir+outfilename)
-
-        print('Saved to '+out_dir+' as '+ outfilename)
     
-    else:
-        print('Web site does not exist')
-        print('No file for '+ date_str) 
-        
-
     
     return None
 
