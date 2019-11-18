@@ -56,14 +56,16 @@ untar_cmd = 'tar -zxvf '+ filename + file_to_extract -C path
 
 ### get stuff ready for function
 year='2016'
-month='06'
-day='01'
+month='05'
+day='09'
 hr='00'
 
 init_date= year+month+day+hr
-fcsthr = '000'
+fcsthr = '012'
 tar_cmd = 'tar -zxvf '+src_dir+init_date+'.tgz '+init_date+'/ncep_gec00.t00z.pgrb2f'+fcsthr+' -C '+data_dir
 
-
+print('Getting data for '+init_date+' for fcst hour '+fcsthr)
+subprocess.call(tar_cmd)
 
 'tar -zxvf /Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/2016060100.tgz 2016060100/ncep_gec00.t00z.pgrb2f000 -C /Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
+'tar -zxvf /Volumes/GoogleDrive/Shared\ drives/Datamart/NAEFS/2016060100.tgz 2016060100/ncep_gec00.t00z.pgrb2f012 -C /Volumes/GoogleDrive/My\ Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
