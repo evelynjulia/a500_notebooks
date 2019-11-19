@@ -27,9 +27,9 @@ hr='00'
 #fcsthr = '000'
 
 for year in range(2016, 2017):
-    for month in range(6,7):
+    for month in range(6,9):
         month = str(month).zfill(2)
-        for day in range(1,3):
+        for day in range(1,31):
             day = str(day).zfill(2)
             for fcsthr in ['000','006','012', '018']: 
                 filepath = str(year)+month+day+hr+'/'+mod+'_'+member+'.t00z.pgrb2f'+fcsthr
