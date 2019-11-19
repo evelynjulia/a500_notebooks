@@ -4,13 +4,14 @@
 
 from project.scripts.naefs.get_naefs_bl import get_naefs
 from os import path
-
-
+import os
 
 # get_naefs(year,month,day,hour,fcst_hr,mod,member,out_dir)
 
 # set paths:
 data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
+
+os.chdir(data_dir)
 
 # set params:
 mod='ncep' # or cmc

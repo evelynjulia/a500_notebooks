@@ -147,7 +147,7 @@ def get_naefs(year,month,day,hour,fcst_hr,mod,member,out_dir):
     # extract files
     print('Getting data for '+init_date+' for fcst hour '+fcst_hr)
     print('Downloading file '+mod+'_'+member+'.t'+hour+'z.pgrb2f'+fcst_hr)
-    #subprocess.call(tar_cmd, shell=True) # test without this first: , shell=True)
+    subprocess.call(tar_cmd, shell=True) # test without this first: , shell=True)
 
 
     return None
