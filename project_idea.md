@@ -69,6 +69,12 @@ So check the PBL scheme in these control members...
       * Other derived sounding variables: e.g. CAPE, MLCAPE, MLCIN
 
 2. [Implementation in the NCEP GFS of a Hybrid Eddy-Diffusivity Mass-Flux (EDMF) Boundary Layer Parameterization with Dissipative Heating and Modified Stable Boundary Layer Mixing](https://journals.ametsoc.org/doi/10.1175/WAF-D-15-0053.1?mobileUi=0)
+  - Han, J., M.L. Witek, J. Teixeira, R. Sun, H. Pan, J.K. Fletcher, and C.S. Bretherton, 2016
+  - Describes the boundary layer parameterization scheme in GFS
+  - A new eddy-diffusivity mass-flux (EDMF) PBL scheme is developed
+  -  EDMF scheme is applied only for the strongly unstable PBL
+  - EDCG (eddy-diffusivity countergradient) scheme is used for the weakly unstable PBL
+  - Heating by turbulent kinetic energy (TKE) dissipation is parameterized to reduce an energy imbalance in the GFS
 
 ## Deadline updates - 12 Nov
 
