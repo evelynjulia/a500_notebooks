@@ -639,3 +639,39 @@ the last notebook we were shown about clouds is kinda ow things work in the Cana
 - figure out how to work with a branch for git
 - look into beautiful soup html parser (finds specific tags e.g. hyperlinks (see plot_dales.py))
 - how does one use a pull request? (I looked this up the other day...)
+
+
+# 19 November 2019
+
+Pull requests: 
+
+need to set remotes: `git remote --v`
+
+`git remote add upstream <phil's repo link>` 
+
+
+`git fetch upstream`
+
+because we're editing we're going to need to rebase... 
+
+can either merge changes (this keeps track of commit history)
+
+Or can rebase (rewrite history) `git rebase upstream/master`
+
+
+
+create a branch: 
+`git checkout -b ejw`
+
+
+
+want to be waiting on a branch called by our initials:
+
+`git branch`
+
+`git push origin ejw`
+
+* so now want to work on ejw branch
+
+
+Create a pull request for Phil
