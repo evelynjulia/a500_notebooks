@@ -46,12 +46,14 @@ def subset_naefs(latN, latS, lonW, lonE, region, list_of_files):
     lonW = str(lonW)
     lonE = str(lonE)
 
-    
 
     for file in list_of_files:
-        print(os.path.basename(file)+' in '+os.path.dirname(file))
-        subset_cmd = 'wgrib2 '+file+' -small_grib '+lonW+':'+lonE+' '+latS+':'+latN+' '+file+'_'+region
-        #print(subset_cmd)
+        #print(os.path.basename(file)+' in '+os.path.dirname(file))
+        file_name = file.replace(' ', '\ ')
+        #subset_cmd = 'wgrib2 '+file+' -small_grib '+lonW+':'+lonE+' '+latS+':'+latN+' '+file+'_'+region
+        subset_cmd = 'wgrib2 '+new_file_name+' -small_grib '+lonW+':'+lonE+' '+latS+':'+latN+' '+new_file_name+'_'+region
+        print(subset_cmd)
+        #print(file.replace(' ', '\ '))
         os.system(subset_cmd)
 
 
