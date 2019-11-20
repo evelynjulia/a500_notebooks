@@ -292,16 +292,42 @@ ax.set_title(f'Temp profile for location on {dt.strftime(date_of_run,"%d-%m-%Y")
 # %%
 
 # %%
+with Dataset(data_dir+file,'r') as gec00:
+     hgt85 = gec00.variables['HGT_850mb'][0,...]
 
 # %%
+hgt85.shape
+
+
 
 
 # %%
 # os.getcwd()
 
 # %%
-# import subprocess
-# subprocess.run("touch 'test_file'", shell=True)
+# now we want to unravel the array so we can feed it into SOMS
+
+# first unravel each day
+
+# then combine all into one 2D array with rows as data and columns as the lat and lon vars that have been flattened
+
+# then can feed into minisom SOM package 
+
+# %%
+flat_hgt85 = hgt85.flatten()
+
+
+# %%
+flat_hgt85.shape
+
+
+# %%
+test_reshape = np.reshape(flat_hgt85,hgt85.shape) # THIS WORKS SO I CAN PLOT IT AGAIN AFTER
+
+# %%
+test_reshape.shape
+
+# %%
 
 # %%
 
