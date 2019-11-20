@@ -2,26 +2,42 @@
 # ---
 # jupyter:
 #   jupytext:
+#     cell_metadata_filter: all
+#     notebook_metadata_filter: all,-language_info
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.4'
+#       format_name: percent
+#       format_version: '1.2'
 #       jupytext_version: 1.2.4
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
+#   toc:
+#     base_numbering: 1
+#     nav_menu: {}
+#     number_sections: true
+#     sideBar: true
+#     skip_h1_title: false
+#     title_cell: Table of Contents
+#     title_sidebar: Contents
+#     toc_cell: false
+#     toc_position: {}
+#     toc_section_display: true
+#     toc_window_display: false
 # ---
 
+# %% [markdown]
 # # Visualize NAEFS netCDF file
 
+# %% [markdown]
 # Eve Wicksteed
 #
 # 8 November 2019
 #
 # Script to plot NAEFS forecsat data for one hour over Vancouver
 
-# +
+# %%
 import glob
 from netCDF4 import Dataset
 from dateutil.parser import parse
@@ -40,7 +56,7 @@ import scipy
 #import warnings
 #warnings.filterwarnings(“ignore”,category=scipy.optimize.OptimizeWarning)
 
-from mpl_toolkits.basemap import Basemap
+#from mpl_toolkits.basemap import Basemap
 import cartopy.crs as crs
 from cartopy.feature import NaturalEarthFeature
 import matplotlib.pyplot as plt
@@ -54,10 +70,12 @@ import matplotlib
 cmap=matplotlib.cm.get_cmap('viridis')
 
 from netCDF4 import num2date, date2num
-# -
 
-file = 'cmc_gec00.t00z.pgrb2f012_BC.nc'
+# %%
+#file = 'cmc_gec00.t00z.pgrb2f012_BC.nc'
+file = 'ncep_gec00.t00z.pgrb2f000_SA.nc'
 
+# %%
 data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
 date='2016050900/'
 # +
@@ -66,7 +84,8 @@ with Dataset(data_dir+file) as input:
 # -
 
 
-with Dataset(file,'r') as gec00:
+# %%
+with Dataset(data_dir+file,'r') as gec00:
     hgt85 = gec00.variables['HGT_850mb'][...]
     lons = gec00.variables['longitude'][...]
     lats = gec00.variables['latitude'][...]
@@ -76,7 +95,7 @@ with Dataset(file,'r') as gec00:
     time_units= gec00.variables['time'].units
 
 
-# +
+# %%
 # #hgt85.shape
 # tmp85.shape
 # #lon.shape
@@ -86,18 +105,18 @@ date_of_run = num2date(time,units=time_units)[0]
 
 
 
-# -
+# %%
 date_of_run
 
+# %%
 
-
-# +
+# %%
 # plt.imshow(np.squeeze(tmp85))
-# -
 
+# %% [markdown]
 # ## Cartopy test
 
-# +
+# %%
 # import matplotlib
 # cmap=matplotlib.cm.get_cmap('viridis')
 
@@ -125,7 +144,7 @@ ax.set_title(f'NAEFS forecast: 85 kPa temperature for {dt.strftime(date_of_run,"
 
 
 
-# +
+# %%
 proj = crs.PlateCarree()
 #proj = crs.RotatedPole(pole_longitude=-177.5, pole_latitude=37.5)
 
@@ -158,11 +177,11 @@ ax.plot(van_x,van_y,'ro',markersize=4);
 
 
 
-# -
 
+# %% [markdown]
 # ## See NAEFS temp profiles for Vancouver
 
-# +
+# %%
 # get temps at different heights:
 timestep = 0
 
@@ -174,12 +193,12 @@ timestep = 0
 
 # CAPE TOWN
 # 33.9249° S, 18.4241° E
-choose_lat = 33
+choose_lat = -33
 choose_lon = 18 
 
 
 
-with Dataset(file,'r') as gec00:
+with Dataset(data_dir+file,'r') as gec00:
 #     hgt85 = gec00.variables['HGT_850mb'][0,...]
     lon = gec00.variables['longitude'][...]
     lat = gec00.variables['latitude'][...]
@@ -207,15 +226,12 @@ lat_ind = np.where(lat == choose_lat)
 lon_ind = np.where(which_lon == choose_lon)
 
 print(lat_ind, lon_ind)
+# %%
 
+# %%
 
-# -
-
-
-
-
-# +
-levs = np.array([1000, 925, 850, 700, 500, 250, 200, 100, 50])
+# %%
+levs = np.array([1000, 925, 850, 700, 500, 250, 200]) #, 100, 50])
 varbls = ['TMP', 'RH', 'HGT', 'UGRD', 'VGRD']
 
 #Other variables:
@@ -225,7 +241,7 @@ varbls = ['TMP', 'RH', 'HGT', 'UGRD', 'VGRD']
 
 all_data = np.zeros((len(levs),len(varbls)))
 
-with Dataset(file,'r') as gec00:
+with Dataset(data_dir+file,'r') as gec00:
     for ind_v, var in enumerate(varbls):
         for ind_l, lev in enumerate(levs):
             var_an_lev = var+'_'+str(lev)+'mb'
@@ -233,11 +249,12 @@ with Dataset(file,'r') as gec00:
             datanew = data[lat_ind, lon_ind]
             all_data[ind_l,ind_v]= datanew
 
-# -
 
+# %%
 # now we have an array with a couple of variables (tmp and RH for each model level)
 all_data
 
+# %%
 fig, ax = plt.subplots(2, 2, figsize=(10,10));
 ax[0,0].plot(all_data[:,0],levs, 'ko-', label = 'Temperature');
 ax[0,1].plot(all_data[:,1],levs, 'ko-',label = 'RH');
@@ -254,6 +271,7 @@ ax[1,1].invert_yaxis();
 ax[1,1].set_title(f'U and V wind components on {dt.strftime(date_of_run,"%d-%m-%Y")}')
 plt.legend();
 
+# %%
 fig, ax = plt.subplots(1,1, figsize=(9,5));
 ax.plot(levs, all_data[:,2], 'ko-', label='height');
 ax.set_ylim(0,2000)
@@ -261,6 +279,7 @@ ax.set_xlim(700,1100)
 ax.set_xlabel('pressure (hPa)')
 ax.set_ylabel('height (m)')
 
+# %%
 fig, ax = plt.subplots(1,1, figsize=(9,5));
 ax.plot(all_data[:,0], levs, 'ko-', label='height');
 ax.set_xlim(265,300);
@@ -270,18 +289,20 @@ ax.invert_yaxis();
 ax.set_ylim(1100,750);
 ax.set_title(f'Temp profile for location on {dt.strftime(date_of_run,"%d-%m-%Y")}');
 
+# %%
+
+# %%
+
+# %%
 
 
+# %%
+# os.getcwd()
 
+# %%
+# import subprocess
+# subprocess.run("touch 'test_file'", shell=True)
 
+# %%
 
-
-
-os.getcwd()
-
-import subprocess
-subprocess.run("touch 'test_file'", shell=True)
-
-
-
-
+# %%
