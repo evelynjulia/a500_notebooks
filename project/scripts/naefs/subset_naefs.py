@@ -8,12 +8,8 @@
 import glob
 import os
 
-# to list the files in my directories of each date
 
-my_file_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/201606*/*'
-
-
-def subset_naefs(latN, latS, lonW, lonE, region, file_dir):
+def subset_naefs(latN, latS, lonW, lonE, region, list_of_files):
 
     '''
 
@@ -34,9 +30,8 @@ def subset_naefs(latN, latS, lonW, lonE, region, file_dir):
     region: the name appended to the files
         (str)
     
-    file_dir: directory that holds all the files to iterate through
-        this shouldn't have any files that you don't want to convert
-        (str)
+    list_of_files: list of files to iterate through
+        list
     
     Returns
     =======
@@ -51,7 +46,7 @@ def subset_naefs(latN, latS, lonW, lonE, region, file_dir):
     lonW = str(lonW)
     lonE = str(lonE)
 
-    list_of_files = glob.glob(file_dir)
+    
 
     for file in list_of_files:
         print(os.path.basename(file)+' in '+os.path.dirname(file))
@@ -63,6 +58,10 @@ def subset_naefs(latN, latS, lonW, lonE, region, file_dir):
     return None
 
 
+# get a list of all the files that I want to subset
+my_file_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/2016*/*'
+my_list_of_files = glob.glob(my_file_dir)
+
 # for cape town:
 my_region = 'SA'
 my_latN = '-20'
@@ -71,7 +70,7 @@ my_lonW = '15'
 my_lonE = '35'
 
 # call function:
-subset_naefs(my_latN, my_latS, my_lonW, my_lonE, my_region, my_file_dir)
+subset_naefs(my_latN, my_latS, my_lonW, my_lonE, my_region, my_list_of_files)
 
 # for file in list_of_files:
 #     #print(os.path.basename(file)+' in '+os.path.dirname(file))
