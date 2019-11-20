@@ -76,6 +76,12 @@ So check the PBL scheme in these control members...
   - EDCG (eddy-diffusivity countergradient) scheme is used for the weakly unstable PBL
   - Heating by turbulent kinetic energy (TKE) dissipation is parameterized to reduce an energy imbalance in the GFS
 
+  3. [Evaluation of Multiple Planetary Boundary Layer Parameterization Schemes in Southeast U.S. Cold Season Severe Thunderstorm Environments](https://journals.ametsoc.org/doi/full/10.1175/WAF-D-16-0193.1)
+  - Cohen, A.E., S.M. Cavallo, M.C. Coniglio, H.E. Brooks, and I.L. Jirak, 2017
+  - Compares various modelled PBL schemes with observational data in the US
+  - low level wind profiles are important as well as low level thermodynamic profiles
+  - uses 21 different severe weather events to compare
+
 ## Deadline updates - 12 Nov
 
 **Goal:** Understand forecast model boundary layer parameterization and compare with tower or sonde data
