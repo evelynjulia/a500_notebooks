@@ -328,7 +328,31 @@ test_reshape = np.reshape(flat_hgt85,hgt85.shape) # THIS WORKS SO I CAN PLOT IT 
 test_reshape.shape
 
 # %%
+os.system("touch test_file")
 
 # %%
+os.getcwd()
+
+# %%
+os.system('touch test_os_sys')
+
+
+# %%
+#import subprocess
+
+
+# %%
+#subprocess.call("ls")
+
+# %%
+list_of_files = glob.glob('/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/2016*/*')
+
+# %%
+for file in l:
+    #print(file)
+    if os.path.exists(file):
+        print(file+' exists\n')
+    
+
 
 # %%
