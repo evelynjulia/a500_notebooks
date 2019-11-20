@@ -7,7 +7,7 @@
 
 # imports
 import glob
-import os
+# import os
 from project.scripts.naefs.subset_naefs import subset_naefs
 
 # get a list of all the files that I want to subset
