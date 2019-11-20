@@ -2,3 +2,5 @@
 project/data
 project/__pycache__
 *.ipynb
+project/docs
+*__pycache__
