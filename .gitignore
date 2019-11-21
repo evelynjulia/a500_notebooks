@@ -4,3 +4,4 @@ project/__pycache__
 *.ipynb
 project/docs
 *__pycache__
+data
