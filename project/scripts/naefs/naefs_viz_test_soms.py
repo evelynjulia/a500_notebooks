@@ -71,6 +71,9 @@ cmap=matplotlib.cm.get_cmap('viridis')
 
 from netCDF4 import num2date, date2num
 
+import pandas as pd
+
+
 # %%
 #file = 'cmc_gec00.t00z.pgrb2f012_BC.nc'
 file = 'ncep_gec00.t00z.pgrb2f000_SA.nc'
@@ -79,9 +82,9 @@ file = 'ncep_gec00.t00z.pgrb2f000_SA.nc'
 data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
 date='2016050900/'
 # +
-with Dataset(data_dir+file) as input:
-    ncdump.ncdump(input)
-# -
+# with Dataset(data_dir+file) as input:
+#     ncdump.ncdump(input)
+# # -
 
 
 # %%
@@ -117,30 +120,30 @@ date_of_run
 # ## Cartopy test
 
 # %%
-# import matplotlib
-# cmap=matplotlib.cm.get_cmap('viridis')
+# # import matplotlib
+# # cmap=matplotlib.cm.get_cmap('viridis')
 
-proj = crs.PlateCarree()
-#proj = crs.RotatedPole(pole_longitude=-177.5, pole_latitude=37.5)
+# proj = crs.PlateCarree()
+# #proj = crs.RotatedPole(pole_longitude=-177.5, pole_latitude=37.5)
 
 
-#plt.figure(figsize=(6, 3))
-fig, ax = plt.subplots(1, 1, figsize=(9,5))
-ax = plt.axes(projection=proj)
-ax.set_global()
-ax.coastlines()
+# #plt.figure(figsize=(6, 3))
+# fig, ax = plt.subplots(1, 1, figsize=(9,5))
+# ax = plt.axes(projection=proj)
+# ax.set_global()
+# ax.coastlines()
 
-ax.contourf(lons, lats, np.squeeze(tmp85)) #, transform=data_crs)
+# ax.contourf(lons, lats, np.squeeze(tmp85)) #, transform=data_crs)
 
-#cs=ax.pcolormesh(lons,lats,np.squeeze(tmp85),cmap=cmap,transform=proj,alpha=0.8);
+# #cs=ax.pcolormesh(lons,lats,np.squeeze(tmp85),cmap=cmap,transform=proj,alpha=0.8);
 
-cs=ax.imshow(np.squeeze(tmp85),origin='upper',cmap=cmap,
-         transform=proj,alpha=0.8);
+# cs=ax.imshow(np.squeeze(tmp85),origin='upper',cmap=cmap,
+#          transform=proj,alpha=0.8);
 
-cax,kw = matplotlib.colorbar.make_axes(ax,location='bottom',pad=0.05,shrink=0.7);
-out=fig.colorbar(cs,cax=cax,extend='both',**kw);
-label=out.set_label('85 kPa temperature (K)',size=10);
-ax.set_title(f'NAEFS forecast: 85 kPa temperature for {dt.strftime(date_of_run,"%d-%m-%Y")}');
+# cax,kw = matplotlib.colorbar.make_axes(ax,location='bottom',pad=0.05,shrink=0.7);
+# out=fig.colorbar(cs,cax=cax,extend='both',**kw);
+# label=out.set_label('85 kPa temperature (K)',size=10);
+# ax.set_title(f'NAEFS forecast: 85 kPa temperature for {dt.strftime(date_of_run,"%d-%m-%Y")}');
 
 
 
@@ -290,13 +293,31 @@ ax.set_ylim(1100,750);
 ax.set_title(f'Temp profile for location on {dt.strftime(date_of_run,"%d-%m-%Y")}');
 
 # %%
+#dt.strftime(date_of_run,"%Y%m%d%H")
+
+
 
 # %%
-with Dataset(data_dir+file,'r') as gec00:
-     hgt85 = gec00.variables['HGT_850mb'][0,...]
 
 # %%
-hgt85.shape
+df = pd.DataFrame()
+with Dataset(file,'r') as gec00:
+    hgt85 = gec00.variables['HGT_850mb'][0,...]
+    flat_hgt85 = hgt85.flatten()
+    
+    
+    
+    # get the date
+    date_of_run = num2date(time,units=time_units)[0]
+    date = dt.strftime(date_of_run,"%Y%m%d%H")
+    # add data to a pd df with date as the column name
+
+
+df[date] = flat_hgt85
+
+# %%
+df.info()
+#hgt85.shape
 
 
 
@@ -328,13 +349,11 @@ test_reshape = np.reshape(flat_hgt85,hgt85.shape) # THIS WORKS SO I CAN PLOT IT 
 test_reshape.shape
 
 # %%
-os.system("touch test_file")
 
 # %%
 os.getcwd()
 
 # %%
-os.system('touch test_os_sys')
 
 
 # %%
@@ -345,14 +364,32 @@ os.system('touch test_os_sys')
 #subprocess.call("ls")
 
 # %%
-list_of_files = glob.glob('/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/2016*/*')
+list_of_files = glob.glob('/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/2016*/*.nc')
+
+# %% {"scrolled": true}
+df = pd.DataFrame()
+for file in list_of_files[0:20]:
+    #print(file)
+    with Dataset(file,'r') as gec00:
+        hgt85 = gec00.variables['HGT_850mb'][0,...].byteswap().newbyteorder()
+        time=gec00.variables['time'][...]
+        time_units= gec00.variables['time'].units
+        flat_hgt85 = hgt85.flatten()# .byteswap().newbyteorder()
+        # get the date
+        date_of_run = num2date(time,units=time_units)[0]
+        date = dt.strftime(date_of_run,"%Y%m%d%H")
+        print(date)
+    # add data to a pd df with date as the column name
+    df[date] = flat_hgt85
 
 # %%
-for file in l:
-    #print(file)
-    if os.path.exists(file):
-        print(file+' exists\n')
-    
+df
 
+# %%
+# how to get  this to work for more columns???
+
+# %%
+
+# %%
 
 # %%
