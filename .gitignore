@@ -5,3 +5,8 @@ project/__pycache__
 project/docs
 *__pycache__
 data
+notebooks/pandas/data
+notebooks/pandas/a500_pandas_data.zip
+*.nc
+*.csv
+*.pdf
