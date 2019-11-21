@@ -675,3 +675,49 @@ want to be waiting on a branch called by our initials:
 
 
 Create a pull request for Phil
+
+
+# 21 Nov
+
+## Awkward
+
+Create env to use awkward arrays:
+
+`conda env create env_awkward.yml`
+
+`conda create awkward`
+
+then start jupyter notebook
+
+these jagged arrays allow us to store data of different lengths
+
+can use group by to do multi-indexing 
+
+## Testing
+
+pytest --> needs to have word "test" in the function name and then pytest will find them
+
+* we should be writing tests
+
+
+## Click
+
+`test_click.py` has been updated
+
+Do this:
+
+`python /utils/test_click.py`
+
+`python /utils/test_click.py read-json --help`
+
+Then it will fail so we have to change something?
+
+start docstring with \b (back space)
+
+[See here](https://github.com/phaustin/a500_notebooks/blob/master/utils/plotting_code/plot_3d_surface.py#L88-L90)
+
+## Project
+
+Dec 5 - prez of what we're doing / planning to do 12:00 or 12:30
+
+And then we want to hand in soon after that.
