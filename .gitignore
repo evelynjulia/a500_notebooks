@@ -10,3 +10,5 @@ notebooks/pandas/a500_pandas_data.zip
 *.nc
 *.csv
 *.pdf
+.vscode*
+*.npz
