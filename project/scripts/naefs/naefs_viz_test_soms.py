@@ -46,11 +46,11 @@ import numpy as np
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 #import pytz
-from datetime import datetime as dt
+#from datetime import datetime as dt
 from a500.utils import ncdump
 
-import numpy as np
-from scipy.optimize import curve_fit
+
+#from scipy.optimize import curve_fit
 import scipy
 #from scipy.stats.distributions import  t
 #import warnings
@@ -301,7 +301,7 @@ ax.set_title(f'Temp profile for location on {dt.strftime(date_of_run,"%d-%m-%Y")
 
 # %%
 df = pd.DataFrame()
-with Dataset(file,'r') as gec00:
+with Dataset(data_dir+file,'r') as gec00:
     hgt85 = gec00.variables['HGT_850mb'][0,...]
     flat_hgt85 = hgt85.flatten()
     
@@ -366,12 +366,15 @@ os.getcwd()
 # %%
 list_of_files = glob.glob('/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/2016*/*.nc')
 
+# %%
+list_of_files
+
 # %% {"scrolled": true}
 df = pd.DataFrame()
-for file in list_of_files[0:20]:
+for file in list_of_files[0:30]:
     #print(file)
     with Dataset(file,'r') as gec00:
-        hgt85 = gec00.variables['HGT_850mb'][0,...].byteswap().newbyteorder()
+        hgt85 = gec00.variables['HGT_850mb'][0,...] # .byteswap().newbyteorder()
         time=gec00.variables['time'][...]
         time_units= gec00.variables['time'].units
         flat_hgt85 = hgt85.flatten()# .byteswap().newbyteorder()
@@ -382,7 +385,7 @@ for file in list_of_files[0:20]:
     # add data to a pd df with date as the column name
     df[date] = flat_hgt85
 
-# %%
+# %% {"scrolled": false}
 df
 
 # %%
