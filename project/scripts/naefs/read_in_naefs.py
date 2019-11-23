@@ -11,8 +11,10 @@ from netCDF4 import num2date, date2num
 import pandas as pd
 import os
 
+import pickle
 
-#data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/'
+
+data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/'
 
 list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/2016*/*.nc')
 
@@ -24,7 +26,7 @@ list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/da
 #print(path_str[0][-8:-3])
 
 
-pathlist = sorted(Path(filein).glob(file+'*'))
+#pathlist = sorted(Path(filein).glob(file+'*'))
 
 hgt85, date = [], []
 for file in list_of_files:
@@ -57,3 +59,8 @@ all_dates = np.stack(date)
 ########################################################################
 
 naefs_df_hgt85 = pd.DataFrame(all_hgt85.T, columns = all_dates)
+
+
+file = open(data_dir+'naefs_df_hgt85.pkl', 'wb') # open a file, where you ant to store the data
+pickle.dump(naefs_df_hgt85, file) # dump information to that file
+file.close() # close the file
