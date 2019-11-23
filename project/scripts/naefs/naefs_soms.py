@@ -11,6 +11,7 @@
 
 import pickle
 from minisom import MiniSom
+import numpy as np
 
 data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/'
 filename = 'naefs_df_hgt85.pkl'
