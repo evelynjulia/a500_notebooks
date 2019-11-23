@@ -13,3 +13,4 @@ notebooks/pandas/a500_pandas_data.zip
 .vscode*
 *.npz
 opt.*
+*.pkl
