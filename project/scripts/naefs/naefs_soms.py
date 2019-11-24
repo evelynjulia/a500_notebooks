@@ -13,6 +13,7 @@ import pickle
 from minisom import MiniSom
 import numpy as np
 
+
 data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/'
 filename = 'naefs_df_hgt85.pkl'
 
@@ -29,3 +30,23 @@ test_som = MiniSom(4,3,my_data.shape[1])
 test_som.train_random(data_arr, 10, verbose=True)
 
 wmap = test_som.win_map(data_arr)
+
+import matplotlib.pyplot as plt
+from matplotlib.gridspec import GridSpec
+
+
+plt.figure(figsize=(16, 16))
+the_grid = GridSpec(8, 8)
+for position in wmap.keys():
+    plt.subplot(the_grid[6-position[1], position[0]])
+    plt.plot(np.min(wmap[position], axis=0), color='gray', alpha=.5)
+    plt.plot(np.mean(wmap[position], axis=0))
+    plt.plot(np.max(wmap[position], axis=0), color='gray', alpha=.5)
+plt.show()
+
+#plt.savefig('resulting_images/time_series.png')
+
+
+#  |  win_map(self, data)
+#  |      Returns a dictionary wm where wm[(i,j)] is a list
+#  |      with all the patterns that have been mapped in the position i,j.
