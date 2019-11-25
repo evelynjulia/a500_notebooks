@@ -21,7 +21,7 @@ list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/da
 len_date = 10
 
 # get date
-date, theta_v = [], []
+date, theta_v, hgts = [], [], []
 for file in list_of_files[0:4]:
     #print(file)
     #print(os.path.basename(file))
@@ -29,19 +29,24 @@ for file in list_of_files[0:4]:
     print(date_i)
     df = pd.read_csv(file)
     if df.shape[0] > 0:
-        t_v_i = np.array(df['THTV'])
+        t_v_i = np.array(df['THTV'][0:20])
+        hgts_i = np.array(df['HGHT'][0:20])
         theta_v.append(t_v_i)
         date.append(date_i)
+        hgts.append(hgts_i)
     else: 
         print('Sounding dataframe is empty... skipping this date/time:', date_i)
 
 
 all_tv = np.stack(theta_v)
-
+all_hgts = np.stack(hgts)
 # the above corresponds to the following date order
 all_dates = np.stack(date)
 
+
+
 sonde_df_tv = pd.DataFrame(all_tv.T, columns = all_dates)
+sonde_df_height = pd.DataFrame(all_hgts.T, columns = all_dates)
     
 
 #pd.read_csv("/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/2016082712_sounding_68816.csv")
