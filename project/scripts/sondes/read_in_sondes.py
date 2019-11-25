@@ -20,7 +20,8 @@ list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/da
 
 len_date = 10
 
-#FOR theta-V ('THTV' in the sondes)
+# To read in data and combine all into a df with date as columns and height/ theta v as rows
+# For theta-V ('THTV' in the sondes)
 # get date
 date, theta_v, hgts = [], [], []
 for file in list_of_files[0:4]:
