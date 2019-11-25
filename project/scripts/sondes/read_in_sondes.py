@@ -20,6 +20,32 @@ list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/da
 
 len_date = 10
 
+# read all into one dataframe and then groupby date
+
+df_all = pd.DataFrame()
+for file in list_of_files[0:3]:
+    df = pd.read_csv(file, index_col= 'Unnamed: 0')
+    date_i = os.path.basename(file)[0:len_date]
+    if df.shape[0] > 0:
+        df_all = df_all.append(df)
+        print('Adding data for ', date_i)
+        print(df_all.shape)
+    else: 
+        print(date_i,' sounding dataframe is empty... skipping this date/time.')
+
+# what about multi index? for date and then height / pressure
+## not sure this multi index thing will work
+# df_all.set_index('DATE')
+# df_all.set_index(['DATE', 'HGHT'], inplace=True)
+# df_all.set_index(['HGHT', 'DATE'], inplace=True)
+# df_all.groupby(level=1).mean()
+
+df.set_index('HGHT', inplace=True)
+df.groupby('DATE')['THTV'].plot(legend=True)
+
+
+
+
 # To read in data and combine all into a df with date as columns and height/ theta v as rows
 # For theta-V ('THTV' in the sondes)
 # get date
