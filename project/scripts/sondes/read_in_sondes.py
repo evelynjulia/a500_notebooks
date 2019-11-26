@@ -25,7 +25,7 @@ len_date = 10
 fig, ax = plt.subplots()
 
 df_all = pd.DataFrame()
-for file in list_of_files[0:4]:
+for file in list_of_files:
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
     date_i = os.path.basename(file)[0:len_date]
     if df.shape[0] > 0:
@@ -37,7 +37,7 @@ for file in list_of_files[0:4]:
         print(date_i,' sounding dataframe is empty... skipping this date/time.')
 
 
-plt.legend()
+#plt.legend()
 plt.show()
 
 
