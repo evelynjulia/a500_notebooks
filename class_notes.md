@@ -721,3 +721,11 @@ start docstring with \b (back space)
 Dec 5 - prez of what we're doing / planning to do 12:00 or 12:30
 
 And then we want to hand in soon after that.
+
+
+# Tuesday, 26 November 2019
+
+
+git pull cycle
+
+need to rebase upstream on master and rebase ejw branch on master
