@@ -729,3 +729,37 @@ And then we want to hand in soon after that.
 git pull cycle
 
 need to rebase upstream on master and rebase ejw branch on master
+
+generally don't want more than 4 arguments in a function
+
+instead of using a class can used named tupled (but can't changed once they're fixed - immutable)
+
+
+Start Ipython:
+
+```
+In [1]: a = dict(item1='test1', item2='test2')                                  
+
+In [2]: a                                                                       
+Out[2]: {'item1': 'test1', 'item2': 'test2'}
+
+In [4]: from collections import namedtuple 
+```
+
+namedtuple --> creates a new class
+can add a dictionary to it. 
+can add other tuples to it. 
+
+
+* if you need more than 4 arguments in a function need to use a named function
+
+can't add more to it so it's good. 
+
+need short functions in the project --> which have data integrity checks like named tuples
+
+Can also use data classes ???
+
+can do a.temp, b.watervapour ???
+
+
+Classes apparently aren't that useful anymore. 
