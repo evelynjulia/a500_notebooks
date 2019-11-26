@@ -117,3 +117,16 @@ The nice thing about that is that if any information that you need is missing, y
 
 - Need to see tests with handwritten code
 - Have some functions that you import into your notebook
+
+
+## Presentation
+
+15 minutes: 12 mins for a talk and 3 mins questions
+
+don't have more than 10 slides
+
+- have research questions
+- motivate what we're doing
+- give plan for how we're tackling it. 
+- show results if we have results
+- transitions are important

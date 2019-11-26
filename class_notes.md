@@ -763,3 +763,49 @@ can do a.temp, b.watervapour ???
 
 
 Classes apparently aren't that useful anymore. 
+
+
+## X-array stuff to read in ncep files
+
+
+time from 1970 is called the epic (seconds since the epic)
+
+finds hour using regex
+
+he then sorts them so they can be read in in order
+
+dataset is different to data array
+
+data array carries attributes and coordinates
+
+apparently iterm2 is good
+
+pdb debugger???
+
+
+Use Phil’s script to combine all files into an xarray for different variables
+
+categorize into stable / unstable 
+
+and then look at how they compare to the soundings 
+
+
+matplotlib turn off pop up windows: 
+
+`matplotlib.use('Agg')`
+
+
+## talk next week Thursday
+
+15 minutes: 12 mins for a talk and 3 mins questions
+
+don't have more than 10 slides
+
+- have research questions
+- motivate what we're doing
+- give plan for how we're tackling it. 
+- show results if we have results
+- transitions are important
+
+
+
