@@ -19,10 +19,13 @@ if this_dir.name == "python":
     notebooks_dir = this_dir.parent
 else:
     notebooks_dir = this_dir
-root_dir = notebooks_dir.parent
+root_dir = notebooks_dir
 data_dir = root_dir / Path("data")
 test_dir = root_dir / Path("test_data")
 map_dir = root_dir / Path("map_data")
+
+pro_dir = root_dir / Path("project")
+pro_data_dir = pro_dir / Path("data")
 
 sys.path.insert(0, str(root_dir))
 sep = "*" * 30
