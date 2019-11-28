@@ -852,3 +852,7 @@ need to ask at least one question during the presentations
 Deliverables:
 - if we have figures in the paper he wants the notebook that generated the figures 
 and if we have functions then he wants to be able to see those in a library / module
+
+
+Use black as an editor to check the code is in the right format
+flake 8 is a different one
