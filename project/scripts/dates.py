@@ -5,8 +5,14 @@
 from pathlib import Path
 import re
 import pprint
+import os
 
-#list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/2016*/*.nc')
+
+
+################################################################################################
+#                                             NAEFS
+################################################################################################
+
 
 naefs_data_dir = "/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/"
 all_naefs_files = list(Path(naefs_data_dir).glob("2016*/*SA.nc"))
@@ -36,5 +42,34 @@ for file in all_naefs_files:
 
 #pprint.pprint(all_naefs_dates)
 
+
+
+
+################################################################################################
+#                                          SOUNDINGS
+################################################################################################
+
+
+sonde_data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
+all_sonde_files = list(Path(sonde_data_dir).glob("*.csv"))
+
+all_sonde_dates = []
+for s_file in all_sonde_files:
+    date_si = os.path.basename(s_file)[0:10]
+    all_sonde_dates.append(int(date_si))
+
+
+
+################################################################################################
+#                                      COMPARE DATES
+################################################################################################
+
+# sort the dates so they're in the same order
+sn_dates = sorted(all_naefs_dates)
+ss_dates = sorted(all_sonde_dates)
+
+comparison_set = set(sn_dates).intersection(ss_dates)
+
+overlapping_dates = list(comparison_set)
 
 
