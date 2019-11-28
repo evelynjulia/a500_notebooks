@@ -808,4 +808,47 @@ don't have more than 10 slides
 - transitions are important
 
 
+# 28 November 2019
 
+tmux stuff - can start a session and come back to it later by attaching
+
+
+## X-array
+
+xarrray does not accept path objects which is why we need to turn it into a string first
+
+nests on the time dimension
+
+select subset of variables
+
+see `andrew_les.py`
+
+want to use ds_['VAR'] --> this returns dataset
+
+data array is stripped of coordinates and we want the coordinates to we want a dataset
+
+
+can take means over dimensions
+
+can then get perturbation
+
+can construct dataset with zip
+
+
+This scripts calculates the means and the perturbations
+
+
+map_blocks... -> this solves the problem of the file saving to too many chuncks... (I think) 
+
+so then things are rechucked and some thought needs to be put into this in order to figure out how to do it
+
+
+## Project 
+
+Rubrics are available on the course webpage
+
+need to ask at least one question during the presentations
+
+Deliverables:
+- if we have figures in the paper he wants the notebook that generated the figures 
+and if we have functions then he wants to be able to see those in a library / module
