@@ -53,6 +53,7 @@ Compare this with sonde data (somewhere in the states where there is lots of dat
 
 So check the PBL scheme in these control members...
 
+[GFS operational physics](https://dtcenter.org/GMTB/gfs_phys_doc_dev/group___p_b_l.html)
 
 
 
