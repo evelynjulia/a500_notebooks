@@ -20,6 +20,7 @@ root_dir = notebooks_dir.parent
 data_dir = root_dir / Path("data")
 test_dir = root_dir / Path("test_data")
 map_dir = root_dir / Path("map_data")
+pro_dir = root_dir / Path("project")
 
 sys.path.insert(0, str(root_dir))
 sep = "*" * 30
