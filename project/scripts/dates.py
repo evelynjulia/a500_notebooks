@@ -73,3 +73,15 @@ comparison_set = set(sn_dates).intersection(ss_dates)
 overlapping_dates = list(comparison_set)
 
 
+################################################################################################
+#                                    ALL DATES - PLOTTING
+################################################################################################
+
+# new set with elements in sn_dates but not in ss_dates
+not_in_sondes = set(sn_dates).difference(ss_dates)
+
+
+# this has all the possible dates in it with no duplicates:
+all_dates = set(sn_dates).union(not_in_sondes)
+
+all_dates.issuperset(overlapping_dates)
