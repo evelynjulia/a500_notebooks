@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import pprint
 import os
+import datetime
 
 
 
@@ -77,11 +78,31 @@ overlapping_dates = list(comparison_set)
 #                                    ALL DATES - PLOTTING
 ################################################################################################
 
-# new set with elements in sn_dates but not in ss_dates
-not_in_sondes = set(sn_dates).difference(ss_dates)
+# # new set with elements in sn_dates but not in ss_dates
+# not_in_sondes = set(sn_dates).difference(ss_dates)
 
 
-# this has all the possible dates in it with no duplicates:
-all_dates = set(sn_dates).union(not_in_sondes)
+# # this has all the possible dates in it with no duplicates:
+# all_dates = set(sn_dates).union(not_in_sondes)
 
-all_dates.issuperset(overlapping_dates)
+# # create list of datetime objects
+# new_date_l = []
+# for i in list(all_dates):
+#     ii = datetime.datetime.strptime(str(i), '%Y%m%d%H')
+#     print(ii)
+#     new_date_l.append(ii)
+
+
+# # create list of 1 and 0 if dates exist
+# test = list(all_dates.copy())
+# for dt_ind, dt_val in enumerate(all_dates):
+#     print(dt_ind)
+#     print(dt_val)
+#     if dt_val in overlapping_dates:  ### Figure out if it exists
+#         print(dt_val in overlapping_dates)
+#         print('date overlaps')
+#         test[dt_ind] = 1
+#     else:
+#         test[dt_ind] = 0
+
+
