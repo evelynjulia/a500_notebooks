@@ -131,3 +131,18 @@ don't have more than 10 slides
 - give plan for how we're tackling it. 
 - show results if we have results
 - transitions are important
+
+
+## 29 Nov notes: 
+
+- https://atmos.washington.edu/~breth/classes/AS547/lect/lect8.pdf
+- https://atmos.washington.edu/~breth/classes/AS547/
+
+Chatted to Phil:
+
+- first see which different stability classes (stable, convective, neutral) I have by looking at theta and the sign of the slope...
+- the can create new columns in a pandas dataframe to classify the stabilty class and also the wind speed
+- for wind speed can have a category of 1 for winds above 5m/s and 0 for winds under 5m/s
+- then use groupby in pd. df to work with them. 
+- can compare the model data to the stability class values to see if the same is represented
+- want at least 10 examples in each category so I have a good RMS value
