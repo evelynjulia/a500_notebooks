@@ -1,6 +1,14 @@
 # functions
 # list of useful functions for project
 
+from pathlib import Path
+from pathlib import Path
+import re
+import pprint
+import os
+import datetime
+
+
 def make_theta(temp,press):
     """
       temp in K
