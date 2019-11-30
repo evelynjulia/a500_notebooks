@@ -17,7 +17,7 @@ import xarray as xr
 from a500.utils import ncdump
 import re
 import context
-from functions import make_theta
+from project.scripts.functions import make_theta
 import sys
 
 sys.path.append("/Users/catherinemathews/UBC/a500_notebooks/project/scripts")
