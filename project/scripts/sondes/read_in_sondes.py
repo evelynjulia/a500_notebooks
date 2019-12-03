@@ -88,10 +88,11 @@ p_levs = [1000, 925, 850, 700, 500, 250, 200]
 df_all = pd.DataFrame()
 
 
-for file in list_of_files[0:1]:
+for file in list_of_files[2:3]:
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
     date_i = os.path.basename(file)[0:len_date]
     print(df)
+    hr_i = os.path.basename(file)[-2:]
     new_df_i = pd.DataFrame()
     # now we have the df
     if df.shape[0] > 0:
@@ -118,16 +119,19 @@ for file in list_of_files[0:1]:
         elif new_df_i['THTA_GRAD'][0] <= -0.005:
             new_df_i['STABILITY'] = -1 # unstable
         else:
-            print('None of the conditions were met. Maybe check this for date')
+            print('None of the STABILITY conditions were met. Maybe check this for date: ', date_i)
         
         # Column for wind cat
-
-        # column for day / night
-        if new_df_i['DATE'][0] >= 0.005:
-
-        # add new df to a list of all dataframes
+        # column for day / night (Time Of Day)
+        if hr_i == '00':
+            new_df_i['TOD'] = 0 # night
+        elif hr_i == '12':
+            new_df_i['TOD'] = 1 # day
+        else:
+            print('None of the TOD conditions were met. Maybe check this for date: ', date_i)
+        
         print(new_df_i)
-    
+        # add new df to a list of all dataframes  
     else: 
         print(date_i,' sounding dataframe is empty... skipping this date/time.')
 
