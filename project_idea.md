@@ -131,6 +131,7 @@ don't have more than 10 slides
 - give plan for how we're tackling it. 
 - show results if we have results
 - transitions are important
+- provide motivation, make sure it's doable and flag any issues. 
 
 
 ## 29 Nov notes: 
@@ -146,3 +147,8 @@ Chatted to Phil:
 - then use groupby in pd. df to work with them. 
 - can compare the model data to the stability class values to see if the same is represented
 - want at least 10 examples in each category so I have a good RMS value
+
+
+## 3 December notes
+
+[Paper with classifications on stability classes](https://dc.uwm.edu/cgi/viewcontent.cgi?article=2458&context=etd)
