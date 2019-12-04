@@ -1,6 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 # reproducibe example
 # eve
 # 3 december
+
+
 
 import pickle
 
