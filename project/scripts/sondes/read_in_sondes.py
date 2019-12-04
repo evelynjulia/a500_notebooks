@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 # Eve Wicksteed
 #
 # 23 November 2019
@@ -22,32 +25,32 @@ list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/da
 
 len_date = 10
 
-# read all into one dataframe and then groupby date
-fig, ax = plt.subplots()
-fig2, ax2 = plt.subplots()
+# # read all into one dataframe and then groupby date
+# fig, ax = plt.subplots()
+# fig2, ax2 = plt.subplots()
 
-df_all = pd.DataFrame()
-for file in list_of_files[0:50]:
-    df = pd.read_csv(file, index_col= 'Unnamed: 0')
-    date_i = os.path.basename(file)[0:len_date]
-    if df.shape[0] > 0:
-        # PLOT
-        ax.plot(df['THTA'][df['HGHT'] < 2500], df['HGHT'][df['HGHT'] < 2500], '.-', label = date_i)
-        ax2.plot(df['WSPD'][df['HGHT'] < 2500], df['HGHT'][df['HGHT'] < 2500], '.-', label = date_i)
-        # add to all one df
-        df_all = df_all.append(df)
-        print('Adding data for ', date_i)
-        print(df_all.shape)
-    else: 
-        print(date_i,' sounding dataframe is empty... skipping this date/time.')
+# df_all = pd.DataFrame()
+# for file in list_of_files[0:50]:
+#     df = pd.read_csv(file, index_col= 'Unnamed: 0')
+#     date_i = os.path.basename(file)[0:len_date]
+#     if df.shape[0] > 0:
+#         # PLOT
+#         ax.plot(df['THTA'][df['HGHT'] < 2500], df['HGHT'][df['HGHT'] < 2500], '.-', label = date_i)
+#         ax2.plot(df['WSPD'][df['HGHT'] < 2500], df['HGHT'][df['HGHT'] < 2500], '.-', label = date_i)
+#         # add to all one df
+#         df_all = df_all.append(df)
+#         print('Adding data for ', date_i)
+#         print(df_all.shape)
+#     else: 
+#         print(date_i,' sounding dataframe is empty... skipping this date/time.')
 
 
-ax.set_ylabel('Height')
-ax.set_xlabel('Theta')
-ax2.set_ylabel('Height')
-ax2.set_xlabel('Wind speed')
-#plt.legend()
-plt.show()
+# ax.set_ylabel('Height')
+# ax.set_xlabel('Theta')
+# ax2.set_ylabel('Height')
+# ax2.set_xlabel('Wind speed')
+# #plt.legend()
+# plt.show()
 
 
 
@@ -64,13 +67,16 @@ plt.show()
 
 
 # PRES   HGHT  TEMP  DWPT  RH  MIXR  WDIR  WSPD   THTA   THTE   THTV        DATE
+#df_all = pd.DataFrame()
 
 p_levs = [1000, 925, 850, 700, 500, 250, 200]
 
-df_all = pd.DataFrame()
 
 
-for file in list_of_files[2:3]:
+i = 0
+for file in list_of_files:
+    i += 1
+    print('\nnumber of files read = ',i)
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
     #print(df)
     date_i = os.path.basename(file)[0:len_date]
@@ -86,8 +92,17 @@ for file in list_of_files[2:3]:
         
         # then add the columns to a new df
         new_df_i['PRES'] = p_levs
-        new_df_i['THTA'] = thta_intp(p_levs)
-        new_df_i['HGHT'] = hght_intp(p_levs)
+        try:
+            new_df_i['THTA'] = thta_intp(p_levs)
+        except Exception:
+            print('broke loop (hopefully)')
+            continue
+        
+        try:
+            new_df_i['HGHT'] = hght_intp(p_levs)
+        except Exception:
+            print('broke loop (hopefully)')
+            continue
         new_df_i['DATE'] = df['DATE']
         
         # calc gradient (dtheta_dp)
@@ -113,7 +128,7 @@ for file in list_of_files[2:3]:
         print(new_df_i)
 
     else: 
-        print(date_i,' sounding dataframe is empty... skipping this date/time.')
+        print(date_i,'sounding dataframe is empty... skipping this date/time.')
     
 
 # # test np where
@@ -142,12 +157,12 @@ for file in list_of_files[2:3]:
 # add new df to a list of all dataframes  
 # Column for wind cat
 
-### PLOTTING
-fig, ax = plt.subplots()
-ax.plot(new_df_i['THTA'],p_levs,  '.-')
-#ax.plot(df['THTA'], df['HGHT'], '.-')
-ax.invert_yaxis()
-plt.show()
+# ### PLOTTING
+# fig, ax = plt.subplots()
+# ax.plot(new_df_i['THTA'],p_levs,  '.-')
+# #ax.plot(df['THTA'], df['HGHT'], '.-')
+# ax.invert_yaxis()
+# plt.show()
 
 
 
@@ -155,11 +170,11 @@ plt.show()
 
 
 
-# add to loop after
+# # add to loop after
         
-        # add to all one df
-        df_all = df_all.append(df)
-        print('Adding data for ', date_i)
-        print(df_all.shape)
-    else: 
-        print(date_i,' sounding dataframe is empty... skipping this date/time.')
+#         # add to all one df
+#         df_all = df_all.append(df)
+#         print('Adding data for ', date_i)
+#         print(df_all.shape)
+#     else: 
+#         print(date_i,' sounding dataframe is empty... skipping this date/time.')
