@@ -11,6 +11,7 @@ import datetime as dt
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
+from scipy import interpolate
 
 import pickle
 
@@ -52,37 +53,18 @@ plt.show()
 
 ###
 # to get only the bottom values
-df_all[df_all['PRES']>= 900]
+# df_all[df_all['PRES']>= 900]
 
 
 
 ############################################################
 # test - not with plotting, just in creating DF
 
-from scipy import interpolate
-
-# 
-df_all = pd.DataFrame()
-for file in list_of_files[0:1]:
-    df = pd.read_csv(file, index_col= 'Unnamed: 0')
-    date_i = os.path.basename(file)[0:len_date]
-    print(df)
 
 
-# this works for interpolation
-thta_intp = interpolate.interp1d(df['PRESS'].values, df['THTA'].values)
-new_heights = np.arange(42,2500,10)
-comp_thta = thta_intp(new_heights)
-
-
-fig, ax = plt.subplots()
-ax.plot(comp_thta, new_heights, '.-')
-ax.plot(df['THTA'], df['HGHT'], '.-')
-plt.show()
 
 # PRES   HGHT  TEMP  DWPT  RH  MIXR  WDIR  WSPD   THTA   THTE   THTV        DATE
 
-# pres_vals = ['PRES_200mb', 'PRES_250mb', 'PRES_500mb', 'PRES_700mb', 'PRES_850mb', 'PRES_925mb', 'PRES_1000mb']
 p_levs = [1000, 925, 850, 700, 500, 250, 200]
 
 df_all = pd.DataFrame()
@@ -90,16 +72,18 @@ df_all = pd.DataFrame()
 
 for file in list_of_files[2:3]:
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
-    date_i = os.path.basename(file)[0:len_date]
     print(df)
-    hr_i = os.path.basename(file)[-2:]
+    date_i = os.path.basename(file)[0:len_date]
+    print(date_i)
+    hr_i = date_i[-2:]
+    print(hr_i)
     new_df_i = pd.DataFrame()
     # now we have the df
     if df.shape[0] > 0:
         # get interpolations for new columns
         thta_intp = interpolate.interp1d(df['PRES'].values, df['THTA'].values)
         hght_intp = interpolate.interp1d(df['PRES'].values, df['HGHT'].values)
-
+        
         # then add the columns to a new df
         new_df_i['PRES'] = p_levs
         new_df_i['THTA'] = thta_intp(p_levs)
@@ -109,7 +93,7 @@ for file in list_of_files[2:3]:
         # calc gradient (dtheta_dp)
         # need to make it negative because pressure decreases with height
         new_df_i['THTA_GRAD'] = - np.gradient(new_df_i['THTA'], new_df_i['PRES'])
-
+        
         # create column for stability class
         # 0.005 should be about a 0.5 deg C change in temp from 1000mb to 925mb
         if new_df_i['THTA_GRAD'][0] >= 0.005:
@@ -121,7 +105,6 @@ for file in list_of_files[2:3]:
         else:
             print('None of the STABILITY conditions were met. Maybe check this for date: ', date_i)
         
-        # Column for wind cat
         # column for day / night (Time Of Day)
         if hr_i == '00':
             new_df_i['TOD'] = 0 # night
@@ -131,15 +114,18 @@ for file in list_of_files[2:3]:
             print('None of the TOD conditions were met. Maybe check this for date: ', date_i)
         
         print(new_df_i)
-        # add new df to a list of all dataframes  
+    
     else: 
         print(date_i,' sounding dataframe is empty... skipping this date/time.')
 
 
+# test 
 
+# TO DO / add to loop above
+# add new df to a list of all dataframes  
+# Column for wind cat
 
-
-
+### PLOTTING
 fig, ax = plt.subplots()
 ax.plot(new_df_i['THTA'],p_levs,  '.-')
 #ax.plot(df['THTA'], df['HGHT'], '.-')
