@@ -72,7 +72,7 @@ df_all = pd.DataFrame()
 
 for file in list_of_files[2:3]:
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
-    print(df)
+    #print(df)
     date_i = os.path.basename(file)[0:len_date]
     print(date_i)
     hr_i = date_i[-2:]
@@ -93,33 +93,63 @@ for file in list_of_files[2:3]:
         # calc gradient (dtheta_dp)
         # need to make it negative because pressure decreases with height
         new_df_i['THTA_GRAD'] = - np.gradient(new_df_i['THTA'], new_df_i['PRES'])
-        
+
         # create column for stability class
         # 0.005 should be about a 0.5 deg C change in temp from 1000mb to 925mb
-        if new_df_i['THTA_GRAD'][0] >= 0.005:
-            new_df_i['STABILITY'] = 1 # stable
-        elif new_df_i['THTA_GRAD'][0] < 0.005 and new_df_i['THTA_GRAD'][0] > -0.05:
-            new_df_i['STABILITY'] = 0 # neutral
-        elif new_df_i['THTA_GRAD'][0] <= -0.005:
-            new_df_i['STABILITY'] = -1 # unstable
-        else:
-            print('None of the STABILITY conditions were met. Maybe check this for date: ', date_i)
-        
+        stability_conditions = [
+            new_df_i['THTA_GRAD'][0] >= 0.005,
+            (new_df_i['THTA_GRAD'][0] < 0.005) & (new_df_i['THTA_GRAD'][0] > -0.05),
+            new_df_i['THTA_GRAD'][0] <= -0.005]
+        stability_choices = [1, 0, -1]  #['stable', 'neutral', 'unstable']
+        new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
+
         # column for day / night (Time Of Day)
-        if hr_i == '00':
-            new_df_i['TOD'] = 0 # night
-        elif hr_i == '12':
-            new_df_i['TOD'] = 1 # day
-        else:
-            print('None of the TOD conditions were met. Maybe check this for date: ', date_i)
+        tod_conditions = [
+            hr_i == '00',
+            hr_i == '12']
+        tod_choices = [0, 12]  #['night', 'day']
+        new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
         
+
+
+        print(new_df_i)
+    else: 
+        print(date_i,' sounding dataframe is empty... skipping this date/time.')
+    
+
+
+
         print(new_df_i)
     
     else: 
         print(date_i,' sounding dataframe is empty... skipping this date/time.')
 
 
-# test 
+# test np where
+#new_df_i['test_npwhere'] = np.where(new_df_i['THTA_GRAD'][0] >= 0.005, 'stable', 'other')
+stability_conditions = [
+    new_df_i['THTA_GRAD'][0] >= 0.005,
+    (new_df_i['THTA_GRAD'][0] < 0.005) & (new_df_i['THTA_GRAD'][0] > -0.05),
+    new_df_i['THTA_GRAD'][0] <= -0.005]
+stability_choices = [1, 0, -1]  #['stable', 'neutral', 'unstable']
+new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
+
+tod_conditions = [
+    hr_i == '00',
+    hr_i == '12']
+tod_choices = [0, 12]  #['night', 'day']
+new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
+
+print(new_df_i)
+
+
+
+
+
+#
+        else:
+            print('None of the STABILITY conditions were met. Maybe check this for date: '+date_i)
+                    print('None of the TOD conditions were met. Maybe check this for date: ', date_i)
 
 # TO DO / add to loop above
 # add new df to a list of all dataframes  
