@@ -110,46 +110,33 @@ for file in list_of_files[2:3]:
         tod_choices = [0, 12]  #['night', 'day']
         new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
         
-
-
         print(new_df_i)
+
     else: 
         print(date_i,' sounding dataframe is empty... skipping this date/time.')
     
 
+# # test np where
+# #new_df_i['test_npwhere'] = np.where(new_df_i['THTA_GRAD'][0] >= 0.005, 'stable', 'other')
+# stability_conditions = [
+#     new_df_i['THTA_GRAD'][0] >= 0.005,
+#     (new_df_i['THTA_GRAD'][0] < 0.005) & (new_df_i['THTA_GRAD'][0] > -0.05),
+#     new_df_i['THTA_GRAD'][0] <= -0.005]
+# stability_choices = [1, 0, -1]  #['stable', 'neutral', 'unstable']
+# new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
 
+# tod_conditions = [
+#     hr_i == '00',
+#     hr_i == '12']
+# tod_choices = [0, 12]  #['night', 'day']
+# new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
 
-        print(new_df_i)
-    
-    else: 
-        print(date_i,' sounding dataframe is empty... skipping this date/time.')
-
-
-# test np where
-#new_df_i['test_npwhere'] = np.where(new_df_i['THTA_GRAD'][0] >= 0.005, 'stable', 'other')
-stability_conditions = [
-    new_df_i['THTA_GRAD'][0] >= 0.005,
-    (new_df_i['THTA_GRAD'][0] < 0.005) & (new_df_i['THTA_GRAD'][0] > -0.05),
-    new_df_i['THTA_GRAD'][0] <= -0.005]
-stability_choices = [1, 0, -1]  #['stable', 'neutral', 'unstable']
-new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
-
-tod_conditions = [
-    hr_i == '00',
-    hr_i == '12']
-tod_choices = [0, 12]  #['night', 'day']
-new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
-
-print(new_df_i)
+# print(new_df_i)
 
 
 
 
 
-#
-        else:
-            print('None of the STABILITY conditions were met. Maybe check this for date: '+date_i)
-                    print('None of the TOD conditions were met. Maybe check this for date: ', date_i)
 
 # TO DO / add to loop above
 # add new df to a list of all dataframes  
