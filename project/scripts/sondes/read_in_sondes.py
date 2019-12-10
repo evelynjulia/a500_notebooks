@@ -25,38 +25,48 @@ list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/da
 
 len_date = 10
 
-# # read all into one dataframe and then groupby date
-# fig, ax = plt.subplots()
+# read all into one dataframe and then groupby date
+fig, ax = plt.subplots()
 # fig2, ax2 = plt.subplots()
 
-# df_all = pd.DataFrame()
-# for file in list_of_files[0:50]:
-#     df = pd.read_csv(file, index_col= 'Unnamed: 0')
-#     date_i = os.path.basename(file)[0:len_date]
-#     if df.shape[0] > 0:
-#         # PLOT
-#         ax.plot(df['THTA'][df['HGHT'] < 2500], df['HGHT'][df['HGHT'] < 2500], '.-', label = date_i)
-#         ax2.plot(df['WSPD'][df['HGHT'] < 2500], df['HGHT'][df['HGHT'] < 2500], '.-', label = date_i)
-#         # add to all one df
-#         df_all = df_all.append(df)
-#         print('Adding data for ', date_i)
-#         print(df_all.shape)
-#     else: 
-#         print(date_i,' sounding dataframe is empty... skipping this date/time.')
+df_all = pd.DataFrame()
+for file in list_of_files[1:100]:
+    df = pd.read_csv(file, index_col= 'Unnamed: 0')
+    date_i = os.path.basename(file)[0:len_date]
+    if df.shape[0] > 0:
+        # PLOT
+        ax.plot(df['THTA'][df['PRES'] > 850], df['HGHT'][df['PRES'] > 850], '.-', label = date_i)
+        #ax2.plot(df['WSPD'][df['PRES'] > 850], df['PRES'][df['PRES'] > 850], '.-', label = date_i)
+        # add to all one df
+        #ax.plot(df['THTA'][0:10], df['HGHT'][0:10], '.-', label = date_i)
+        df_all = df_all.append(df)
+        print('Adding data for ', date_i)
+        print(df_all.shape)
+    else: 
+        print(date_i,' sounding dataframe is empty... skipping this date/time.')
 
 
-# ax.set_ylabel('Height')
-# ax.set_xlabel('Theta')
-# ax2.set_ylabel('Height')
+ax.set_ylabel('Height (m)')
+ax.set_xlabel('Theta (K)')
+# ax2.set_ylabel('Pressure')
 # ax2.set_xlabel('Wind speed')
-# #plt.legend()
-# plt.show()
+#plt.legend()
+#ax.invert_yaxis()
+ax.set_title('Sounding data')
+plt.show()
 
 
 
 ###
 # to get only the bottom values
 # df_all[df_all['PRES']>= 900]
+# df = pd.read_csv(list_of_files[7], index_col= 'Unnamed: 0')
+# fig, ax = plt.subplots()
+# ax.plot(df['THTA'], df['HGHT'], 'r.-', linewidth=2, markersize =10)
+# plt.show()
+# ax.set_ylabel('Height (m)')
+# ax.set_xlabel('Theta (K)')
+# ax.set_title('Sounding data')
 
 
 
@@ -74,7 +84,7 @@ p_levs = [1000, 925, 850, 700, 500, 250, 200]
 
 
 i = 0
-for file in list_of_files:
+for file in list_of_files[0:10]:
     i += 1
     print('\nnumber of files read = ',i)
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
