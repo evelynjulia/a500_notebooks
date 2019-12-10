@@ -30,7 +30,7 @@ fig, ax = plt.subplots()
 # fig2, ax2 = plt.subplots()
 
 df_all = pd.DataFrame()
-for file in list_of_files[1:100]:
+for file in list_of_files[1:10]:
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
     date_i = os.path.basename(file)[0:len_date]
     if df.shape[0] > 0:
@@ -42,6 +42,9 @@ for file in list_of_files[1:100]:
         df_all = df_all.append(df)
         print('Adding data for ', date_i)
         print(df_all.shape)
+        df['THTA_GRAD'] = - np.gradient(df['THTA'], df['PRES'])
+        df['mean_grad'] = np.mean(df['THTA_GRAD'][df['PRES'] > 850])
+        print(df)
     else: 
         print(date_i,' sounding dataframe is empty... skipping this date/time.')
 
@@ -50,7 +53,7 @@ ax.set_ylabel('Height (m)')
 ax.set_xlabel('Theta (K)')
 # ax2.set_ylabel('Pressure')
 # ax2.set_xlabel('Wind speed')
-#plt.legend()
+plt.legend()
 #ax.invert_yaxis()
 ax.set_title('Sounding data')
 plt.show()
@@ -119,11 +122,17 @@ for file in list_of_files[0:10]:
         # need to make it negative because pressure decreases with height
         new_df_i['THTA_GRAD'] = - np.gradient(new_df_i['THTA'], new_df_i['PRES'])
 
+
+
+        # calc gradients of sounding data
+        df['THTA_GRAD'] = np.gradient(df['THTA'], df['PRES'])
+        #df['THTA'][df['PRES'] > 850], df['HGHT'][df['PRES'] > 850]
+
         # create column for stability class
         # 0.005 should be about a 0.5 deg C change in temp from 1000mb to 925mb
         stability_conditions = [
             new_df_i['THTA_GRAD'][0] >= 0.005,
-            (new_df_i['THTA_GRAD'][0] < 0.005) & (new_df_i['THTA_GRAD'][0] > -0.05),
+            (new_df_i['THTA_GRAD'][0] < 0.005) & (new_df_i['THTA_GRAD'][0] > -0.005),
             new_df_i['THTA_GRAD'][0] <= -0.005]
         stability_choices = [1, 0, -1]  #['stable', 'neutral', 'unstable']
         new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
