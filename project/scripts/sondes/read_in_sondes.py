@@ -25,8 +25,8 @@ fig_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/figures/'
 
 run_date = dt.datetime.now().strftime('%y%m%d')
 
-#list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv'))
-list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv')
+list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv'))
+#list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv')
 
 # params / constants
 len_date = 10
@@ -40,7 +40,7 @@ fig, ax = plt.subplots()
 # fig2, ax2 = plt.subplots()
 
 df_all = pd.DataFrame()
-for file in list_of_files[1:20]:
+for file in list_of_files:
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
     date_i = os.path.basename(file)[0:len_date]
     if df.shape[0] > 0:
@@ -77,7 +77,7 @@ ax.set_ylabel('Height (m)')
 ax.set_xlabel('Theta (K)')
 # ax2.set_ylabel('Pressure')
 # ax2.set_xlabel('Wind speed')
-plt.legend()
+#plt.legend()
 #ax.invert_yaxis()
 ax.set_title('Sounding data')
 #plt.show()
@@ -116,7 +116,7 @@ sonde_stabilty_classes = []
 sonde_gradients = []
 
 i = 0
-for file in list_of_files[0:20]:
+for file in list_of_files:
     i += 1
     print('\nnumber of files read = ',i)
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
@@ -169,16 +169,13 @@ for file in list_of_files[0:20]:
         new_df_i['THTA_GRAD_INTERP'] = - np.gradient(new_df_i['THTA'], new_df_i['PRES'])
         new_df_i['MEAN_GRAD_INTERP'] = np.mean(new_df_i['THTA_GRAD_INTERP'][new_df_i['PRES'] >= top_pres])
 
-        
-
-
         # set column in new_df_i
         new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
         new_df_i['MEAN_GRAD_BELOW_'+str(top_pres)] = mean_grad_i  # mean gradient below 850mb (top_pres), not interpolated
 
         sonde_stabilty_classes.append(new_df_i['STABILITY'][0])
-        # print('Stability = ', new_df_i['STABILITY'][0])
         sonde_gradients.append(mean_grad_i)
+        # print('Stability = ', new_df_i['STABILITY'][0])
         # print('Mean Grad = ', mean_grad_i)
 
 
@@ -211,31 +208,11 @@ for file in list_of_files[0:20]:
 
 ax.set_ylabel('Pressure (mb)')
 ax.set_xlabel('Theta (K)')
-# ax2.set_ylabel('Pressure')
-# ax2.set_xlabel('Wind speed')
-plt.legend()
+#plt.legend()
 ax.invert_yaxis()
 ax.set_title('Sounding data')
 #plt.show()
 plt.savefig(fig_dir+'interpolated_soundings_below_850mb_'+run_date+'run.png')
-
-# # test np where
-# #new_df_i['test_npwhere'] = np.where(new_df_i['THTA_GRAD'][0] >= 0.005, 'stable', 'other')
-# stability_conditions = [
-#     new_df_i['THTA_GRAD'][0] >= 0.005,
-#     (new_df_i['THTA_GRAD'][0] < 0.005) & (new_df_i['THTA_GRAD'][0] > -0.05),
-#     new_df_i['THTA_GRAD'][0] <= -0.005]
-# stability_choices = [1, 0, -1]  #['stable', 'neutral', 'unstable']
-# new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
-
-# tod_conditions = [
-#     hr_i == '00',
-#     hr_i == '12']
-# tod_choices = [0, 12]  #['night', 'day']
-# new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
-
-# print(new_df_i)
-
 
 
 
@@ -244,7 +221,16 @@ print('stab classes',sonde_stabilty_classes)
 print('gradients',sonde_gradients)
 
 
-fig, ax = plt.subplots(c(1,2), figsize=(15,9))
+stab_pkl_file = open(data_dir+'sonde_stabilty_classes.pkl', 'wb')
+pickle.dump(df, stab_pkl_file)
+stab_pkl_file.close()
+
+grad_pkl_file = open(data_dir+'sonde_gradients.pkl', 'wb')
+pickle.dump(df, grad_pkl_file)
+grad_pkl_file.close()
+
+
+fig, ax = plt.subplots(1,2, figsize=(15,9))
 
 ax[0].hist(sonde_stabilty_classes)
 ax[1].hist(sonde_gradients)
@@ -254,6 +240,10 @@ ax[0].set_xlabel('Stability class')
 ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
 #plt.show()
 plt.savefig(fig_dir+'stabilty_histograms_below_850mb_'+run_date+'run.png')
+
+
+
+
 
 
 # TO DO / add to loop above
@@ -281,3 +271,5 @@ plt.savefig(fig_dir+'stabilty_histograms_below_850mb_'+run_date+'run.png')
 #         print(df_all.shape)
 #     else: 
 #         print(date_i,' sounding dataframe is empty... skipping this date/time.')
+
+
