@@ -7,6 +7,7 @@ import re
 import pprint
 import os
 import datetime
+import pandas as pd
 
 
 def make_theta(temp,press):
@@ -112,8 +113,8 @@ def get_overlap_dates(naefs_dir, naefs_files, sonde_dir, sonde_files):
     all_naefs_files = list(Path(naefs_data_dir).glob(naefs_files))
 
     ####### SOME SORTING FUNCTIONS
-    find_hour = re.compile(r".*grb2.*(\d{3,3}).*_SA.nc")
-    find_date = re.compile(r".*naefs/*(\d{10,10}).*_SA.nc")
+    #find_hour = re.compile(r".*grb2.*(\d{3,3}).*_SA.nc")
+    #find_date = re.compile(r".*naefs/*(\d{10,10}).*_SA.nc")
 
 
 
@@ -133,7 +134,9 @@ def get_overlap_dates(naefs_dir, naefs_files, sonde_dir, sonde_files):
     all_sonde_dates = []
     for s_file in all_sonde_files:
         date_si = os.path.basename(s_file)[0:10]
-        all_sonde_dates.append(int(date_si))
+        df = pd.read_csv(s_file, index_col= 'Unnamed: 0')
+        if df.shape[0] > 0:
+            all_sonde_dates.append(int(date_si))
 
 
     # sort the dates so they're in the same order
