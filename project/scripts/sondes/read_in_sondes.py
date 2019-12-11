@@ -21,6 +21,7 @@ import pickle
 
 data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
 
+#list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv'))
 list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv')
 
 # params / constants
@@ -28,7 +29,6 @@ len_date = 10
 top_pres = 850
 stability_limit = 0.005 # what the cutoff is K/mb
 
-print('MEAN_GRAD_BELOW_'+str(top_pres))
 
 
 # read all into one dataframe and then groupby date
@@ -36,7 +36,7 @@ fig, ax = plt.subplots()
 # fig2, ax2 = plt.subplots()
 
 df_all = pd.DataFrame()
-for file in list_of_files[1:10]:
+for file in list_of_files[1:20]:
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
     date_i = os.path.basename(file)[0:len_date]
     if df.shape[0] > 0:
@@ -104,10 +104,14 @@ plt.show()
 
 p_levs = [1000, 925, 850, 700, 500, 250, 200]
 
-#fig, ax = plt.subplots()
+fig, ax = plt.subplots()
+
+
+sonde_stabilty_classes = []
+sonde_gradients = []
 
 i = 0
-for file in list_of_files[0:10]:
+for file in list_of_files[0:20]:
     i += 1
     print('\nnumber of files read = ',i)
     df = pd.read_csv(file, index_col= 'Unnamed: 0')
@@ -135,6 +139,7 @@ for file in list_of_files[0:10]:
             df['MEAN_GRAD'][0] <= -stability_limit]
         stability_choices = [-1, 0, 1]  #['unstable', 'neutral', 'stable']
         
+
         # get interpolations for new columns
         thta_intp = interpolate.interp1d(df['PRES'].values, df['THTA'].values)
         hght_intp = interpolate.interp1d(df['PRES'].values, df['HGHT'].values)
@@ -166,6 +171,11 @@ for file in list_of_files[0:10]:
         new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
         new_df_i['MEAN_GRAD_BELOW_'+str(top_pres)] = mean_grad_i  # mean gradient below 850mb (top_pres), not interpolated
 
+        sonde_stabilty_classes.append(new_df_i['STABILITY'][0])
+        # print('Stability = ', new_df_i['STABILITY'][0])
+        sonde_gradients.append(mean_grad_i)
+        # print('Mean Grad = ', mean_grad_i)
+
 
         # # don't need this (section below) anymore because calculate stability for
         # # just the initial sounding data by calculating the mean of data under 850mb
@@ -187,21 +197,21 @@ for file in list_of_files[0:10]:
         new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
         
         print(new_df_i)
-        #ax.plot(new_df_i['THTA'], new_df_i['PRES'], '.-', label = date_i)
+        ax.plot(new_df_i['THTA'], new_df_i['PRES'], '.-', label = date_i)
         
 
     else: 
         print(date_i,'sounding dataframe is empty... skipping this date/time.')
     
 
-# ax.set_ylabel('Pressure (mb)')
-# ax.set_xlabel('Theta (K)')
-# # ax2.set_ylabel('Pressure')
-# # ax2.set_xlabel('Wind speed')
-# plt.legend()
-# ax.invert_yaxis()
-# ax.set_title('Sounding data')
-# plt.show()
+ax.set_ylabel('Pressure (mb)')
+ax.set_xlabel('Theta (K)')
+# ax2.set_ylabel('Pressure')
+# ax2.set_xlabel('Wind speed')
+plt.legend()
+ax.invert_yaxis()
+ax.set_title('Sounding data')
+plt.show()
 
 # # test np where
 # #new_df_i['test_npwhere'] = np.where(new_df_i['THTA_GRAD'][0] >= 0.005, 'stable', 'other')
@@ -220,7 +230,8 @@ for file in list_of_files[0:10]:
 
 # print(new_df_i)
 
-
+print('stab classes',sonde_stabilty_classes)
+print('gradients',sonde_gradients)
 
 
 
