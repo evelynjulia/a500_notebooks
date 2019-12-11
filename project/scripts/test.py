@@ -11,7 +11,8 @@ naefs_files = "2016*/*SA.nc"
 sonde_data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
 sonde_files = "*.csv"
 
-test_func = get_overlap_dates(naefs_dir= naefs_data_dir, naefs_files= naefs_files, sonde_dir = sonde_data_dir, sonde_files = sonde_files)
+dates_to_use = get_overlap_dates(naefs_dir= naefs_data_dir, naefs_files= naefs_files, sonde_dir = sonde_data_dir, sonde_files = sonde_files)
 
 
-pprint.pprint(sorted(test_func))
+pprint.pprint(sorted(dates_to_use))
+print(len(dates_to_use))
