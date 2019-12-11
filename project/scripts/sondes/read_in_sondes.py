@@ -15,11 +15,15 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 from scipy import interpolate
+import datetime as dt
 
 import pickle
 
 
 data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
+fig_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/figures/'
+
+run_date = dt.datetime.now().strftime('%y%m%d')
 
 #list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv'))
 list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv')
@@ -76,7 +80,8 @@ ax.set_xlabel('Theta (K)')
 plt.legend()
 #ax.invert_yaxis()
 ax.set_title('Sounding data')
-plt.show()
+#plt.show()
+plt.savefig(fig_dir+'original_soundings_below_850mb_'+run_date+'run.png')
 
 
 
@@ -197,7 +202,7 @@ for file in list_of_files[0:20]:
         new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
         
         print(new_df_i)
-        ax.plot(new_df_i['THTA'], new_df_i['PRES'], '.-', label = date_i)
+        ax.plot(new_df_i['THTA'][new_df_i['PRES']>=850], new_df_i['PRES'][new_df_i['PRES']>=850], '.-', label = date_i)
         
 
     else: 
@@ -211,7 +216,8 @@ ax.set_xlabel('Theta (K)')
 plt.legend()
 ax.invert_yaxis()
 ax.set_title('Sounding data')
-plt.show()
+#plt.show()
+plt.savefig(fig_dir+'interpolated_soundings_below_850mb_'+run_date+'run.png')
 
 # # test np where
 # #new_df_i['test_npwhere'] = np.where(new_df_i['THTA_GRAD'][0] >= 0.005, 'stable', 'other')
@@ -230,10 +236,24 @@ plt.show()
 
 # print(new_df_i)
 
+
+
+
+
 print('stab classes',sonde_stabilty_classes)
 print('gradients',sonde_gradients)
 
 
+fig, ax = plt.subplots(c(1,2), figsize=(15,9))
+
+ax[0].hist(sonde_stabilty_classes)
+ax[1].hist(sonde_gradients)
+
+
+ax[0].set_xlabel('Stability class')
+ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
+#plt.show()
+plt.savefig(fig_dir+'stabilty_histograms_below_850mb_'+run_date+'run.png')
 
 
 # TO DO / add to loop above
