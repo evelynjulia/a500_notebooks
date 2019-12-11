@@ -23,7 +23,13 @@ data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
 
 list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv')
 
+# params / constants
 len_date = 10
+top_pres = 850
+stability_limit = 0.005 # what the cutoff is K/mb
+
+print('MEAN_GRAD_BELOW_'+str(top_pres))
+
 
 # read all into one dataframe and then groupby date
 fig, ax = plt.subplots()
@@ -35,15 +41,29 @@ for file in list_of_files[1:10]:
     date_i = os.path.basename(file)[0:len_date]
     if df.shape[0] > 0:
         # PLOT
-        ax.plot(df['THTA'][df['PRES'] > 850], df['HGHT'][df['PRES'] > 850], '.-', label = date_i)
-        #ax2.plot(df['WSPD'][df['PRES'] > 850], df['PRES'][df['PRES'] > 850], '.-', label = date_i)
+        ax.plot(df['THTA'][df['PRES'] > top_pres], df['HGHT'][df['PRES'] > top_pres], '.-', label = date_i)
+        #ax2.plot(df['WSPD'][df['PRES'] > top_pres], df['PRES'][df['PRES'] > top_pres], '.-', label = date_i)
         # add to all one df
         #ax.plot(df['THTA'][0:10], df['HGHT'][0:10], '.-', label = date_i)
         df_all = df_all.append(df)
         print('Adding data for ', date_i)
         print(df_all.shape)
-        df['THTA_GRAD'] = - np.gradient(df['THTA'], df['PRES'])
-        df['mean_grad'] = np.mean(df['THTA_GRAD'][df['PRES'] > 850])
+        # df['THTA_GRAD'] = np.gradient(df['THTA'], df['PRES'])
+        # df['mean_grad'] = np.mean(df['THTA_GRAD'][df['PRES'] > top_pres])
+
+        # get gradient for stability classes:
+        df['THTA_GRAD'] = np.gradient(df['THTA'], df['PRES'])
+        df['MEAN_GRAD'] = np.mean(df['THTA_GRAD'][df['PRES'] >= top_pres])
+
+        # create column for stability class
+        # 0.005 should be about a 0.5 deg C change in temp from 1000mb to 925mb
+        stability_conditions = [
+            df['THTA_GRAD'][0] >= stability_limit,
+            (df['THTA_GRAD'][0] < stability_limit) & (df['THTA_GRAD'][0] > -stability_limit),
+            df['THTA_GRAD'][0] <= -stability_limit]
+        stability_choices = [-1, 0, 1]  #['unstable', 'neutral', 'stable']
+        df['STABILITY'] = np.select(stability_conditions, stability_choices)
+
         print(df)
     else: 
         print(date_i,' sounding dataframe is empty... skipping this date/time.')
@@ -84,7 +104,7 @@ plt.show()
 
 p_levs = [1000, 925, 850, 700, 500, 250, 200]
 
-
+#fig, ax = plt.subplots()
 
 i = 0
 for file in list_of_files[0:10]:
@@ -99,6 +119,22 @@ for file in list_of_files[0:10]:
     new_df_i = pd.DataFrame()
     # now we have the df
     if df.shape[0] > 0:
+        
+        # get gradient for stability classes:
+        df['THTA_GRAD'] = np.gradient(df['THTA'], df['PRES'])
+        df['MEAN_GRAD'] = np.mean(df['THTA_GRAD'][df['PRES'] >= top_pres])
+        mean_grad_i = np.mean(df['THTA_GRAD'][df['PRES'] >= top_pres])
+
+        # create column for stability class
+        # 0.005 should be about a 0.5 deg C change in temp from 1000mb to 925mb
+        # calculate stabilty from the 1000mb to 850mb (top_pres) mean
+
+        stability_conditions = [
+            df['MEAN_GRAD'][0] >= stability_limit,
+            (df['MEAN_GRAD'][0] < stability_limit) & (df['MEAN_GRAD'][0] > -stability_limit),
+            df['MEAN_GRAD'][0] <= -stability_limit]
+        stability_choices = [-1, 0, 1]  #['unstable', 'neutral', 'stable']
+        
         # get interpolations for new columns
         thta_intp = interpolate.interp1d(df['PRES'].values, df['THTA'].values)
         hght_intp = interpolate.interp1d(df['PRES'].values, df['HGHT'].values)
@@ -120,22 +156,28 @@ for file in list_of_files[0:10]:
         
         # calc gradient (dtheta_dp)
         # need to make it negative because pressure decreases with height
-        new_df_i['THTA_GRAD'] = - np.gradient(new_df_i['THTA'], new_df_i['PRES'])
+        new_df_i['THTA_GRAD_INTERP'] = - np.gradient(new_df_i['THTA'], new_df_i['PRES'])
+        new_df_i['MEAN_GRAD_INTERP'] = np.mean(new_df_i['THTA_GRAD_INTERP'][new_df_i['PRES'] >= top_pres])
+
+        
 
 
-
-        # calc gradients of sounding data
-        df['THTA_GRAD'] = np.gradient(df['THTA'], df['PRES'])
-        #df['THTA'][df['PRES'] > 850], df['HGHT'][df['PRES'] > 850]
-
-        # create column for stability class
-        # 0.005 should be about a 0.5 deg C change in temp from 1000mb to 925mb
-        stability_conditions = [
-            new_df_i['THTA_GRAD'][0] >= 0.005,
-            (new_df_i['THTA_GRAD'][0] < 0.005) & (new_df_i['THTA_GRAD'][0] > -0.005),
-            new_df_i['THTA_GRAD'][0] <= -0.005]
-        stability_choices = [1, 0, -1]  #['stable', 'neutral', 'unstable']
+        # set column in new_df_i
         new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
+        new_df_i['MEAN_GRAD_BELOW_'+str(top_pres)] = mean_grad_i  # mean gradient below 850mb (top_pres), not interpolated
+
+
+        # # don't need this (section below) anymore because calculate stability for
+        # # just the initial sounding data by calculating the mean of data under 850mb
+
+        # # create column for stability class
+        # # 0.005 should be about a 0.5 deg C change in temp from 1000mb to 925mb
+        # stability_conditions = [
+        #     new_df_i['THTA_GRAD'][0] >= 0.005,
+        #     (new_df_i['THTA_GRAD'][0] < 0.005) & (new_df_i['THTA_GRAD'][0] > -0.005),
+        #     new_df_i['THTA_GRAD'][0] <= -0.005]
+        # stability_choices = [1, 0, -1]  #['stable', 'neutral', 'unstable']
+        # new_df_i['STABILITY'] = np.select(stability_conditions, stability_choices)
 
         # column for day / night (Time Of Day)
         tod_conditions = [
@@ -145,10 +187,21 @@ for file in list_of_files[0:10]:
         new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
         
         print(new_df_i)
+        #ax.plot(new_df_i['THTA'], new_df_i['PRES'], '.-', label = date_i)
+        
 
     else: 
         print(date_i,'sounding dataframe is empty... skipping this date/time.')
     
+
+# ax.set_ylabel('Pressure (mb)')
+# ax.set_xlabel('Theta (K)')
+# # ax2.set_ylabel('Pressure')
+# # ax2.set_xlabel('Wind speed')
+# plt.legend()
+# ax.invert_yaxis()
+# ax.set_title('Sounding data')
+# plt.show()
 
 # # test np where
 # #new_df_i['test_npwhere'] = np.where(new_df_i['THTA_GRAD'][0] >= 0.005, 'stable', 'other')
