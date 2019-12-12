@@ -17,6 +17,7 @@ import seaborn as sns
 import pickle
 
 
+
 #data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
 #fig_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/figures/'
 
@@ -48,6 +49,7 @@ def get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_lim
     top_pres: the pressure below which I want to get the data
 
     stability_limit: what the cutoff is (in K/mb) to determine stability
+
        
     Returns
     -------
@@ -63,7 +65,8 @@ def get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_lim
     
 
     """
-    
+
+
     run_date = dt.datetime.now().strftime('%y%m%d')
 
     # params / constants
@@ -78,9 +81,12 @@ def get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_lim
     for file in list_of_files:
         df = pd.read_csv(file, index_col= 'Unnamed: 0')
         date_i = os.path.basename(file)[0:len_date]
+
         if df.shape[0] > 0:
             # PLOT
             ax.plot(df['THTA'][df['PRES'] > top_pres], df['PRES'][df['PRES'] > top_pres], '.-', label = date_i)
+
+            df['COMP_DATE']= date_i
 
             # get gradient for stability classes:
             df['THTA_GRAD'] = np.gradient(df['THTA'], df['PRES'])
@@ -192,9 +198,13 @@ def get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_lim
             tod_choices = [0, 12]  #['night', 'day']
             new_df_i['TOD'] = np.select(tod_conditions, tod_choices)
         
+            new_df_i['COMP_DATE']= date_i
+            
             print(new_df_i)
             ax.plot(new_df_i['THTA'][new_df_i['PRES']>=850], new_df_i['PRES'][new_df_i['PRES']>=850], '.-', label = date_i)
 
+
+            
             new_df_all = new_df_all.append(new_df_i)
             print('Adding data for ', date_i)
             print(new_df_all.shape)
@@ -249,11 +259,13 @@ def get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_lim
     # plt.title("title")
     # plt.savefig(fig_dir+'sns_grad_hist_below_850mb_'+run_date+'run.png')
 
-    j = sns.distplot(sonde_stabilty_classes)
-    #j.annotate(stats.pearsonr)
-    j.fig.set_size_inches(8,8)
-    j.fig.suptitle('Stability class')
-    j.savefig(fig_dir+'sns_stab_hist_below_850mb_'+run_date+'run.png')
+
+    # sns.set(rc={'figure.figsize':(11.7,8.27)})
+    # j = sns.distplot(sonde_stabilty_classes)
+    # #j.annotate(stats.pearsonr)
+    # j.fig.set_size_inches(8,8)
+    # j.fig.suptitle('Stability class')
+    # j.savefig(fig_dir+'sns_stab_hist_below_850mb_'+run_date+'run.png')
 
 
     return
