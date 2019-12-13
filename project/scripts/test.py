@@ -41,3 +41,42 @@ stability_limit = 0.005 # what the cutoff is K/mb
 
 get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_limit)
 
+
+### Open a pickle file
+import pickle
+
+fn1 = 'df_of_all_sondes_interp.pkl'
+fn2 = 'df_of_all_sondes_orig.pkl'
+
+pkl_file = open(data_dir+fn1, 'rb') # open a file, where you stored the pickled data
+interp_snds = pickle.load(pkl_file) # dump information to that file
+pkl_file.close() # close the file
+
+pkl_file = open(data_dir+fn2, 'rb') 
+orig_snds = pickle.load(pkl_file) 
+pkl_file.close() 
+
+
+import pandas as pd
+
+snds_sm_dates = pd.DataFrame() # data frame of dates that over lap with naefs data
+
+for i in range(len(interp_snds)):
+    if int(interp_snds['COMP_DATE'].iloc[i]) in dates_to_use:
+        print(i)
+        print('yes')
+        print(interp_snds['COMP_DATE'].iloc[i])
+        # if the date is in, add line to new dataframe
+        snds_sm_dates = snds_sm_dates.append(interp_snds.iloc[i])
+    else:
+        pass
+
+# now I have a dataframe with all the same dates as in the naefs files
+
+
+snds_sm_dates.mean()
+
+
+
+# then get naefs as well
+
