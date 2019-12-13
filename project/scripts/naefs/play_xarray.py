@@ -63,15 +63,24 @@ CT_press = ds_pres.sel(latitude=CT_lat, longitude=CT_lon)
 #### import make_thetav function
 
 ## Theta v xarray
-TV_CT = make_theta()
+#TV_CT = make_theta()
 
+# select certain dates from naefs data...
+time_average = CT_temp.mean('time')
+
+
+## calculate theta
+p0=1.e5
+Rd=287.  #J/kg/K
+cpd=1004.  #J/kg/K
+CT_theta=CT_temp.variables.values*(p0/CT_press**(Rd/cpd))
 
 for i, key in enumerate(CT_temp):
     # print(key)
     # print(press[i])
     # print(CT.variables[key].values)
     #### then we can do a calculation and get it working
-    test = CT_temp.variables[key].values *press[i]
+    test = CT_temp.variables[key].values*(p0/CT_press**(Rd/cpd))
     print(test)
 
 ### need to edit this to work with my xarray
