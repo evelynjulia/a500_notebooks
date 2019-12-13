@@ -3,12 +3,13 @@
 # jupyter:
 #   jupytext:
 #     cell_metadata_filter: all
+#     cell_metadata_json: true
 #     notebook_metadata_filter: all,-language_info
 #     text_representation:
 #       extension: .py
 #       format_name: percent
-#       format_version: '1.2'
-#       jupytext_version: 1.2.4
+#       format_version: '1.3'
+#       jupytext_version: 1.3.0
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -75,8 +76,8 @@ import pandas as pd
 
 
 # %%
-#file = 'cmc_gec00.t00z.pgrb2f012_BC.nc'
-file = 'ncep_gec00.t00z.pgrb2f000_SA.nc'
+file = 'cmc_gec00.t00z.pgrb2f012_BC.nc'
+#file = 'ncep_gec00.t00z.pgrb2f000_SA.nc'
 
 # %%
 data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'

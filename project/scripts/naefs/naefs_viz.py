@@ -7,8 +7,8 @@
 #     text_representation:
 #       extension: .py
 #       format_name: percent
-#       format_version: '1.2'
-#       jupytext_version: 1.2.4
+#       format_version: '1.3'
+#       jupytext_version: 1.3.0
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -72,11 +72,12 @@ cmap=matplotlib.cm.get_cmap('viridis')
 from netCDF4 import num2date, date2num
 
 # %%
-#file = 'cmc_gec00.t00z.pgrb2f012_BC.nc'
-file = 'ncep_gec00.t00z.pgrb2f000_SA.nc'
+file = 'cmc_gec00.t00z.pgrb2f012_BC.nc'
+#file = 'ncep_gec00.t00z.pgrb2f000_SA.nc'
 
 # %%
-data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
+#data_dir = '/Volumes/GoogleDrive/My Drive/Eve/courses/a500_notebooks_g/project/data/naefs/'
+data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/'
 date='2016050900/'
 # +
 with Dataset(data_dir+file) as input:
@@ -172,7 +173,7 @@ van_lon,van_lat = [-123.1207,49.2827]
 van_x,van_y=proj.transform_point(van_lon,van_lat,proj)
 print(van_x, van_y);
 
-ax.plot(van_x,van_y,'ro',markersize=4);
+#ax.plot(van_x,van_y,'ro',markersize=4);
 
 
 
@@ -287,7 +288,7 @@ ax.set_ylabel('pressure (hPa)')
 ax.set_xlabel('Temp (K)')
 ax.invert_yaxis();
 ax.set_ylim(1100,750);
-ax.set_title(f'Temp profile for location on {dt.strftime(date_of_run,"%d-%m-%Y")}');
+ax.set_title(f'NAEFS forecast: temp profile for Cape Town on {dt.strftime(date_of_run,"%d-%m-%Y")}');
 
 # %%
 
