@@ -74,9 +74,10 @@ for i in range(len(interp_snds)):
 # now I have a dataframe with all the same dates as in the naefs files
 
 
-snds_sm_dates.mean()
+snds_sm_dates.mean(('COMP_DATE'))
 
-
+# get the mean grouping by date and then pressure?
+pd.groupby(snds_sm_dates,'COMP_DATE') #???
 
 # then get naefs as well
 
