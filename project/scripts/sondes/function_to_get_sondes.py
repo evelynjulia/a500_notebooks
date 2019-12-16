@@ -98,7 +98,8 @@ def get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_lim
                 df['THTA_GRAD'][0] >= stability_limit,
                 (df['THTA_GRAD'][0] < stability_limit) & (df['THTA_GRAD'][0] > -stability_limit),
                 df['THTA_GRAD'][0] <= -stability_limit]
-            stability_choices = [-1, 0, 1]  #['unstable', 'neutral', 'stable']
+            #stability_choices = [-1, 0, 1]  #['unstable', 'neutral', 'stable']
+            stability_choices = ['unstable', 'neutral', 'stable']  #['unstable', 'neutral', 'stable']
             df['STABILITY'] = np.select(stability_conditions, stability_choices)
 
             print(df)
@@ -158,7 +159,8 @@ def get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_lim
                 df['MEAN_GRAD'][0] >= stability_limit,
                 (df['MEAN_GRAD'][0] < stability_limit) & (df['MEAN_GRAD'][0] > -stability_limit),
                 df['MEAN_GRAD'][0] <= -stability_limit]
-            stability_choices = [-1, 0, 1]  #['unstable', 'neutral', 'stable']
+            #stability_choices = [-1, 0, 1]  #['unstable', 'neutral', 'stable']
+            stability_choices = ['unstable', 'neutral', 'stable']  #['unstable', 'neutral', 'stable']
         
             # get interpolations for new columns
             thta_intp = interpolate.interp1d(df['PRES'].values, df['THTA'].values)
