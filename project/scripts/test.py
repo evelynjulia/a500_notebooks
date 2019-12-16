@@ -37,7 +37,7 @@ fig_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/figures/'
 list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv'))
 
 top_pres = 850
-stability_limit = 0.005 # what the cutoff is K/mb
+stability_limit = 0.01 # what the cutoff is K/mb
 
 get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_limit)
 
@@ -71,13 +71,55 @@ for i in range(len(interp_snds)):
     else:
         pass
 
+
+
 # now I have a dataframe with all the same dates as in the naefs files
 
 
-snds_sm_dates.mean(('COMP_DATE'))
+#snds_sm_dates.mean(('COMP_DATE'))
 
 # get the mean grouping by date and then pressure?
-pd.groupby(snds_sm_dates,'COMP_DATE') #???
+#grouped = snds_sm_dates.groupby('COMP_DATE') #???
+#grouped.first() # prints the first of each column
+
+import matplotlib.pyplot as plt
+import numpy as np
+import datetime as dt
+
+
+
+keys = np.array(snds_sm_dates.groupby('COMP_DATE').first().groupby('STABILITY').count()['DATE'].keys())
+vals = snds_sm_dates.groupby('COMP_DATE').first().groupby('STABILITY').count()['DATE'].values
+
+
+run_date = dt.datetime.now().strftime('%y%m%d')
+
+fig, ax = plt.subplots(1,2, figsize=(15,9))
+ax[0].bar(keys, vals)
+ax[0].set_ylabel('Count')
+ax[0].set_xlabel('Stability class')
+ax[1].hist(snds_sm_dates.groupby('COMP_DATE').first()['MEAN_GRAD_BELOW_850'],50)
+ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
+#plt.title('Number of cases in each stability class')
+plt.savefig(fig_dir+'bar_stab_classes_and_grad'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
+
+fig, ax = plt.subplots(figsize=(15,9))
+ax.bar(keys, vals)
+ax.set_ylabel('Count')
+ax.set_xlabel('Stability class')
+ax.set_title('Histogram of theta gradients')
+plt.savefig(fig_dir+'grads_hist'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
+
+
+# grouped by stability class
+gbs =  snds_sm_dates.groupby('STABILITY') 
+
+gbs.groups.keys()
 
 # then get naefs as well
-
