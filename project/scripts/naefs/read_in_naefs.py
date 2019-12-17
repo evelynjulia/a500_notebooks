@@ -35,7 +35,7 @@ naefs_files = "2016*/*SA.nc"
 sonde_data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
 sonde_files = "*.csv"
 dates_to_use = get_overlap_dates(naefs_dir= naefs_data_dir, naefs_files= naefs_files, sonde_dir = sonde_data_dir, sonde_files = sonde_files)
-pprint.pprint(sorted(dates_to_use))
+#pprint.pprint(sorted(dates_to_use))
 
 
 ########################################################################
@@ -68,13 +68,13 @@ print("latitude and longitude indices")
 print(lat_ind, lon_ind)
 
 
-hgt85, date, tmp850, tmp925, tmp1000 = [], [], [], [], []
+hgt850, hgt925, hgt1000, date, tmp850, tmp925, tmp1000 = [], [], [], [], [], [], []
+rh1000, rh925, rh850, vvel1000 = [],[],[],[]
 for file in sorted(list_of_files):
     print(os.path.basename(file)) # get the actual file name
     eves_file = Dataset(file,'r') 
     #print(eves_file.variables.keys())
     
-
     # get the date
     time=eves_file.variables['time'][...]
 
@@ -85,40 +85,63 @@ for file in sorted(list_of_files):
 
     if int(date_i) in dates_to_use:
         print(date_i, 'in dates to use')
+        date.append(date_i)
 
         # get other variables
         #hgt85_i = np.array(eves_file.variables['HGT_850mb'][0,...])[lat_ind, lon_ind] # to get data for CT
-        hgt85_i = float(eves_file.variables['HGT_850mb'][0,...][lat_ind, lon_ind]) # to get data for CT
-        tmp1000_i = float(eves_file.variables['TMP_1000mb'][timestep,...][lat_ind, lon_ind])
-        tmp925_i = float(eves_file.variables['TMP_925mb'][timestep,...][lat_ind, lon_ind])
-        tmp850_i = float(eves_file.variables['TMP_850mb'][timestep,...][lat_ind, lon_ind])
-
-        hgt85.append(hgt85_i)
-        date.append(date_i)
+        hgt850_i = float(eves_file.variables['HGT_850mb'][0,...][lat_ind, lon_ind]) # to get data for CT
+        hgt925_i = float(eves_file.variables['HGT_925mb'][0,...][lat_ind, lon_ind])
+        hgt1000_i = float(eves_file.variables['HGT_1000mb'][0,...][lat_ind, lon_ind])
+        tmp1000_i = float(eves_file.variables['TMP_1000mb'][0,...][lat_ind, lon_ind])
+        tmp925_i = float(eves_file.variables['TMP_925mb'][0,...][lat_ind, lon_ind])
+        tmp850_i = float(eves_file.variables['TMP_850mb'][0,...][lat_ind, lon_ind])
+        rh1000_i = float(eves_file.variables['RH_1000mb'][0,...][lat_ind, lon_ind])
+        rh925_i = float(eves_file.variables['RH_925mb'][0,...][lat_ind, lon_ind])
+        rh850_i = float(eves_file.variables['RH_850mb'][0,...][lat_ind, lon_ind])
+        vvel1000_i = float(eves_file.variables['VVEL_1000mb'][0,...][lat_ind, lon_ind])
+        
+        hgt850.append(hgt850_i)
+        hgt925.append(hgt925_i)
+        hgt1000.append(hgt1000_i)
         tmp1000.append(tmp1000_i)
         tmp925.append(tmp925_i)
         tmp850.append(tmp850_i)
+        rh1000.append(rh1000_i)
+        rh925.append(rh925_i)
+        rh850.append(rh850_i)
+        vvel1000.append(vvel1000_i)
 
     else:
         pass
 
-    #hgt85_i = np.array(eves_file.variables['HGT_850mb'][0,...])
+
+
+
 
 all_naefs_data = pd.DataFrame()
 all_naefs_data['COMP_DATE'] = date
-all_naefs_data['HGT850'] = hgt85
+all_naefs_data['HGT850'] = hgt850
+all_naefs_data['HGT925'] = hgt925
+all_naefs_data['HGT1000'] = hgt1000
 all_naefs_data['TMP1000'] = tmp1000
 all_naefs_data['TMP925'] = tmp925
 all_naefs_data['TMP850'] = tmp850
+all_naefs_data['RH1000'] = rh1000
+all_naefs_data['RH925'] = rh925
+all_naefs_data['RH850'] = rh850
+all_naefs_data['VVEL1000'] = vvel1000
 
 
 ########################################################################
 ######################## to pandas dataframe ########################
 ########################################################################
 
-naefs_df_hgt85 = pd.DataFrame(all_hgt85.T, columns = all_dates)
 
-
-file = open(data_dir+'naefs_df_hgt85.pkl', 'wb') # open a file, where you ant to store the data
-pickle.dump(naefs_df_hgt85, file) # dump information to that file
+file = open(data_dir+'all_naefs_df.pkl', 'wb') # open a file, where you ant to store the data
+pickle.dump(all_naefs_data, file) # dump information to that file
 file.close() # close the file
+
+# naefs_df_hgt85 = pd.DataFrame(all_hgt85.T, columns = all_dates)
+# file = open(data_dir+'naefs_df_hgt85.pkl', 'wb') # open a file, where you ant to store the data
+# pickle.dump(naefs_df_hgt85, file) # dump information to that file
+# file.close() # close the file
