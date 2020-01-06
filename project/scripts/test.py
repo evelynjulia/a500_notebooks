@@ -37,7 +37,7 @@ fig_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/figures/'
 list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv'))
 
 top_pres = 850
-stability_limit = 0.01 # what the cutoff is K/mb
+stability_limit = 0.005 # what the cutoff is K/mb
 
 get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_limit)
 
@@ -104,17 +104,10 @@ ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
 plt.savefig(fig_dir+'bar_stab_classes_and_grad'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
+#### 
+# now plot sondes for the right data
 
-
-fig, ax = plt.subplots(figsize=(15,9))
-ax.bar(keys, vals)
-ax.set_ylabel('Count')
-ax.set_xlabel('Stability class')
-ax.set_title('Histogram of theta gradients')
-plt.savefig(fig_dir+'grads_hist'+run_date+'run_stablim'+str(stability_limit)+'.png')
-
-
-
+# get means for different classes
 
 
 # grouped by stability class
@@ -122,4 +115,47 @@ gbs =  snds_sm_dates.groupby('STABILITY')
 
 gbs.groups.keys()
 
+# sonde data to use where the pressure values are only for 850, 925 and 1000
+sonde_data_tu = snds_sm_dates[snds_sm_dates['PRES']>=850]
+
+# get some averages
+day_lev_av = sonde_data_tu.groupby(['STABILITY','PRES','COMP_DATE'])['THTA'].mean()
+
+# averages over all dates
+stab_lev_av = sonde_data_tu.groupby(['STABILITY','PRES'])['THTA'].mean()
+stab_lev_TOD_av = sonde_data_tu.groupby(['STABILITY','PRES','TOD'])['THTA'].mean()
+
+lev_TOD_av = sonde_data_tu.groupby(['PRES','TOD'])['THTA'].mean()
+
+stab = ['Neutral', 'Stable', 'Unstable']
+Pres = [850,925, 1000]
+tod = ['00', '12']
+
+fig, ax = plt.subplots(1,1, figsize=(15,9))
+ax.plot(stab_lev_av.unstack().iloc[0], Pres)
+ax.plot(stab_lev_av.unstack().iloc[1], Pres)
+ax.plot(stab_lev_av.unstack().iloc[2], Pres)
+ax.set_ylabel('Pressure')
+ax.set_xlabel('Theta')
+ax.invert_yaxis()
+plt.legend(stab)
+plt.title('Mean theta by stability class')
+plt.savefig(fig_dir+'mean_stab_class_sonde'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+fig, ax = plt.subplots(1,1, figsize=(15,9))
+ax.plot(lev_TOD_av.unstack().T.iloc[0], Pres)
+ax.plot(lev_TOD_av.unstack().T.iloc[1], Pres)
+ax.set_ylabel('Pressure')
+ax.set_xlabel('Theta')
+ax.invert_yaxis()
+plt.legend(tod)
+plt.title('Mean theta by time of sounding')
+plt.savefig(fig_dir+'mean_TOD_sonde'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
+
+
+
 # then get naefs as well
+
