@@ -364,14 +364,17 @@ plt.show()
 df1_s
 df2_n
 
-# model error:  (for all levels)
+# model error:
+
+# MAE: 
 MAE_thta_all_levs = sum( np.abs(df1_s['THTA'] - df2_n['THTA']) ) / (len(df1_s['THTA']))
-# 6.5473684210526315 (degrees C) all levels
 MAE_thta_1000 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==1000] - df2_n['THTA'][df1_s['PRES']==1000]) ) / (len(df1_s['THTA'][df1_s['PRES']==1000]))
-# 1000 = 1.3894736842105264
 MAE_thta_925 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==925] - df2_n['THTA'][df1_s['PRES']==925]) ) / (len(df1_s['THTA'][df1_s['PRES']==925]))
-# 925 = 5.7368421052631575
 MAE_thta_850 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==850] - df2_n['THTA'][df1_s['PRES']==850]) ) / (len(df1_s['THTA'][df1_s['PRES']==850]))
+
+# 6.5473684210526315 (degrees C) all levels
+# 1000 = 1.3894736842105264
+#  925 = 5.7368421052631575
 # 850 = 12.51578947368421
 
 MAPE_thta_all_levs = ( sum( np.abs( (df1_s['THTA'] - df2_n['THTA']) / df1_s['THTA'] ) ) / (len(df1_s['THTA'])) )*100
@@ -379,7 +382,7 @@ MAPE_thta_1000 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==1000] - df2_n['THT
 MAPE_thta_925 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==925] - df2_n['THTA'][df1_s['PRES']==925]) / df1_s['THTA'][df1_s['PRES']==925] ) ) / (len(df1_s['THTA'][df1_s['PRES']==925])) )*100
 MAPE_thta_850 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==850] - df2_n['THTA'][df1_s['PRES']==850]) / df1_s['THTA'][df1_s['PRES']==850] ) ) / (len(df1_s['THTA'][df1_s['PRES']==850])) )*100
 
-### MAPE
+### MAPE (%)
 # all levs: 2.226939155093236
 # 1000 = 0.48386672774818307
 # 925 = 1.9622621853483255
