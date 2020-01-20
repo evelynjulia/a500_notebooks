@@ -236,3 +236,29 @@ new_naefs_df_tu['STABILITY'] = np.select(stability_conditions, stability_choices
 new_naefs_df_tu['TOD'] = new_naefs_df_tu['COMP_DATE'].str[-2:]
 
 new_naefs_df_tu
+
+
+
+##############
+# now make the sonde df exactly the same as the naefs one:
+df1_s = pd.DataFrame()
+df1_s['COMP_DATE'] = sonde_data_tu['COMP_DATE']
+df1_s['AV_GRAD'] = sonde_data_tu['THTA_GRAD_INTERP']
+df1_s['PRES'] = sonde_data_tu['PRES']
+df1_s['THTA'] = sonde_data_tu['THTA']
+df1_s['STABILITY'] = sonde_data_tu['STABILITY']
+df1_s['TOD'] = sonde_data_tu['TOD']
+
+df2_n = new_naefs_df_tu.copy()
+df2_n['THTA'] = df2_n['THTA'].round()
+
+df1_s
+df2_n
+
+# sort by date and then pressure so that they're in the same order... 
+df1_s = df1_s.sort_values(by=['COMP_DATE', 'PRES'])
+df2_n = df2_n.sort_values(by=['COMP_DATE', 'PRES'])
+
+
+# and then can check they're the same by 
+df1_s['COMP_DATE'] - df2_n['COMP_DATE']
