@@ -79,7 +79,7 @@ for i in range(len(interp_snds)):
         print('yes')
         print(interp_snds['COMP_DATE'].iloc[i])
         # if the date is in, add line to new dataframe
-        snds_sm_dates = snds_sm_dates.append(interp_snds.iloc[i])
+        #snds_sm_dates = snds_sm_dates.append(interp_snds.iloc[i])
     else:
         pass
 
@@ -259,6 +259,153 @@ df2_n
 df1_s = df1_s.sort_values(by=['COMP_DATE', 'PRES'])
 df2_n = df2_n.sort_values(by=['COMP_DATE', 'PRES'])
 
+df1_s = df1_s.reset_index(drop=True)
+df2_n = df2_n.reset_index(drop=True)
 
 # and then can check they're the same by 
-df1_s['COMP_DATE'] - df2_n['COMP_DATE']
+test = (df1_s['COMP_DATE'].astype(float) - df2_n['COMP_DATE'].astype(float))[:]
+
+for ind, line in enumerate(test):
+    print(ind, line)
+
+
+# sondes data is missing 2016083100
+# easy fix is to remove that date from naefs
+### 192 
+# np.where(df2_n['COMP_DATE']==str(2016081300)))
+# df1_s['COMP_DATE'][190:200]
+
+# df2_n['COMP_DATE'][190:200]
+
+
+
+
+#### so the sonds df (df1_s) is the right size maybe?
+
+df2_n = df2_n.drop([192, 193, 194])
+
+
+df1_s = df1_s.reset_index(drop=True)
+df2_n = df2_n.reset_index(drop=True)
+
+
+df1_s
+df2_n
+
+
+# and then can check they're the same by 
+test = (df1_s['COMP_DATE'].astype(float) - df2_n['COMP_DATE'].astype(float))[:]
+sum(test) # if this gives me 0 then my dataframes are the same and I can compare my naefs data to my sonde data
+
+
+
+######
+
+sonde_stability_level_av_thta = df1_s.groupby(['STABILITY','PRES'])['THTA'].mean()
+#sonde_stability_level_TOD_av_thta = df1_s.groupby(['STABILITY','PRES','TOD'])['THTA'].mean()
+naefs_stability_level_av_thta = df2_n.groupby(['STABILITY','PRES'])['THTA'].mean()
+#naefs_stability_level_TOD_av_thta = df2_n.groupby(['STABILITY','PRES','TOD'])['THTA'].mean()
+
+sonde_lev_TOD_av = df1_s.groupby(['PRES','TOD'])['THTA'].mean()
+naefs_lev_TOD_av = df2_n.groupby(['PRES','TOD'])['THTA'].mean()
+
+stab = ['Stable', 'Unstable', 'Neutral']
+Pres = [850,925, 1000]
+tod = ['00', '12']
+
+fig, ax = plt.subplots(2,1, figsize=(15,9))
+#plt.title('Mean theta by stability class')
+ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[0], Pres)
+ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[1], Pres)
+ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[2], Pres)
+ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[0], Pres)
+ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[1], Pres)
+ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[2], Pres)
+ax[0].set_title('SONDES')
+ax[1].set_title('NAEFS')
+ax[0].set_xlim(280,300)
+ax[1].set_xlim(280,300)
+ax[0].set_ylabel('Pressure')
+#ax[0].set_xlabel('Theta')
+ax[1].set_ylabel('Pressure')
+ax[1].set_xlabel('Theta')
+ax[0].invert_yaxis()
+ax[1].invert_yaxis()
+plt.legend(stab)
+#plt.show()
+plt.savefig(fig_dir+'Comparison_average_theta_by_stab_class'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
+fig, ax = plt.subplots(2,1, figsize=(15,9))
+ax[0].plot(sonde_lev_TOD_av.unstack().T.iloc[0], Pres)
+ax[0].plot(sonde_lev_TOD_av.unstack().T.iloc[1], Pres)
+ax[1].plot(naefs_lev_TOD_av.unstack().T.iloc[0], Pres)
+ax[1].plot(naefs_lev_TOD_av.unstack().T.iloc[1], Pres)
+ax[0].set_title('SONDES')
+ax[1].set_title('NAEFS')
+ax[0].set_ylabel('Pressure')
+ax[0].set_xlim(280,300)
+ax[1].set_xlim(280,300)
+#ax[0].set_xlabel('Theta')
+ax[0].invert_yaxis()
+ax[1].invert_yaxis()
+ax[1].set_ylabel('Pressure')
+ax[1].set_xlabel('Theta')
+plt.legend(tod)
+#plt.title('Mean theta by time of sounding')
+plt.show()
+#plt.savefig(fig_dir+'mean_TOD_sonde'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
+#####################################################
+
+df1_s
+df2_n
+
+# model error:  (for all levels)
+MAE_thta_all_levs = sum( np.abs(df1_s['THTA'] - df2_n['THTA']) ) / (len(df1_s['THTA']))
+# 6.5473684210526315 (degrees C) all levels
+MAE_thta_1000 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==1000] - df2_n['THTA'][df1_s['PRES']==1000]) ) / (len(df1_s['THTA'][df1_s['PRES']==1000]))
+# 1000 = 1.3894736842105264
+MAE_thta_925 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==925] - df2_n['THTA'][df1_s['PRES']==925]) ) / (len(df1_s['THTA'][df1_s['PRES']==925]))
+# 925 = 5.7368421052631575
+MAE_thta_850 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==850] - df2_n['THTA'][df1_s['PRES']==850]) ) / (len(df1_s['THTA'][df1_s['PRES']==850]))
+# 850 = 12.51578947368421
+
+MAPE_thta_all_levs = ( sum( np.abs( (df1_s['THTA'] - df2_n['THTA']) / df1_s['THTA'] ) ) / (len(df1_s['THTA'])) )*100
+MAPE_thta_1000 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==1000] - df2_n['THTA'][df1_s['PRES']==1000]) / df1_s['THTA'][df1_s['PRES']==1000] ) ) / (len(df1_s['THTA'][df1_s['PRES']==1000])) )*100
+MAPE_thta_925 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==925] - df2_n['THTA'][df1_s['PRES']==925]) / df1_s['THTA'][df1_s['PRES']==925] ) ) / (len(df1_s['THTA'][df1_s['PRES']==925])) )*100
+MAPE_thta_850 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==850] - df2_n['THTA'][df1_s['PRES']==850]) / df1_s['THTA'][df1_s['PRES']==850] ) ) / (len(df1_s['THTA'][df1_s['PRES']==850])) )*100
+
+### MAPE
+# all levs: 2.226939155093236
+# 1000 = 0.48386672774818307
+# 925 = 1.9622621853483255
+# 850 = 4.234688552183197
+
+
+#####################################################
+# MORE PLOTS --> histograms
+
+df1_stability_keys = np.array(df1_s.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].keys())
+df1_stability_vals = df1_s.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].values
+
+df2_stability_keys = np.array(df2_n.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].keys())
+df2_stability_vals = df2_n.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].values
+
+
+
+fig, ax = plt.subplots(1,2, figsize=(15,9))
+ax[0].bar(df1_stability_keys, df1_stability_vals)
+ax[0].set_ylabel('Count')
+ax[0].set_xlabel('Stability class')
+ax[1].bar(df2_stability_keys, df2_stability_vals)
+ax[1].set_ylabel('Count')
+ax[1].set_xlabel('Stability class')
+#ax[1].hist(snds_sm_dates.groupby('COMP_DATE').first()['MEAN_GRAD_BELOW_850'],50)
+#ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
+#plt.title('Number of cases in each stability class')
+plt.show()
+#plt.savefig(fig_dir+'bar_stab_classes_and_grad'+run_date+'run_stablim'+str(stability_limit)+'.png')
