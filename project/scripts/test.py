@@ -55,7 +55,7 @@ get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_limit)
 
 
 ### Open a pickle file
-
+# read in sonds data
 
 fn1 = 'df_of_all_sondes_interp.pkl'
 fn2 = 'df_of_all_sondes_orig.pkl'
@@ -79,7 +79,7 @@ for i in range(len(interp_snds)):
         print('yes')
         print(interp_snds['COMP_DATE'].iloc[i])
         # if the date is in, add line to new dataframe
-        #snds_sm_dates = snds_sm_dates.append(interp_snds.iloc[i])
+        snds_sm_dates = snds_sm_dates.append(interp_snds.iloc[i])
     else:
         pass
 
@@ -114,7 +114,7 @@ ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
 plt.savefig(fig_dir+'bar_stab_classes_and_grad'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
-#### 
+#######################################################################
 # now plot sondes for the right data
 
 # get means for different classes
@@ -166,7 +166,8 @@ plt.savefig(fig_dir+'mean_TOD_sonde'+run_date+'run_stablim'+str(stability_limit)
 
 
 
-
+###################################################################
+# NAEFS
 
 # then get naefs as well
 
@@ -239,7 +240,7 @@ new_naefs_df_tu
 
 
 
-##############
+###################################################################
 # now make the sonde df exactly the same as the naefs one:
 df1_s = pd.DataFrame()
 df1_s['COMP_DATE'] = sonde_data_tu['COMP_DATE']
@@ -261,6 +262,9 @@ df2_n = df2_n.sort_values(by=['COMP_DATE', 'PRES'])
 
 df1_s = df1_s.reset_index(drop=True)
 df2_n = df2_n.reset_index(drop=True)
+
+#####################################################
+# check that the dataframes are the same
 
 # and then can check they're the same by 
 test = (df1_s['COMP_DATE'].astype(float) - df2_n['COMP_DATE'].astype(float))[:]
@@ -299,7 +303,8 @@ sum(test) # if this gives me 0 then my dataframes are the same and I can compare
 
 
 
-######
+###########################################################
+# plot comparisons of average theta
 
 sonde_stability_level_av_thta = df1_s.groupby(['STABILITY','PRES'])['THTA'].mean()
 #sonde_stability_level_TOD_av_thta = df1_s.groupby(['STABILITY','PRES','TOD'])['THTA'].mean()
@@ -354,8 +359,8 @@ ax[1].set_ylabel('Pressure')
 ax[1].set_xlabel('Theta')
 plt.legend(tod)
 #plt.title('Mean theta by time of sounding')
-plt.show()
-#plt.savefig(fig_dir+'mean_TOD_sonde'+run_date+'run_stablim'+str(stability_limit)+'.png')
+#plt.show()
+plt.savefig(fig_dir+'Comparison_average_theta_by_TOD'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
 
@@ -412,3 +417,22 @@ ax[1].set_xlabel('Stability class')
 #plt.title('Number of cases in each stability class')
 plt.show()
 #plt.savefig(fig_dir+'bar_stab_classes_and_grad'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
+
+
+
+
+
+#### trying to recalculate the sonde gradients (the same way I calculated the naefs ones)
+
+ptable = (df1_s.pivot(index = 'COMP_DATE', columns= 'PRES', values='THTA'))
+test2 = (ptable[1000]-ptable[850])/150
+plt.hist(test2)
+plt.show()
+#naefs_df_tu['AV_GRAD'] = (naefs_df_tu['THTA1000'] - naefs_df_tu['THTA850'])/150
+
+
+
+
