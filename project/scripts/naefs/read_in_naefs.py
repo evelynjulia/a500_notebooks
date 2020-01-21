@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 # Eve Wicksteed
 #
 # 22 November 2019
-
+import context
 import glob
 from netCDF4 import Dataset
 import numpy as np
@@ -10,9 +12,11 @@ from a500.utils import ncdump
 from netCDF4 import num2date, date2num
 import pandas as pd
 import os
-
+import sys
 import pickle
 
+
+#sys.path.append("/Users/catherinemathews/UBC/a500_notebooks/project/scripts")
 
 data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/'
 
@@ -26,8 +30,10 @@ list_of_files = glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/da
 #######################     Get dates to use     #######################
 ########################################################################
 
-from project.scripts.functions import get_full_date
-from project.scripts.functions import get_overlap_dates
+# from project.scripts.functions import get_full_date
+# from project.scripts.functions import get_overlap_dates
+from functions import get_full_date
+from functions import get_overlap_dates
 import pprint
 # import get_full_date(the_file)
 naefs_data_dir = "/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/"
