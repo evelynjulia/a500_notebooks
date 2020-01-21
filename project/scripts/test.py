@@ -9,7 +9,7 @@
 
 
 # test getting overlapping dates
-
+# %%
 from project.scripts.functions import get_full_date
 from project.scripts.functions import get_overlap_dates
 import pprint
@@ -26,7 +26,7 @@ import datetime as dt
 
 import pandas as pd
 
-
+# %%
 naefs_data_dir = "/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/"
 naefs_files = "2016*/*SA.nc"
 
@@ -36,8 +36,8 @@ sonde_files = "*.csv"
 dates_to_use = get_overlap_dates(naefs_dir= naefs_data_dir, naefs_files= naefs_files, sonde_dir = sonde_data_dir, sonde_files = sonde_files)
 
 
-pprint.pprint(sorted(dates_to_use))
-print(len(dates_to_use))
+# pprint.pprint(sorted(dates_to_use))
+# print(len(dates_to_use))
 
 
 # test function to get sondes and plot 
@@ -49,8 +49,10 @@ fig_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/figures/'
 list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv'))
 
 top_pres = 850
-stability_limit = 0.005 # what the cutoff is K/mb
+#stability_limit = 0.005 # what the cutoff is K/mb
+stability_limit = 0.067 # what the cutoff is K/mb
 
+# %%
 get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_limit)
 
 
@@ -193,7 +195,8 @@ naefs_df_tu['THTA1000'] = naefs_df_tu['TMP1000']*((p0/100000)**(Rd/cpd))
 naefs_df_tu['THTA925'] = naefs_df_tu['TMP925']*((p0/100000)**(Rd/cpd))
 naefs_df_tu['THTA850'] = naefs_df_tu['TMP850']*((p0/100000)**(Rd/cpd))
 
-naefs_df_tu['AV_GRAD'] = (naefs_df_tu['THTA1000'] - naefs_df_tu['THTA850'])/150
+#naefs_df_tu['AV_GRAD'] = (naefs_df_tu['THTA1000'] - naefs_df_tu['THTA850'])/150
+naefs_df_tu['AV_GRAD'] = ((naefs_df_tu['THTA1000'] - naefs_df_tu['THTA925'])/75 ) + ( (naefs_df_tu['THTA925'] - naefs_df_tu['THTA850'])/75 )
 
 
 naefs_day_means = naefs_df_tu.groupby(['COMP_DATE']).mean()
