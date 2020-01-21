@@ -437,5 +437,43 @@ plt.show()
 #naefs_df_tu['AV_GRAD'] = (naefs_df_tu['THTA1000'] - naefs_df_tu['THTA850'])/150
 
 
+##########################################################################################################
+
+df1_s
+df2_n
+
+pres = [850,925,1000]
+
+ptable_sondes = (df1_s.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'))
+ptable_naefs = (df2_n.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'))
+
+plt.plot(ptable_sondes, pres)
+plt.show()
+
+
+fig, ax = plt.subplots(2,1, figsize=(15,9))
+ax[0].plot(ptable_sondes, pres)
+ax[1].plot(ptable_naefs, pres)
+ax[0].set_title('SONDES')
+ax[1].set_title('NAEFS')
+ax[0].set_xlim(270,310)
+ax[1].set_xlim(270,310)
+# ax[0].set_ylabel('Pressure')
+# #ax[0].set_xlabel('Theta')
+# ax[1].set_ylabel('Pressure')
+# ax[1].set_xlabel('Theta')
+ax[0].invert_yaxis()
+ax[1].invert_yaxis()
+#plt.show()
+plt.savefig(fig_dir+'actual_data_model_v_obs'+run_date+'.png')
+
+
+
+
+
+
+
+
+
 
 
