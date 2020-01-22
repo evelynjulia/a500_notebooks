@@ -321,14 +321,17 @@ stab = ['Stable', 'Unstable', 'Neutral']
 Pres = [850,925, 1000]
 tod = ['00', '12']
 
+stab_sond_leg = ['Neutral', 'Stable', 'Unstable']
+stab_naefs_leg = ['Neutral', 'Unstable', 'Stable']
+
 fig, ax = plt.subplots(2,1, figsize=(15,9))
 #plt.title('Mean theta by stability class')
-ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[0], Pres)
-ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[1], Pres)
-ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[2], Pres)
-ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[0], Pres)
-ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[1], Pres)
-ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[2], Pres)
+ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[0], Pres, color='green')
+ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[1], Pres, color='orange')
+ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[2], Pres, color='blue')
+ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[0], Pres, color='green')
+ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[1], Pres, color='blue')
+ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[2], Pres, color='orange')
 ax[0].set_title('SONDES')
 ax[1].set_title('NAEFS')
 ax[0].set_xlim(277,300)
@@ -339,8 +342,8 @@ ax[1].set_ylabel('Pressure')
 ax[1].set_xlabel('Theta')
 ax[0].invert_yaxis()
 ax[1].invert_yaxis()
-ax[0].legend(stab)
-ax[1].legend(stab)
+ax[0].legend(stab_sond_leg)
+ax[1].legend(stab_naefs_leg)
 #plt.show()
 plt.savefig(fig_dir+'Comparison_average_theta_by_stab_class'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
