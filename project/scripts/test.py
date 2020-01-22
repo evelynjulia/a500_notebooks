@@ -254,7 +254,7 @@ df1_s['STABILITY'] = sonde_data_tu['STABILITY']
 df1_s['TOD'] = sonde_data_tu['TOD']
 
 df2_n = new_naefs_df_tu.copy()
-df2_n['THTA'] = df2_n['THTA'].round()
+#df2_n['THTA'] = df2_n['THTA'] #.round()
 
 df1_s
 df2_n
@@ -331,15 +331,16 @@ ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[1], Pres)
 ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[2], Pres)
 ax[0].set_title('SONDES')
 ax[1].set_title('NAEFS')
-ax[0].set_xlim(280,300)
-ax[1].set_xlim(280,300)
+ax[0].set_xlim(277,300)
+ax[1].set_xlim(277,300)
 ax[0].set_ylabel('Pressure')
 #ax[0].set_xlabel('Theta')
 ax[1].set_ylabel('Pressure')
 ax[1].set_xlabel('Theta')
 ax[0].invert_yaxis()
 ax[1].invert_yaxis()
-plt.legend(stab)
+ax[0].legend(stab)
+ax[1].legend(stab)
 #plt.show()
 plt.savefig(fig_dir+'Comparison_average_theta_by_stab_class'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
@@ -360,7 +361,8 @@ ax[0].invert_yaxis()
 ax[1].invert_yaxis()
 ax[1].set_ylabel('Pressure')
 ax[1].set_xlabel('Theta')
-plt.legend(tod)
+ax[1].legend(tod)
+ax[0].legend(tod)
 #plt.title('Mean theta by time of sounding')
 #plt.show()
 plt.savefig(fig_dir+'Comparison_average_theta_by_TOD'+run_date+'run_stablim'+str(stability_limit)+'.png')
@@ -380,10 +382,10 @@ MAE_thta_1000 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==1000] - df2_n['THTA'][d
 MAE_thta_925 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==925] - df2_n['THTA'][df1_s['PRES']==925]) ) / (len(df1_s['THTA'][df1_s['PRES']==925]))
 MAE_thta_850 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==850] - df2_n['THTA'][df1_s['PRES']==850]) ) / (len(df1_s['THTA'][df1_s['PRES']==850]))
 
-# 6.5473684210526315 (degrees C) all levels
-# 1000 = 1.3894736842105264
-#  925 = 5.7368421052631575
-# 850 = 12.51578947368421
+# 6.563158301637881 (degrees C) all levels
+# 1000 = 1.3978960217927632
+#  925 = 5.726315789473685
+# 850 = 12.565263093647205
 
 MAPE_thta_all_levs = ( sum( np.abs( (df1_s['THTA'] - df2_n['THTA']) / df1_s['THTA'] ) ) / (len(df1_s['THTA'])) )*100
 MAPE_thta_1000 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==1000] - df2_n['THTA'][df1_s['PRES']==1000]) / df1_s['THTA'][df1_s['PRES']==1000] ) ) / (len(df1_s['THTA'][df1_s['PRES']==1000])) )*100
@@ -391,10 +393,10 @@ MAPE_thta_925 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==925] - df2_n['THTA'
 MAPE_thta_850 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==850] - df2_n['THTA'][df1_s['PRES']==850]) / df1_s['THTA'][df1_s['PRES']==850] ) ) / (len(df1_s['THTA'][df1_s['PRES']==850])) )*100
 
 ### MAPE (%)
-# all levs: 2.226939155093236
-# 1000 = 0.48386672774818307
-# 925 = 1.9622621853483255
-# 850 = 4.234688552183197
+# all levs: 2.232375122056103
+# 1000 = 0.4868148673723333
+# 925 = 1.9590205783128465
+# 850 = 4.251289920483132
 
 
 #####################################################
@@ -406,15 +408,15 @@ df1_stability_vals = df1_s.groupby('COMP_DATE').first().groupby('STABILITY').cou
 df2_stability_keys = np.array(df2_n.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].keys())
 df2_stability_vals = df2_n.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].values
 
-
-
 fig, ax = plt.subplots(1,2, figsize=(15,9))
 ax[0].bar(df1_stability_keys, df1_stability_vals)
 ax[0].set_ylabel('Count')
 ax[0].set_xlabel('Stability class')
+ax[0].set_title('SONDES')
 ax[1].bar(df2_stability_keys, df2_stability_vals)
 ax[1].set_ylabel('Count')
 ax[1].set_xlabel('Stability class')
+ax[0].set_title('NAEFS')
 #ax[1].hist(snds_sm_dates.groupby('COMP_DATE').first()['MEAN_GRAD_BELOW_850'],50)
 #ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
 #plt.title('Number of cases in each stability class')
@@ -471,12 +473,75 @@ ax[1].invert_yaxis()
 plt.savefig(fig_dir+'actual_data_model_v_obs'+run_date+'.png')
 
 
+###########################################################################################
+
+
+####### trying to fix naefs stufF:
+new_df_plot = pd.DataFrame()
+new_df_plot['COMP_DATE'] = naefs_df_tu['COMP_DATE']
+new_df_plot['THTA1000'] = naefs_df_tu['THTA1000']
+new_df_plot['THTA925'] = naefs_df_tu['THTA925']
+new_df_plot['THTA850'] = naefs_df_tu['THTA850']
+new_df_plot = new_df_plot.set_index('COMP_DATE')
+
+
+
+# # new_naefs_df_tu
+# ptable_n2 = (new_naefs_df_tu.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'))
+
+
+# fig, ax = plt.subplots(1,1, figsize=(15,9))
+# ax.plot(ptable_n2, pres)
+# ax.set_title('NAEFS')
+# ax.set_xlim(270,310)
+# ax.invert_yaxis()
+# plt.show()
+# #plt.savefig(fig_dir+'actual_data_model_v_obs'+run_date+'.png')
+
+# # df2_n
+# ptable_n3 = (df2_n.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'))
+
+
+# fig, ax = plt.subplots(1,1, figsize=(15,9))
+# ax.plot(ptable_n3, pres)
+# ax.set_title('NAEFS')
+# ax.set_xlim(270,310)
+# ax.invert_yaxis()
+# plt.show()
 
 
 
 
+pres2 = [1000,925,850]
+#run_date = dt.datetime.now().strftime('%y%m%d')
+
+fig, ax = plt.subplots(1,1, figsize=(15,9))
+ax.plot(new_df_plot.T, pres2)
+#ax.plot(new_naefs_test.T)
+ax.invert_yaxis()
+plt.title('NAEFS data')
+ax.set_xlabel('Potential temperature (K)')
+ax.set_ylabel('Pressure (kPa)')
+plt.show()
+#plt.savefig(fig_dir+'all_naefs_data_to_comp_overlapping_dates'+run_date+'run.png')
 
 
 
+###########################################################################################
+# PLOT sondes verses naefs, original data
 
-
+fig, ax = plt.subplots(2,1, figsize=(15,9))
+ax[0].plot(ptable_sondes, pres)
+ax[1].plot(new_df_plot.T, pres2)
+ax[0].set_title('SONDES')
+ax[1].set_title('NAEFS')
+ax[0].set_xlim(270,310)
+ax[1].set_xlim(270,310)
+ax[0].set_ylabel('Pressure (kPa)')
+#ax[0].set_xlabel('Theta')
+ax[1].set_ylabel('Pressure (kPa)')
+ax[1].set_xlabel('Potential temperature (K)')
+ax[0].invert_yaxis()
+ax[1].invert_yaxis()
+#plt.show()
+plt.savefig(fig_dir+'actual_data_model_v_obs_attempt2'+run_date+'.png')
