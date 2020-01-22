@@ -448,6 +448,9 @@ ptable_sondes = (df1_s.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'
 ptable_naefs = (df2_n.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'))
 
 plt.plot(ptable_sondes, pres)
+
+ptable2_naefs = (df2_n.pivot(index = 'COMP_DATE', columns= 'PRES', values='THTA'))
+plt.plot(ptable2_naefs.T) #, pres)
 plt.show()
 
 
