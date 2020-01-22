@@ -336,10 +336,10 @@ ax[0].set_title('SONDES')
 ax[1].set_title('NAEFS')
 ax[0].set_xlim(277,300)
 ax[1].set_xlim(277,300)
-ax[0].set_ylabel('Pressure')
+ax[0].set_ylabel('Pressure (kPa)')
 #ax[0].set_xlabel('Theta')
-ax[1].set_ylabel('Pressure')
-ax[1].set_xlabel('Theta')
+ax[1].set_ylabel('Pressure (kPa)')
+ax[1].set_xlabel('Potential temperature (K)')
 ax[0].invert_yaxis()
 ax[1].invert_yaxis()
 ax[0].legend(stab_sond_leg)
@@ -356,14 +356,14 @@ ax[1].plot(naefs_lev_TOD_av.unstack().T.iloc[0], Pres)
 ax[1].plot(naefs_lev_TOD_av.unstack().T.iloc[1], Pres)
 ax[0].set_title('SONDES')
 ax[1].set_title('NAEFS')
-ax[0].set_ylabel('Pressure')
+ax[0].set_ylabel('Pressure (kPa))
 ax[0].set_xlim(280,300)
 ax[1].set_xlim(280,300)
 #ax[0].set_xlabel('Theta')
 ax[0].invert_yaxis()
 ax[1].invert_yaxis()
-ax[1].set_ylabel('Pressure')
-ax[1].set_xlabel('Theta')
+ax[1].set_ylabel('Pressure (kPa)')
+ax[1].set_xlabel('Potential temperature (K)')
 ax[1].legend(tod)
 ax[0].legend(tod)
 #plt.title('Mean theta by time of sounding')
@@ -419,11 +419,11 @@ ax[0].set_title('SONDES')
 ax[1].bar(df2_stability_keys, df2_stability_vals)
 ax[1].set_ylabel('Count')
 ax[1].set_xlabel('Stability class')
-ax[0].set_title('NAEFS')
+ax[1].set_title('NAEFS')
 #ax[1].hist(snds_sm_dates.groupby('COMP_DATE').first()['MEAN_GRAD_BELOW_850'],50)
 #ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
 #plt.title('Number of cases in each stability class')
-plt.show()
+#plt.show()
 plt.savefig(fig_dir+'bar_stab_classes_and_grad'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
@@ -466,26 +466,26 @@ ax[0].set_title('SONDES')
 ax[1].set_title('NAEFS')
 ax[0].set_xlim(270,310)
 ax[1].set_xlim(270,310)
-# ax[0].set_ylabel('Pressure')
-# #ax[0].set_xlabel('Theta')
-# ax[1].set_ylabel('Pressure')
-# ax[1].set_xlabel('Theta')
+ax[0].set_ylabel('Pressure (kPa)')
+#ax[0].set_xlabel('Potential Temperature (K)')
+ax[1].set_ylabel('Pressure (kPa)')
+ax[1].set_xlabel('Potential Temperature (K)')
 ax[0].invert_yaxis()
 ax[1].invert_yaxis()
 #plt.show()
 plt.savefig(fig_dir+'actual_data_model_v_obs'+run_date+'.png')
 
 
-###########################################################################################
+# ###########################################################################################
 
 
-####### trying to fix naefs stufF:
-new_df_plot = pd.DataFrame()
-new_df_plot['COMP_DATE'] = naefs_df_tu['COMP_DATE']
-new_df_plot['THTA1000'] = naefs_df_tu['THTA1000']
-new_df_plot['THTA925'] = naefs_df_tu['THTA925']
-new_df_plot['THTA850'] = naefs_df_tu['THTA850']
-new_df_plot = new_df_plot.set_index('COMP_DATE')
+# ####### trying to fix naefs stufF:
+# new_df_plot = pd.DataFrame()
+# new_df_plot['COMP_DATE'] = naefs_df_tu['COMP_DATE']
+# new_df_plot['THTA1000'] = naefs_df_tu['THTA1000']
+# new_df_plot['THTA925'] = naefs_df_tu['THTA925']
+# new_df_plot['THTA850'] = naefs_df_tu['THTA850']
+# new_df_plot = new_df_plot.set_index('COMP_DATE')
 
 
 
@@ -515,36 +515,36 @@ new_df_plot = new_df_plot.set_index('COMP_DATE')
 
 
 
-pres2 = [1000,925,850]
-#run_date = dt.datetime.now().strftime('%y%m%d')
+# pres2 = [1000,925,850]
+# #run_date = dt.datetime.now().strftime('%y%m%d')
 
-fig, ax = plt.subplots(1,1, figsize=(15,9))
-ax.plot(new_df_plot.T, pres2)
-#ax.plot(new_naefs_test.T)
-ax.invert_yaxis()
-plt.title('NAEFS data')
-ax.set_xlabel('Potential temperature (K)')
-ax.set_ylabel('Pressure (kPa)')
-plt.show()
-#plt.savefig(fig_dir+'all_naefs_data_to_comp_overlapping_dates'+run_date+'run.png')
+# fig, ax = plt.subplots(1,1, figsize=(15,9))
+# ax.plot(new_df_plot.T, pres2)
+# #ax.plot(new_naefs_test.T)
+# ax.invert_yaxis()
+# plt.title('NAEFS data')
+# ax.set_xlabel('Potential temperature (K)')
+# ax.set_ylabel('Pressure (kPa)')
+# plt.show()
+# #plt.savefig(fig_dir+'all_naefs_data_to_comp_overlapping_dates'+run_date+'run.png')
 
 
 
 ###########################################################################################
-# PLOT sondes verses naefs, original data
+# # PLOT sondes verses naefs, original data
 
-fig, ax = plt.subplots(2,1, figsize=(15,9))
-ax[0].plot(ptable_sondes, pres)
-ax[1].plot(new_df_plot.T, pres2)
-ax[0].set_title('SONDES')
-ax[1].set_title('NAEFS')
-ax[0].set_xlim(270,310)
-ax[1].set_xlim(270,310)
-ax[0].set_ylabel('Pressure (kPa)')
-#ax[0].set_xlabel('Theta')
-ax[1].set_ylabel('Pressure (kPa)')
-ax[1].set_xlabel('Potential temperature (K)')
-ax[0].invert_yaxis()
-ax[1].invert_yaxis()
-#plt.show()
-plt.savefig(fig_dir+'actual_data_model_v_obs_attempt2'+run_date+'.png')
+# fig, ax = plt.subplots(2,1, figsize=(15,9))
+# ax[0].plot(ptable_sondes, pres)
+# ax[1].plot(new_df_plot.T, pres2)
+# ax[0].set_title('SONDES')
+# ax[1].set_title('NAEFS')
+# ax[0].set_xlim(270,310)
+# ax[1].set_xlim(270,310)
+# ax[0].set_ylabel('Pressure (kPa)')
+# #ax[0].set_xlabel('Theta')
+# ax[1].set_ylabel('Pressure (kPa)')
+# ax[1].set_xlabel('Potential temperature (K)')
+# ax[0].invert_yaxis()
+# ax[1].invert_yaxis()
+# #plt.show()
+# plt.savefig(fig_dir+'actual_data_model_v_obs_attempt2'+run_date+'.png')
