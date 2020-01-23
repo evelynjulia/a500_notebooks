@@ -384,11 +384,20 @@ df2_n
 
 # model error:
 
+# set constants:
+snd1000 = df1_s['THTA'][df1_s['PRES']==1000]
+snd925 = df1_s['THTA'][df1_s['PRES']==925]
+snd850 = df1_s['THTA'][df1_s['PRES']==850]
+nfs1000 = df2_n['THTA'][df1_s['PRES']==1000]
+nfs925 = df2_n['THTA'][df1_s['PRES']==925]
+nfs850 = df2_n['THTA'][df1_s['PRES']==850]
+
+
 # MAE: 
 MAE_thta_all_levs = sum( np.abs(df1_s['THTA'] - df2_n['THTA']) ) / (len(df1_s['THTA']))
-MAE_thta_1000 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==1000] - df2_n['THTA'][df1_s['PRES']==1000]) ) / (len(df1_s['THTA'][df1_s['PRES']==1000]))
-MAE_thta_925 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==925] - df2_n['THTA'][df1_s['PRES']==925]) ) / (len(df1_s['THTA'][df1_s['PRES']==925]))
-MAE_thta_850 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==850] - df2_n['THTA'][df1_s['PRES']==850]) ) / (len(df1_s['THTA'][df1_s['PRES']==850]))
+MAE_thta_1000 = sum( np.abs(snd1000 - nfs1000) ) / (len(snd1000))
+MAE_thta_925 = sum( np.abs(snd925 - nfs925) ) / (len(snd925))
+MAE_thta_850 = sum( np.abs(snd850 - nfs850) ) / (len(snd850))
 
 # 6.563158301637881 (degrees C) all levels
 # 1000 = 1.3978960217927632
@@ -396,15 +405,30 @@ MAE_thta_850 = sum( np.abs(df1_s['THTA'][df1_s['PRES']==850] - df2_n['THTA'][df1
 # 850 = 12.565263093647205
 
 MAPE_thta_all_levs = ( sum( np.abs( (df1_s['THTA'] - df2_n['THTA']) / df1_s['THTA'] ) ) / (len(df1_s['THTA'])) )*100
-MAPE_thta_1000 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==1000] - df2_n['THTA'][df1_s['PRES']==1000]) / df1_s['THTA'][df1_s['PRES']==1000] ) ) / (len(df1_s['THTA'][df1_s['PRES']==1000])) )*100
-MAPE_thta_925 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==925] - df2_n['THTA'][df1_s['PRES']==925]) / df1_s['THTA'][df1_s['PRES']==925] ) ) / (len(df1_s['THTA'][df1_s['PRES']==925])) )*100
-MAPE_thta_850 = ( sum( np.abs( (df1_s['THTA'][df1_s['PRES']==850] - df2_n['THTA'][df1_s['PRES']==850]) / df1_s['THTA'][df1_s['PRES']==850] ) ) / (len(df1_s['THTA'][df1_s['PRES']==850])) )*100
+MAPE_thta_1000 = ( sum( np.abs( (snd1000 - nfs1000) / snd1000 ) ) / (len(snd1000)) )*100
+MAPE_thta_925 = ( sum( np.abs( (snd925 - nfs925) / snd925 ) ) / (len(snd925)) )*100
+MAPE_thta_850 = ( sum( np.abs( (snd850 - nfs850) / snd850 ) ) / (len(snd850)) )*100
 
 ### MAPE (%)
 # all levs: 2.232375122056103
 # 1000 = 0.4868148673723333
 # 925 = 1.9590205783128465
 # 850 = 4.251289920483132
+
+# RMSE
+RMSE_thta_all_levs = np.sqrt(sum( (df1_s['THTA'] - df2_n['THTA'])**2 / (len(df1_s['THTA'])) )) 
+RMSE_thta_1000 = np.sqrt(sum( (snd1000 - nfs1000)**2 / (len(snd1000)) )) 
+RMSE_thta_925 = np.sqrt(sum( (snd925 - nfs925)**2 / (len(snd925)) )) 
+RMSE_thta_850 = np.sqrt(sum( (snd850 - nfs850)**2 / (len(snd850)) )) 
+
+
+# Correlations 
+cor_all_levs = np.corrcoef( snd1000, nfs1000)
+
+
+
+
+
 
 
 #####################################################
