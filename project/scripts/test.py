@@ -179,7 +179,8 @@ pkl_file.close()
 
 
 # make potential temp in df
-p0=1.e5
+#p0=1.e5
+p0 = 100 #kPa
 Rd=287.  #J/kg/K
 cpd=1004.  #J/kg/K
 #CT_theta=CT_temp.variables.values*(p0/CT_press**(Rd/cpd))
@@ -191,9 +192,13 @@ naefs_df_tu['TMP1000'] = naefs_data['TMP1000']
 naefs_df_tu['TMP925'] = naefs_data['TMP925']
 naefs_df_tu['TMP850'] = naefs_data['TMP850']
 
-naefs_df_tu['THTA1000'] = naefs_df_tu['TMP1000']*((p0/100000)**(Rd/cpd))
-naefs_df_tu['THTA925'] = naefs_df_tu['TMP925']*((p0/100000)**(Rd/cpd))
-naefs_df_tu['THTA850'] = naefs_df_tu['TMP850']*((p0/100000)**(Rd/cpd))
+# naefs_df_tu['THTA1000'] = naefs_df_tu['TMP1000']*((p0/100000)**(Rd/cpd))
+# naefs_df_tu['THTA925'] = naefs_df_tu['TMP925']*((p0/100000)**(Rd/cpd))
+# naefs_df_tu['THTA850'] = naefs_df_tu['TMP850']*((p0/100000)**(Rd/cpd))
+# fix this 
+naefs_df_tu['THTA1000'] = naefs_df_tu['TMP1000']*((p0/100)**(Rd/cpd))
+naefs_df_tu['THTA925'] = naefs_df_tu['TMP925']*((p0/92.5)**(Rd/cpd))
+naefs_df_tu['THTA850'] = naefs_df_tu['TMP850']*((p0/85)**(Rd/cpd))
 
 #naefs_df_tu['AV_GRAD'] = (naefs_df_tu['THTA1000'] - naefs_df_tu['THTA850'])/150
 naefs_df_tu['AV_GRAD'] = ((naefs_df_tu['THTA1000'] - naefs_df_tu['THTA925'])/75 ) + ( (naefs_df_tu['THTA925'] - naefs_df_tu['THTA850'])/75 )
