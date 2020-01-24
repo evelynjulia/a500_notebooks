@@ -423,10 +423,15 @@ RMSE_thta_850 = np.sqrt(sum( (snd850 - nfs850)**2 / (len(snd850)) ))
 
 
 # Correlations 
-cor_all_levs = np.corrcoef( snd1000, nfs1000)
+cor_all_levs = np.corrcoef(np.array(df1_s['THTA']), np.array(df2_n['THTA']))[0,1]
+cor1000 = np.corrcoef(np.array(snd1000), np.array(nfs1000))[0,1]
+cor925 = np.corrcoef(np.array(snd925), np.array(nfs925))[0,1]
+cor850 = np.corrcoef(np.array(snd850), np.array(nfs850))[0,1]
 
-
-
+cor_all_levs
+cor1000
+cor925 
+cor850
 
 
 
