@@ -246,6 +246,47 @@ new_naefs_df_tu['TOD'] = new_naefs_df_tu['COMP_DATE'].str[-2:]
 
 new_naefs_df_tu
 
+###################################################################
+# 25 Jan 2020
+# new sonde stability table
+
+sonde_new = pd.DataFrame()
+sonde_new['COMP_DATE'] = sonde_data_tu['COMP_DATE']
+sonde_new['GRAD'] = sonde_data_tu['THTA_GRAD_INTERP']
+sonde_new['PRES'] = sonde_data_tu['PRES']
+sonde_new['THTA'] = sonde_data_tu['THTA']
+sonde_new = sonde_new.reset_index(drop=True)
+
+sonde_table = sonde_new.pivot(index = 'COMP_DATE', columns= 'PRES', values='GRAD')
+sonde_table['1000'] = ((sonde_table.iloc[:,2] - sonde_table.iloc[:,1])/75 ) + ( (sonde_table.iloc[:,1] - sonde_table.iloc[:,0])/75 )
+sonde_table['925'] = ((sonde_table.iloc[:,2] - sonde_table.iloc[:,1])/75 ) + ( (sonde_table.iloc[:,1] - sonde_table.iloc[:,0])/75 )
+sonde_table['850'] = ((sonde_table.iloc[:,2] - sonde_table.iloc[:,1])/75 ) + ( (sonde_table.iloc[:,1] - sonde_table.iloc[:,0])/75 )
+sonde_table = sonde_table.reset_index()
+
+
+sonde_table_back = pd.melt(sonde_table, id_vars=['COMP_DATE'], value_vars=['1000', '925', '850',])
+sonde_table_back = sonde_table_back.sort_values(by=['COMP_DATE', 'PRES'])
+sonde_table_back = sonde_table_back.reset_index(drop=True)
+
+
+sonde_new['AV_GRAD'] = sonde_table_back['value']
+
+
+### done up to here 25 Jan 
+
+stability_conditions = [
+    sonde_new['AV_GRAD'] >= stability_limit,
+    (sonde_new['AV_GRAD'] < stability_limit) & (sonde_new['AV_GRAD'] > -stability_limit),
+    sonde_new['AV_GRAD'] <= -stability_limit ]
+
+stability_choices = ['unstable', 'neutral', 'stable']  #['unstable', 'neutral', 'stable']
+new_naefs_df_tu['STABILITY'] = np.select(stability_conditions, stability_choices)
+
+### GET TIME OF DAY COLUMN
+new_naefs_df_tu['TOD'] = new_naefs_df_tu['COMP_DATE'].str[-2:]
+
+
+
 
 
 ###################################################################
