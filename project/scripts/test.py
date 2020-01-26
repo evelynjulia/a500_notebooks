@@ -50,7 +50,7 @@ list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/pro
 
 top_pres = 850
 #stability_limit = 0.005 # what the cutoff is K/mb
-stability_limit = 0.067 # what the cutoff is K/mb
+stability_limit = 0.0067 # what the cutoff is K/mb
 
 # %%
 get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_limit)
@@ -201,8 +201,8 @@ naefs_df_tu['THTA925'] = naefs_df_tu['TMP925']*((p0/92.5)**(Rd/cpd))
 naefs_df_tu['THTA850'] = naefs_df_tu['TMP850']*((p0/85)**(Rd/cpd))
 
 #naefs_df_tu['AV_GRAD'] = (naefs_df_tu['THTA1000'] - naefs_df_tu['THTA850'])/150
-naefs_df_tu['AV_GRAD'] = ((naefs_df_tu['THTA1000'] - naefs_df_tu['THTA925'])/75 ) + ( (naefs_df_tu['THTA925'] - naefs_df_tu['THTA850'])/75 )
-
+#naefs_df_tu['AV_GRAD'] = ((naefs_df_tu['THTA1000'] - naefs_df_tu['THTA925'])/75 ) + ( (naefs_df_tu['THTA925'] - naefs_df_tu['THTA850'])/75 )
+naefs_df_tu['AV_GRAD'] = ((naefs_df_tu['THTA925'] - naefs_df_tu['THTA1000'])/75 ) 
 
 naefs_day_means = naefs_df_tu.groupby(['COMP_DATE']).mean()
 all_neafs_means = naefs_day_means.mean()
@@ -257,10 +257,12 @@ sonde_new['PRES'] = sonde_data_tu['PRES']
 sonde_new['THTA'] = sonde_data_tu['THTA']
 sonde_new = sonde_new.reset_index(drop=True)
 
-sonde_table = sonde_new.pivot(index = 'COMP_DATE', columns= 'PRES', values='GRAD')
-sonde_table['1000'] = ((sonde_table.iloc[:,2] - sonde_table.iloc[:,1])/75 ) + ( (sonde_table.iloc[:,1] - sonde_table.iloc[:,0])/75 )
-sonde_table['925'] = ((sonde_table.iloc[:,2] - sonde_table.iloc[:,1])/75 ) + ( (sonde_table.iloc[:,1] - sonde_table.iloc[:,0])/75 )
-sonde_table['850'] = ((sonde_table.iloc[:,2] - sonde_table.iloc[:,1])/75 ) + ( (sonde_table.iloc[:,1] - sonde_table.iloc[:,0])/75 )
+sonde_table = sonde_new.pivot(index = 'COMP_DATE', columns= 'PRES', values='THTA')
+#grad = ((sonde_table.iloc[:,2] - sonde_table.iloc[:,1])/75 ) + ( (sonde_table.iloc[:,1] - sonde_table.iloc[:,0])/75 )
+grad = ((sonde_table.iloc[:,1] - sonde_table.iloc[:,2])/75 )
+sonde_table['1000'] = grad
+sonde_table['925'] = grad
+sonde_table['850'] = grad
 sonde_table = sonde_table.reset_index()
 
 
@@ -280,10 +282,10 @@ stability_conditions = [
     sonde_new['AV_GRAD'] <= -stability_limit ]
 
 stability_choices = ['unstable', 'neutral', 'stable']  #['unstable', 'neutral', 'stable']
-new_naefs_df_tu['STABILITY'] = np.select(stability_conditions, stability_choices)
+sonde_new['STABILITY'] = np.select(stability_conditions, stability_choices)
 
 ### GET TIME OF DAY COLUMN
-new_naefs_df_tu['TOD'] = new_naefs_df_tu['COMP_DATE'].str[-2:]
+sonde_new['TOD'] = sonde_new['COMP_DATE'].str[-2:]
 
 
 
@@ -291,13 +293,23 @@ new_naefs_df_tu['TOD'] = new_naefs_df_tu['COMP_DATE'].str[-2:]
 
 ###################################################################
 # now make the sonde df exactly the same as the naefs one:
+# df1_s = pd.DataFrame()
+# df1_s['COMP_DATE'] = sonde_data_tu['COMP_DATE']
+# df1_s['AV_GRAD'] = sonde_data_tu['THTA_GRAD_INTERP']
+# df1_s['PRES'] = sonde_data_tu['PRES']
+# df1_s['THTA'] = sonde_data_tu['THTA']
+# df1_s['STABILITY'] = sonde_data_tu['STABILITY']
+# df1_s['TOD'] = sonde_data_tu['TOD']
+
 df1_s = pd.DataFrame()
-df1_s['COMP_DATE'] = sonde_data_tu['COMP_DATE']
-df1_s['AV_GRAD'] = sonde_data_tu['THTA_GRAD_INTERP']
-df1_s['PRES'] = sonde_data_tu['PRES']
-df1_s['THTA'] = sonde_data_tu['THTA']
-df1_s['STABILITY'] = sonde_data_tu['STABILITY']
-df1_s['TOD'] = sonde_data_tu['TOD']
+df1_s['COMP_DATE'] = sonde_new['COMP_DATE']
+df1_s['AV_GRAD'] = sonde_new['AV_GRAD']
+df1_s['PRES'] = sonde_new['PRES']
+df1_s['THTA'] = sonde_new['THTA']
+df1_s['STABILITY'] = sonde_new['STABILITY']
+df1_s['TOD'] = sonde_new['TOD']
+
+
 
 df2_n = new_naefs_df_tu.copy()
 #df2_n['THTA'] = df2_n['THTA'] #.round()
@@ -342,10 +354,6 @@ df1_s = df1_s.reset_index(drop=True)
 df2_n = df2_n.reset_index(drop=True)
 
 
-df1_s
-df2_n
-
-
 # and then can check they're the same by 
 test = (df1_s['COMP_DATE'].astype(float) - df2_n['COMP_DATE'].astype(float))[:]
 sum(test) # if this gives me 0 then my dataframes are the same and I can compare my naefs data to my sonde data
@@ -367,14 +375,15 @@ stab = ['Stable', 'Unstable', 'Neutral']
 Pres = [850,925, 1000]
 tod = ['00', '12']
 
-stab_sond_leg = ['Neutral', 'Stable', 'Unstable']
-stab_naefs_leg = ['Neutral', 'Unstable', 'Stable']
+stab_sond_leg = ['Neutral', 'Stable', 'Unstable'] #['Neutral', 'Unstable', 'Stable']
+#['Neutral', 'Stable', 'Unstable']
+stab_naefs_leg = ['Neutral', 'Stable', 'Unstable']
 
 fig, ax = plt.subplots(2,1, figsize=(15,9))
 #plt.title('Mean theta by stability class')
 ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[0], Pres, color='green')
-ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[1], Pres, color='orange')
-ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[2], Pres, color='blue')
+ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[1], Pres, color='blue')
+ax[0].plot(sonde_stability_level_av_thta.unstack().iloc[2], Pres, color='orange')
 ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[0], Pres, color='green')
 ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[1], Pres, color='blue')
 ax[1].plot(naefs_stability_level_av_thta.unstack().iloc[2], Pres, color='orange')
@@ -394,6 +403,20 @@ ax[1].legend(stab_naefs_leg)
 plt.savefig(fig_dir+'Comparison_average_theta_by_stab_class'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
+fig, ax = plt.subplots(1,1, figsize=(15,9))
+ax.plot(sonde_stability_level_av_thta.unstack().iloc[0], Pres, '-.', color='red')
+ax.plot(sonde_stability_level_av_thta.unstack().iloc[1], Pres, color='red')
+ax.plot(naefs_stability_level_av_thta.unstack().iloc[0], Pres, '-.', color='orange')
+ax.plot(naefs_stability_level_av_thta.unstack().iloc[1], Pres, color='orange')
+ax.set_xlim(280,300)
+ax.set_ylabel('Pressure (kPa)')
+ax.set_xlabel('Potential temperature (K)')
+ax.invert_yaxis()
+ax.legend(['Neutral - sonde', 'Stable - sonde', 'Neutral - NAEFS', 'Stable - NAEFS'])
+#plt.show()
+plt.savefig(fig_dir+'Comparison_average_theta_by_stab_class_all'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
 
 fig, ax = plt.subplots(2,1, figsize=(15,9))
 ax[0].plot(sonde_lev_TOD_av.unstack().T.iloc[0], Pres)
@@ -402,7 +425,7 @@ ax[1].plot(naefs_lev_TOD_av.unstack().T.iloc[0], Pres)
 ax[1].plot(naefs_lev_TOD_av.unstack().T.iloc[1], Pres)
 ax[0].set_title('SONDES')
 ax[1].set_title('NAEFS')
-ax[0].set_ylabel('Pressure (kPa))
+ax[0].set_ylabel('Pressure (kPa)')
 ax[0].set_xlim(280,300)
 ax[1].set_xlim(280,300)
 #ax[0].set_xlabel('Theta')
@@ -440,21 +463,21 @@ MAE_thta_1000 = sum( np.abs(snd1000 - nfs1000) ) / (len(snd1000))
 MAE_thta_925 = sum( np.abs(snd925 - nfs925) ) / (len(snd925))
 MAE_thta_850 = sum( np.abs(snd850 - nfs850) ) / (len(snd850))
 
-# 6.563158301637881 (degrees C) all levels
-# 1000 = 1.3978960217927632
-#  925 = 5.726315789473685
-# 850 = 12.565263093647205
+MAE_thta_all_levs
+MAE_thta_1000
+MAE_thta_925
+MAE_thta_850
+
 
 MAPE_thta_all_levs = ( sum( np.abs( (df1_s['THTA'] - df2_n['THTA']) / df1_s['THTA'] ) ) / (len(df1_s['THTA'])) )*100
 MAPE_thta_1000 = ( sum( np.abs( (snd1000 - nfs1000) / snd1000 ) ) / (len(snd1000)) )*100
 MAPE_thta_925 = ( sum( np.abs( (snd925 - nfs925) / snd925 ) ) / (len(snd925)) )*100
 MAPE_thta_850 = ( sum( np.abs( (snd850 - nfs850) / snd850 ) ) / (len(snd850)) )*100
 
-### MAPE (%)
-# all levs: 2.232375122056103
-# 1000 = 0.4868148673723333
-# 925 = 1.9590205783128465
-# 850 = 4.251289920483132
+MAPE_thta_all_levs
+MAPE_thta_1000
+MAPE_thta_925
+MAPE_thta_850
 
 # RMSE
 RMSE_thta_all_levs = np.sqrt(sum( (df1_s['THTA'] - df2_n['THTA'])**2 / (len(df1_s['THTA'])) )) 
@@ -462,6 +485,10 @@ RMSE_thta_1000 = np.sqrt(sum( (snd1000 - nfs1000)**2 / (len(snd1000)) ))
 RMSE_thta_925 = np.sqrt(sum( (snd925 - nfs925)**2 / (len(snd925)) )) 
 RMSE_thta_850 = np.sqrt(sum( (snd850 - nfs850)**2 / (len(snd850)) )) 
 
+RMSE_thta_all_levs
+RMSE_thta_1000
+RMSE_thta_925
+RMSE_thta_850
 
 # Correlations 
 cor_all_levs = np.corrcoef(np.array(df1_s['THTA']), np.array(df2_n['THTA']))[0,1]
@@ -527,11 +554,11 @@ pres = [850,925,1000]
 ptable_sondes = (df1_s.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'))
 ptable_naefs = (df2_n.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'))
 
-plt.plot(ptable_sondes, pres)
+# plt.plot(ptable_sondes, pres)
 
-ptable2_naefs = (df2_n.pivot(index = 'COMP_DATE', columns= 'PRES', values='THTA'))
-plt.plot(ptable2_naefs.T) #, pres)
-plt.show()
+# ptable2_naefs = (df2_n.pivot(index = 'COMP_DATE', columns= 'PRES', values='THTA'))
+# plt.plot(ptable2_naefs.T) #, pres)
+# plt.show()
 
 
 fig, ax = plt.subplots(2,1, figsize=(15,9))
