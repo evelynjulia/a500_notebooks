@@ -56,7 +56,7 @@ pkl_file.close()
 
 # NAEFS data
 
-pkl_file = open(naefs_data_dir+'all_naefs_df.pkl', 'rb') 
+pkl_file = open(data_dir+'all_naefs_df.pkl', 'rb') 
 naefs_data = pickle.load(pkl_file) 
 pkl_file.close() 
 
@@ -242,13 +242,10 @@ ax[1].bar(naefs_stability_keys, naefs_stability_vals)
 ax[1].set_ylabel('Count')
 ax[1].set_xlabel('Stability class')
 ax[1].set_title('NAEFS')
-#ax[0].set_ylim(0,70)
-#ax[1].set_ylim(0,70)
-#ax[1].hist(snds_sm_dates.groupby('COMP_DATE').first()['MEAN_GRAD_BELOW_850'],50)
-#ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
-#plt.title('Number of cases in each stability class')
-#plt.show()
-plt.savefig(fig_dir+'bar_stab_classes_and_grad'+run_date+'run_stablim'+str(stability_limit)+'.png')
+ax[0].set_ylim(0,70)
+ax[1].set_ylim(0,70)
+plt.show()
+#plt.savefig(fig_dir+'bar_stab_classes_and_grad'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
 
