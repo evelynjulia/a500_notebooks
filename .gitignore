@@ -1,5 +1,5 @@
 .ipynb_checkpoints
-project/data
+#project/data
 project/__pycache__
 *.ipynb
 project/docs
@@ -13,6 +13,6 @@ notebooks/pandas/a500_pandas_data.zip
 .vscode*
 *.npz
 opt.*
-*.pkl
-*.png
+#*.pkl
+#.png
 *.zip
