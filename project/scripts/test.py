@@ -50,10 +50,10 @@ list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/pro
 
 top_pres = 850
 #stability_limit = 0.005 # what the cutoff is K/mb
-stability_limit = 0.0067 # what the cutoff is K/mb
+stability_limit = 0.067 # what the cutoff is K/mb
 
 # %%
-get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_limit)
+#get_sonde_stabilty(data_dir, fig_dir, list_of_files, top_pres, stability_limit)
 
 
 ### Open a pickle file
@@ -440,6 +440,24 @@ ax[0].legend(tod)
 plt.savefig(fig_dir+'Comparison_average_theta_by_TOD'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
+fig, ax = plt.subplots(1,1, figsize=(15,9))
+ax.plot(sonde_lev_TOD_av.unstack().T.iloc[0], Pres, '-.', color='red')
+ax.plot(sonde_lev_TOD_av.unstack().T.iloc[1], Pres, color='red')
+ax.plot(naefs_lev_TOD_av.unstack().T.iloc[0], Pres, '-.', color='orange')
+ax.plot(naefs_lev_TOD_av.unstack().T.iloc[1], Pres, color='orange')
+ax.set_xlim(285,300)
+ax.set_ylabel('Pressure (kPa)')
+ax.set_xlabel('Potential temperature (K)')
+ax.invert_yaxis()
+ax.legend(['00 - sonde', '12 - sonde', '00 - NAEFS', '12 - NAEFS'])
+#plt.show()
+plt.savefig(fig_dir+'Comparison_average_theta_by_TOD_all'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
+
+
+
 
 #####################################################
 
@@ -522,6 +540,8 @@ ax[1].bar(df2_stability_keys, df2_stability_vals)
 ax[1].set_ylabel('Count')
 ax[1].set_xlabel('Stability class')
 ax[1].set_title('NAEFS')
+#ax[0].set_ylim(0,70)
+#ax[1].set_ylim(0,70)
 #ax[1].hist(snds_sm_dates.groupby('COMP_DATE').first()['MEAN_GRAD_BELOW_850'],50)
 #ax[1].set_xlabel('Mean gradient between 1000mb and 850mb')
 #plt.title('Number of cases in each stability class')
