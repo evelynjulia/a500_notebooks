@@ -27,10 +27,12 @@ import datetime as dt
 import pandas as pd
 
 # %%
-naefs_data_dir = "/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/"
+#naefs_data_dir = "/Users/catherinemathews/UBC/a500_notebooks/project/data/naefs/"
+naefs_data_dir = '/Users/ewicksteed/Documents/Eve/a500_notebooks_git_proj_version/project/data/'
 naefs_files = "2016*/*SA.nc"
 
-sonde_data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
+#sonde_data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
+sonde_data_dir = '/Users/ewicksteed/Documents/Eve/a500_notebooks_git_proj_version/project/data/sondes'
 sonde_files = "*.csv"
 
 dates_to_use = get_overlap_dates(naefs_dir= naefs_data_dir, naefs_files= naefs_files, sonde_dir = sonde_data_dir, sonde_files = sonde_files)
@@ -43,8 +45,10 @@ dates_to_use = get_overlap_dates(naefs_dir= naefs_data_dir, naefs_files= naefs_f
 # test function to get sondes and plot 
 
 
-data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
-fig_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/figures/'
+#data_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/'
+data_dir = '/Users/ewicksteed/Documents/Eve/a500_notebooks_git_proj_version/project/data/'
+#fig_dir = '/Users/catherinemathews/UBC/a500_notebooks/project/figures/'
+fig_dir = '/Users/ewicksteed/Documents/Eve/a500_notebooks_git_proj_version/project/figures'
 
 list_of_files = sorted(glob.glob('/Users/catherinemathews/UBC/a500_notebooks/project/data/sondes/*.csv'))
 
