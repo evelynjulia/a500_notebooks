@@ -25,7 +25,7 @@ import pandas as pd
 # %% Set directories 
 
 data_dir = '/Users/ewicksteed/Documents/Eve/a500_notebooks_git_proj_version/project/data/'
-fig_dir = '/Users/ewicksteed/Documents/Eve/a500_notebooks_git_proj_version/project/figures'
+fig_dir = '/Users/ewicksteed/Documents/Eve/a500_notebooks_git_proj_version/project/figures/new_to_use/'
 
 # %% Set constants
 
@@ -226,7 +226,7 @@ test = (sondes['COMP_DATE'].astype(float) - naefs['COMP_DATE'].astype(float))[:]
 sum(test) # if this gives me 0 then my dataframes are the same and I can compare my naefs data to my sonde data
 
 
-# %% Plot histograms of stability
+# %% Bar plot of stability
 
 sondes_stability_keys = np.array(sondes.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].keys())
 sondes_stability_vals = sondes.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].values
@@ -236,18 +236,188 @@ naefs_stability_vals = naefs.groupby('COMP_DATE').first().groupby('STABILITY').c
 
 
 fig, ax = plt.subplots(1,2, figsize=(15,9))
-ax[0].bar(sondes_stability_keys, sondes_stability_vals)
+ax[0].bar(sondes_stability_keys, sondes_stability_vals, color = 'red')
 ax[0].set_ylabel('Count')
 ax[0].set_xlabel('Stability class')
 ax[0].set_title('SONDES')
-ax[1].bar(naefs_stability_keys, naefs_stability_vals)
+ax[1].bar(naefs_stability_keys, naefs_stability_vals, color = 'orange')
 ax[1].set_ylabel('Count')
 ax[1].set_xlabel('Stability class')
 ax[1].set_title('NAEFS')
-#ax[0].set_ylim(0,70)
-#ax[1].set_ylim(0,70)
+ax[0].set_ylim(0,80)
+ax[1].set_ylim(0,80)
 #plt.show()
 plt.savefig(fig_dir+'Bar_plot'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
+# %% Calculate averages
 
+# mean by stability
+sonde_stability_level_av_thta = sondes.groupby(['STABILITY','PRES'])['THTA'].mean()
+naefs_stability_level_av_thta = naefs.groupby(['STABILITY','PRES'])['THTA'].mean()
+
+# mean bu time of day
+sonde_lev_TOD_av = sondes.groupby(['PRES','TOD'])['THTA'].mean()
+naefs_lev_TOD_av = naefs.groupby(['PRES','TOD'])['THTA'].mean()
+
+# %% Plots for comparison of av theta
+
+Pres = [850,925, 1000]
+tod = ['00', '12']
+leg = ['Neutral', 'Stable'] #, 'Unstable'] 
+
+# by stability class
+fig, ax = plt.subplots(1,1, figsize=(15,9))
+ax.plot(sonde_stability_level_av_thta.unstack().iloc[0], Pres, '-.', color='red')
+ax.plot(sonde_stability_level_av_thta.unstack().iloc[1], Pres, color='red')
+ax.plot(naefs_stability_level_av_thta.unstack().iloc[0], Pres, '-.', color='orange')
+ax.plot(naefs_stability_level_av_thta.unstack().iloc[1], Pres, color='orange')
+ax.set_ylabel('Pressure (kPa)')
+ax.set_xlabel('Potential temperature (K)')
+ax.invert_yaxis()
+ax.legend(['Neutral - sonde', 'Stable - sonde', 'Neutral - NAEFS', 'Stable - NAEFS'])
+#plt.show()
+plt.savefig(fig_dir+'Comparison_average_theta_by_stab_class_all'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
+# by time of day
+fig, ax = plt.subplots(1,1, figsize=(15,9))
+ax.plot(sonde_lev_TOD_av.unstack().T.iloc[0], Pres, '-.', color='red')
+ax.plot(sonde_lev_TOD_av.unstack().T.iloc[1], Pres, color='red')
+ax.plot(naefs_lev_TOD_av.unstack().T.iloc[0], Pres, '-.', color='orange')
+ax.plot(naefs_lev_TOD_av.unstack().T.iloc[1], Pres, color='orange')
+ax.set_ylabel('Pressure (kPa)')
+ax.set_xlabel('Potential temperature (K)')
+ax.invert_yaxis()
+ax.legend(['00 - sonde', '12 - sonde', '00 - NAEFS', '12 - NAEFS'])
+#plt.show()
+plt.savefig(fig_dir+'Comparison_average_theta_by_TOD_all'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
+# %% Plot sonde versus model data - potentential temp
+
+pres = [850,925,1000]
+
+# convert so easy to plot
+ptable_sondes = (sondes.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'))
+ptable_naefs = (naefs.pivot(index = 'PRES', columns= 'COMP_DATE', values='THTA'))
+
+
+fig, ax = plt.subplots(2,1, figsize=(15,9))
+ax[0].plot(ptable_sondes, pres)
+ax[1].plot(ptable_naefs, pres)
+ax[0].set_title('SONDES')
+ax[1].set_title('NAEFS')
+ax[0].set_xlim(280,310)
+ax[1].set_xlim(280,310)
+ax[0].set_ylabel('Pressure (kPa)')
+#ax[0].set_xlabel('Potential Temperature (K)')
+ax[1].set_ylabel('Pressure (kPa)')
+ax[1].set_xlabel('Potential Temperature (K)')
+ax[0].invert_yaxis()
+ax[1].invert_yaxis()
+#plt.show()
+plt.savefig(fig_dir+'actual_data_model_v_obs'+run_date+'.png')
+
+
+# %% calculate error:
+
+# set constants:
+snd1000 = sondes['THTA'][sondes['PRES']==1000]
+snd925 = sondes['THTA'][sondes['PRES']==925]
+snd850 = sondes['THTA'][sondes['PRES']==850]
+nfs1000 = naefs['THTA'][sondes['PRES']==1000]
+nfs925 = naefs['THTA'][sondes['PRES']==925]
+nfs850 = naefs['THTA'][sondes['PRES']==850]
+
+
+# MAE: 
+MAE_thta_all_levs = sum( np.abs(sondes['THTA'] - naefs['THTA']) ) / (len(sondes['THTA']))
+MAE_thta_1000 = sum( np.abs(snd1000 - nfs1000) ) / (len(snd1000))
+MAE_thta_925 = sum( np.abs(snd925 - nfs925) ) / (len(snd925))
+MAE_thta_850 = sum( np.abs(snd850 - nfs850) ) / (len(snd850))
+
+MAE_thta_all_levs
+MAE_thta_1000
+MAE_thta_925
+MAE_thta_850
+
+
+MAPE_thta_all_levs = ( sum( np.abs( (sondes['THTA'] - naefs['THTA']) / sondes['THTA'] ) ) / (len(sondes['THTA'])) )*100
+MAPE_thta_1000 = ( sum( np.abs( (snd1000 - nfs1000) / snd1000 ) ) / (len(snd1000)) )*100
+MAPE_thta_925 = ( sum( np.abs( (snd925 - nfs925) / snd925 ) ) / (len(snd925)) )*100
+MAPE_thta_850 = ( sum( np.abs( (snd850 - nfs850) / snd850 ) ) / (len(snd850)) )*100
+
+MAPE_thta_all_levs
+MAPE_thta_1000
+MAPE_thta_925
+MAPE_thta_850
+
+# RMSE
+RMSE_thta_all_levs = np.sqrt(sum( (sondes['THTA'] - naefs['THTA'])**2 / (len(sondes['THTA'])) )) 
+RMSE_thta_1000 = np.sqrt(sum( (snd1000 - nfs1000)**2 / (len(snd1000)) )) 
+RMSE_thta_925 = np.sqrt(sum( (snd925 - nfs925)**2 / (len(snd925)) )) 
+RMSE_thta_850 = np.sqrt(sum( (snd850 - nfs850)**2 / (len(snd850)) )) 
+
+RMSE_thta_all_levs
+RMSE_thta_1000
+RMSE_thta_925
+RMSE_thta_850
+
+# Correlations 
+cor_all_levs = np.corrcoef(np.array(sondes['THTA']), np.array(naefs['THTA']))[0,1]
+cor1000 = np.corrcoef(np.array(snd1000), np.array(nfs1000))[0,1]
+cor925 = np.corrcoef(np.array(snd925), np.array(nfs925))[0,1]
+cor850 = np.corrcoef(np.array(snd850), np.array(nfs850))[0,1]
+
+cor_all_levs
+cor1000
+cor925 
+cor850
+
+
+# %% Correlation plot
+
+
+fig, ax = plt.subplots(1,3, figsize=(15,5))
+ax[0].scatter(np.array(snd1000), np.array(nfs1000), label = '1000 kPa')
+ax[1].scatter(np.array(snd925), np.array(nfs925), label = '925 kPa')
+ax[2].scatter(np.array(snd850), np.array(nfs850), label = '850 kPa')
+ax[0].plot([280, 310], [280, 310], "r--")
+ax[1].plot([280, 310], [280, 310], "r--")
+ax[2].plot([280, 310], [280, 310], "r--")
+# ax[0].set_title('SONDES')
+# ax[1].set_title('NAEFS')
+ax[0].set_xlim(280,310)
+ax[1].set_xlim(280,310)
+ax[2].set_xlim(280,310)
+ax[0].set_ylim(280,310)
+ax[1].set_ylim(280,310)
+ax[2].set_ylim(280,310)
+
+ax[0].set_ylabel('NAEFS - Potential Temperature (K)')
+
+ax[0].set_title('1000 kPa')
+ax[1].set_title('925 kPa')
+ax[2].set_title('850 kPa')
+ax[0].set_xlabel('Sondes - Potential Temperature (K)')
+ax[1].set_xlabel('Sondes - Potential Temperature (K)')
+ax[2].set_xlabel('Sondes - Potential Temperature (K)')
+
+#plt.show()
+plt.savefig(fig_dir+'correlation_thta'+run_date+'.png')
+
+
+
+# %%
+
+fig, ax = plt.subplots(1, figsize=(9,9))
+ax.scatter(sondes['THTA'], naefs['THTA'], label = '1000 kPa')
+ax.plot([280, 310], [280, 310], "r--")
+ax.set_ylabel('NAEFS - Potential Temperature (K)')
+ax.set_xlabel('Potential Temperature (K)')
+ax.set_title('Correlation for potential temperature at all levels')
+plt.show()
+sondes
