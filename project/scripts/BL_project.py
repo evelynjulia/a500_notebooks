@@ -30,12 +30,13 @@ fig_dir = '/Users/ewicksteed/Documents/Eve/a500_notebooks_git_proj_version/proje
 # %% Set constants
 
 top_pres = 850
-stability_limit = 0.067 # what the cutoff is K/mb
+stability_limit = 0.02 # what the cutoff is K/mb
 
 p0 = 100 #kPa
 Rd=287.  #J/kg/K
 cpd=1004.  #J/kg/K
 
+run_date = dt.datetime.now().strftime('%y%m%d')
 
 # %% Read in some data
 # 
@@ -55,7 +56,6 @@ orig_snds = pickle.load(pkl_file)
 pkl_file.close() 
 
 # NAEFS data
-
 pkl_file = open(data_dir+'all_naefs_df.pkl', 'rb') 
 naefs_data = pickle.load(pkl_file) 
 pkl_file.close() 
@@ -78,6 +78,7 @@ for i in range(len(interp_snds)):
     else:
         pass
 
+
 # sonde data to use where the pressure values are only for 850, 925 and 1000
 sonde_data_tu = snds_sm_dates[snds_sm_dates['PRES']>=850]
 
@@ -88,14 +89,16 @@ sonde_new['COMP_DATE'] = sonde_data_tu['COMP_DATE']
 sonde_new['GRAD'] = sonde_data_tu['THTA_GRAD_INTERP']
 sonde_new['PRES'] = sonde_data_tu['PRES']
 sonde_new['THTA'] = sonde_data_tu['THTA']
+sonde_new['HGHT'] = sonde_data_tu['HGHT']
 sonde_new = sonde_new.reset_index(drop=True)
 
 sonde_table = sonde_new.pivot(index = 'COMP_DATE', columns= 'PRES', values='THTA')
-#grad = ((sonde_table.iloc[:,2] - sonde_table.iloc[:,1])/75 ) + ( (sonde_table.iloc[:,1] - sonde_table.iloc[:,0])/75 )
-grad = ((sonde_table.iloc[:,1] - sonde_table.iloc[:,2])/75 )
-sonde_table['1000'] = grad
-sonde_table['925'] = grad
-sonde_table['850'] = grad
+# calculate the temp difference in the bottom layer
+diff = ((sonde_table.iloc[:,1] - sonde_table.iloc[:,2])/75 ) # 925 - 1000
+
+sonde_table['1000'] = diff
+sonde_table['925'] = diff
+sonde_table['850'] = diff
 sonde_table = sonde_table.reset_index()
 
 sonde_table_back = pd.melt(sonde_table, id_vars=['COMP_DATE'], value_vars=['1000', '925', '850',])
@@ -103,17 +106,17 @@ sonde_table_back = pd.melt(sonde_table, id_vars=['COMP_DATE'], value_vars=['1000
 sonde_table_back = sonde_table_back.sort_values(by=['COMP_DATE', 'PRES'])
 sonde_table_back = sonde_table_back.reset_index(drop=True)
 
-sonde_new['AV_GRAD'] = sonde_table_back['value']
+sonde_new['DIFF'] = sonde_table_back['value']
 
 
 # %% Calculate stability and TOD for sondes
 
 stability_conditions = [
-    sonde_new['AV_GRAD'] >= stability_limit,
-    (sonde_new['AV_GRAD'] < stability_limit) & (sonde_new['AV_GRAD'] > -stability_limit),
-    sonde_new['AV_GRAD'] <= -stability_limit ]
+    sonde_new['DIFF'] >= stability_limit,
+    (sonde_new['DIFF'] < stability_limit) & (sonde_new['DIFF'] > -stability_limit),
+    sonde_new['DIFF'] <= -stability_limit ]
 
-stability_choices = ['unstable', 'neutral', 'stable']  #['unstable', 'neutral', 'stable']
+stability_choices = ['stable', 'neutral', 'unstable']  #['unstable', 'neutral', 'stable']
 sonde_new['STABILITY'] = np.select(stability_conditions, stability_choices)
 
 ### GET TIME OF DAY COLUMN
@@ -136,44 +139,42 @@ naefs_df_tu['THTA850'] = naefs_df_tu['TMP850']*((p0/85)**(Rd/cpd))
 
 # calculate the average gradient below 850 
 # used to identify stability
-#naefs_df_tu['AV_GRAD'] = (naefs_df_tu['THTA1000'] - naefs_df_tu['THTA850'])/150
-#naefs_df_tu['AV_GRAD'] = ((naefs_df_tu['THTA1000'] - naefs_df_tu['THTA925'])/75 ) + ( (naefs_df_tu['THTA925'] - naefs_df_tu['THTA850'])/75 )
-naefs_df_tu['AV_GRAD'] = ((naefs_df_tu['THTA925'] - naefs_df_tu['THTA1000'])/75 ) 
-
+naefs_df_tu['DIFF'] = ((naefs_df_tu['THTA925'] - naefs_df_tu['THTA1000'])/75 ) 
+#diff = ((sonde_table.iloc[:,1] - sonde_table.iloc[:,2])/75 ) # 925 - 1000
 
 # get data in the right format
 p1df = pd.DataFrame()
 p1df['COMP_DATE'] = naefs_df_tu['COMP_DATE']
-p1df['AV_GRAD'] = naefs_df_tu['AV_GRAD']
+p1df['DIFF'] = naefs_df_tu['DIFF']
 p1df['PRES'] = 1000.0
 p1df['THTA'] = naefs_df_tu['THTA1000']
 
 p2df = pd.DataFrame()
 p2df['COMP_DATE'] = naefs_df_tu['COMP_DATE']
-p2df['AV_GRAD'] = naefs_df_tu['AV_GRAD']
+p2df['DIFF'] = naefs_df_tu['DIFF']
 p2df['PRES'] = 925.0
 p2df['THTA'] = naefs_df_tu['THTA925']
 
 p3df = pd.DataFrame()
 p3df['COMP_DATE'] = naefs_df_tu['COMP_DATE']
-p3df['AV_GRAD'] = naefs_df_tu['AV_GRAD']
+p3df['DIFF'] = naefs_df_tu['DIFF']
 p3df['PRES'] = 850.0
 p3df['THTA'] = naefs_df_tu['THTA850']
 
 new_naefs_df_tu = pd.concat([p1df,p2df,p3df])
 
 # then sort by date and pressure
-new_naefs_df_tu.sort_values(by=['COMP_DATE', 'PRES'])
+new_naefs_df_tu = new_naefs_df_tu.sort_values(by=['COMP_DATE', 'PRES'])
 
 
 # %% Calculate stability and TOD for NAEFS
 
 stability_conditions = [
-    new_naefs_df_tu['AV_GRAD'] >= stability_limit,
-    (new_naefs_df_tu['AV_GRAD'] < stability_limit) & (new_naefs_df_tu['AV_GRAD'] > -stability_limit),
-    new_naefs_df_tu['AV_GRAD'] <= -stability_limit ]
+    new_naefs_df_tu['DIFF'] >= stability_limit,
+    (new_naefs_df_tu['DIFF'] < stability_limit) & (new_naefs_df_tu['DIFF'] > -stability_limit),
+    new_naefs_df_tu['DIFF'] <= -stability_limit ]
 
-stability_choices = ['unstable', 'neutral', 'stable']  #['unstable', 'neutral', 'stable']
+stability_choices = ['stable', 'neutral', 'unstable']  #['unstable', 'neutral', 'stable']
 new_naefs_df_tu['STABILITY'] = np.select(stability_conditions, stability_choices)
 
 ### GET TIME OF DAY COLUMN
@@ -184,7 +185,7 @@ new_naefs_df_tu['TOD'] = new_naefs_df_tu['COMP_DATE'].str[-2:]
 
 sondes = pd.DataFrame()
 sondes['COMP_DATE'] = sonde_new['COMP_DATE']
-sondes['AV_GRAD'] = sonde_new['AV_GRAD']
+sondes['DIFF'] = sonde_new['DIFF']
 sondes['PRES'] = sonde_new['PRES']
 sondes['THTA'] = sonde_new['THTA']
 sondes['STABILITY'] = sonde_new['STABILITY']
@@ -196,7 +197,7 @@ sondes = sondes.reset_index(drop=True)
 
 naefs = pd.DataFrame()
 naefs['COMP_DATE'] = new_naefs_df_tu['COMP_DATE']
-naefs['AV_GRAD'] = new_naefs_df_tu['AV_GRAD']
+naefs['DIFF'] = new_naefs_df_tu['DIFF']
 naefs['PRES'] = new_naefs_df_tu['PRES']
 naefs['THTA'] = new_naefs_df_tu['THTA']
 naefs['STABILITY'] = new_naefs_df_tu['STABILITY']
@@ -233,6 +234,7 @@ sondes_stability_vals = sondes.groupby('COMP_DATE').first().groupby('STABILITY')
 naefs_stability_keys = np.array(naefs.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].keys())
 naefs_stability_vals = naefs.groupby('COMP_DATE').first().groupby('STABILITY').count()['TOD'].values
 
+
 fig, ax = plt.subplots(1,2, figsize=(15,9))
 ax[0].bar(sondes_stability_keys, sondes_stability_vals)
 ax[0].set_ylabel('Count')
@@ -242,10 +244,10 @@ ax[1].bar(naefs_stability_keys, naefs_stability_vals)
 ax[1].set_ylabel('Count')
 ax[1].set_xlabel('Stability class')
 ax[1].set_title('NAEFS')
-ax[0].set_ylim(0,70)
-ax[1].set_ylim(0,70)
-plt.show()
-#plt.savefig(fig_dir+'bar_stab_classes_and_grad'+run_date+'run_stablim'+str(stability_limit)+'.png')
+#ax[0].set_ylim(0,70)
+#ax[1].set_ylim(0,70)
+#plt.show()
+plt.savefig(fig_dir+'Bar_plot'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
 
