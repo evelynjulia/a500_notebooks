@@ -250,6 +250,27 @@ ax[1].set_ylim(0,80)
 plt.savefig(fig_dir+'Bar_plot'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
 
+# %% Bar plot of stabtime of day
+
+sondes_tod_keys = np.array(sondes.groupby('COMP_DATE').first().groupby('TOD').count()['STABILITY'].keys())
+sondes_tod_vals = sondes.groupby('COMP_DATE').first().groupby('TOD').count()['STABILITY'].values
+
+naefs_tod_keys = np.array(naefs.groupby('COMP_DATE').first().groupby('TOD').count()['STABILITY'].keys())
+naefs_tod_vals = naefs.groupby('COMP_DATE').first().groupby('TOD').count()['STABILITY'].values
+
+
+fig, ax = plt.subplots(1,1, figsize=(15,9))
+ax.bar(sondes_tod_keys, sondes_tod_vals)
+#ax.bar(naefs_tod_keys, naefs_tod_vals, color = 'orange')
+ax.set_ylabel('Count')
+ax.set_xlabel('Time of day')
+ax.set_title('Number of cases by time of day')
+# ax.set_ylim(0,80)
+#plt.show()
+plt.savefig(fig_dir+'Bar_plot_tod_'+run_date+'run_stablim'+str(stability_limit)+'.png')
+
+
+
 # %% Calculate averages
 
 # mean by stability
@@ -276,6 +297,7 @@ ax.set_ylabel('Pressure (kPa)')
 ax.set_xlabel('Potential temperature (K)')
 ax.invert_yaxis()
 ax.legend(['Neutral - sonde', 'Stable - sonde', 'Neutral - NAEFS', 'Stable - NAEFS'])
+ax.set_title('Average potential temperature profile by stability class')
 #plt.show()
 plt.savefig(fig_dir+'Comparison_average_theta_by_stab_class_all'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
@@ -291,6 +313,7 @@ ax.set_ylabel('Pressure (kPa)')
 ax.set_xlabel('Potential temperature (K)')
 ax.invert_yaxis()
 ax.legend(['00 - sonde', '12 - sonde', '00 - NAEFS', '12 - NAEFS'])
+ax.set_title('Average potential temperature profile by time of day')
 #plt.show()
 plt.savefig(fig_dir+'Comparison_average_theta_by_TOD_all'+run_date+'run_stablim'+str(stability_limit)+'.png')
 
@@ -423,3 +446,23 @@ ax.set_xlabel('Potential Temperature (K)')
 ax.set_title('Correlation for potential temperature at all levels')
 #plt.show()
 plt.savefig(fig_dir+'correlation_thta_all_levs_'+run_date+'.png')
+
+
+# %% try correlation of stabilties
+
+np.corrcoef(sonde_stability_level_av_thta.unstack(),naefs_stability_level_av_thta.unstack())
+
+
+# %%
+
+sonde_stability_level_av_thta.unstack().mean(axis=1)
+naefs_stability_level_av_thta.unstack().mean(axis=1)
+
+
+# %%
+
+fig, ax = plt.subplots(1,1, figsize=(15,5))
+ax.scatter(np.array(sondes['THTA'][sondes['STABILITY']=='stable']), np.array(naefs['THTA'][naefs['STABILITY']=='stable']))
+
+
+# %%
