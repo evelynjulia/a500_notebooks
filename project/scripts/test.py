@@ -35,6 +35,9 @@ sonde_files = "*.csv"
 
 dates_to_use = get_overlap_dates(naefs_dir= naefs_data_dir, naefs_files= naefs_files, sonde_dir = sonde_data_dir, sonde_files = sonde_files)
 
+dates_pkl_file = open(data_dir+'dates_to_use.pkl', 'wb')
+pickle.dump(dates_to_use, dates_pkl_file)
+dates_pkl_file.close()
 
 # pprint.pprint(sorted(dates_to_use))
 # print(len(dates_to_use))
